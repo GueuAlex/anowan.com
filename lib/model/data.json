@@ -1,0 +1,46 @@
+{
+   "": {
+            "id": 1,
+            "is_active": "true ou false selon le statut du qr_code",
+            "type": "temporaire ou permanent",
+            "date_debut": "la date",
+            "date_fin": "date de péremption du qr code || null par defaut pour un qr code permanent",
+            "img_url": "facultatif pour moi || Mais de ton coté cela permettra de restauré un qr code egaré",
+            "code_associate": "le code associé",
+            "is_already_scanned": "false par defaut cela me permettra de savoir si un code a déjà scanné une 1ere fois",
+            "user":  {
+                "id": 5,
+                "genre": "Monsieur",
+                "nom": "TIENE",
+                "prenoms": "Namboke",
+                "entreprise": "DIGIFAZ",
+                "numero_cni": "ABCD00001",
+                "plaque_vehicule": "7654AC01",
+                "email": "admin@digifaz.com",
+                "number": "0595636254",
+                "entrepot_visite": "DIGIFAZ",
+                "motif_visite": "Formation des agents de sécurité"
+            }
+        },
+
+        ".":[  {
+                    "id": 100,
+                    "qr_code_id": 12,
+                    "scand_date": "date de scan",
+                    "scan_hour": "heure de scan",
+                    "motif": "entrée ou sortie"
+                },
+                {
+                    "id": 30,
+                    "qr_code_id": 12,
+                    "scand_date": "date de scan",
+                    "scan_hour": "heure de scan",
+                    "motif": "entrée ou sortie"
+                }
+               
+            ]
+
+             
+}
+
+
