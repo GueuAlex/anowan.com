@@ -1,15 +1,23 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:gap/gap.dart';
+import 'package:get/utils.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
+import 'package:rounded_loading_button/rounded_loading_button.dart';
 import 'package:ticketwave/config/app_text.dart';
 import 'package:ticketwave/config/functions.dart';
+import 'package:ticketwave/model/ticket_model.dart';
+import 'package:ticketwave/widgets/all_sheet_header.dart';
+import 'package:vibration/vibration.dart';
 
 import '../../../config/overlay.dart';
 import '../../../config/palette.dart';
 import '../../../side_bar/custom_side_bar.dart';
 import '../../../side_bar/open_side_dar.dart';
+import '../../../widgets/error_sheet_container.dart';
+import '../../../widgets/infos_column.dart';
 
 class ScanScreen extends StatefulWidget {
   static String routeName = 'scan_screen';
@@ -53,6 +61,8 @@ class _ScanScreenState extends State<ScanScreen> {
               child: Stack(
                 children: [
                   MobileScanner(
+                    controller: mobileScannerController,
+                    allowDuplicates: true,
                     ///////////////////////////////////
                     /// Lorsque le qrcode est détecté
                     ///
@@ -66,6 +76,11 @@ class _ScanScreenState extends State<ScanScreen> {
                         ////////////////
                         /// data =  données que le qrcode continet
                         String data = barcodes.rawValue ?? '';
+
+                        //////////////
+                        /// booleen permettant de connaitre l'etat
+                        /// du process de scanning
+                        isScanCompleted = true;
                         //////////////////////////////
                         // on temporise pendant 3 second
 
@@ -76,30 +91,50 @@ class _ScanScreenState extends State<ScanScreen> {
                             showGif = false;
                           });
                           ///// avec le traitement du qrcode
-                          //////////////
-                          /// booleen permettant de connaitre l'etat
-                          /// du process de scanning
-                          isScanCompleted = true;
+
                           //////////////////////////
                           /// on attend un int
                           /// donc on int.tryParse code pour etre sur de
                           /// son type
-                          //int? id = int.tryParse(data);
-                          if (data.isNotEmpty) {
+                          int? id = int.tryParse(data);
+                          if (id != null) {
                             // juste pour le fun
                             player.play('images/soung.mp3');
                             Functions.showBottomSheet(
+                              size: size,
+                              heightRatio: 1.7,
                               ctxt: context,
                               ///// pour le fun
-                              widget: Container(
-                                color: Colors.white,
-                                width: double.infinity,
-                                height: size.height / 2,
-                                child: Center(
-                                  child: AppText.medium(data),
-                                ),
+                              widget: ScanSheet(data: data),
+                            ).whenComplete(() {
+                              Future.delayed(const Duration(seconds: 3))
+                                  .then((_) {
+                                setState(() {
+                                  isScanCompleted = false;
+                                });
+                              });
+                            });
+                          } else {
+                            ///////////////////////
+                            ///sinon on fait vibrer le device
+                            ///et on afficher un message d'erreur
+                            ///
+                            Vibration.vibrate(duration: 200);
+                            Functions.showBottomSheet(
+                              ctxt: context,
+                              size: size,
+                              heightRatio: 3,
+                              widget: const ErrorSheetContainer(
+                                text: 'Qr code invalide !',
                               ),
-                            );
+                            ).whenComplete(() {
+                              Future.delayed(const Duration(seconds: 3))
+                                  .then((_) {
+                                setState(() {
+                                  isScanCompleted = false;
+                                });
+                              });
+                            });
                           }
                         });
                       }
@@ -107,7 +142,7 @@ class _ScanScreenState extends State<ScanScreen> {
                   ),
                   const QRScannerOverlay(overlayColour: Colors.transparent),
 
-                  /////////////// top widgets :::://s///////////
+                  /////////////// top widgets menu and flash :::://s///////////
                   Positioned(
                     child: Container(
                       width: double.infinity,
@@ -127,11 +162,10 @@ class _ScanScreenState extends State<ScanScreen> {
                           actions: [
                             InkWell(
                               onTap: () {
+                                mobileScannerController.toggleTorch();
                                 setState(() {
                                   isFlashOn = !isFlashOn;
                                 });
-
-                                mobileScannerController.toggleTorch();
                               },
                               child: Icon(
                                 !isFlashOn
@@ -145,7 +179,7 @@ class _ScanScreenState extends State<ScanScreen> {
                     ),
                   ),
 
-                  showGif
+                  showGif ///// widget d'animation gif afficher on detect
                       ? Positioned(
                           top: (size.height - 200) /
                               2, // Align au milieu de la hauteur de l'écran
@@ -171,6 +205,226 @@ class _ScanScreenState extends State<ScanScreen> {
           ],
         ),
       ),
+    );
+  }
+}
+
+class ScanSheet extends StatefulWidget {
+  const ScanSheet({
+    super.key,
+    required this.data,
+  });
+
+  final String data;
+
+  @override
+  State<ScanSheet> createState() => _ScanSheetState();
+}
+
+class _ScanSheetState extends State<ScanSheet> {
+  final RoundedLoadingButtonController _btnController =
+      RoundedLoadingButtonController();
+
+  //////////////////////////////////////////:
+  ///////////
+  TicketModel? _ticket;
+  ///////////////////
+  ///
+  bool isLoading = true;
+
+  Future<void> getTicket({required String uniqueCode}) async {
+    _ticket = await Functions.getTicketFromApi(uniqueCode: uniqueCode);
+  }
+
+  ///
+  ////////////////////////////////////////////
+  @override
+  void initState() {
+    getTicket(uniqueCode: widget.data).whenComplete(() {
+      setState(() {
+        isLoading = false;
+      });
+    });
+
+    super.initState();
+  }
+  ////////////////////////////////////////////
+
+  @override
+  Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    return isLoading
+        ? Center(
+            child: AppText.small('Chargement...'),
+          )
+        : getWidget(ticket: _ticket, size: size);
+  }
+
+  ////////////////////////////////////////////////////////
+  ///
+  ///
+  Widget getWidget({required TicketModel? ticket, required Size size}) {
+    if (ticket != null) {
+      if (!ticket.active) {
+        return Functions.inactifQrCode(ctxt: context);
+      } else if (ticket.scanned) {
+        return const ErrorSheetContainer(
+            text: 'Ce Qr code a déjà été scanné !');
+      } else {
+        return firstScan(ticket: ticket);
+      }
+    } else {
+      return Functions.widget404(size: size, ctxt: context);
+    }
+  }
+
+  Widget firstScan({required TicketModel ticket}) {
+    return Column(
+      children: [
+        Stack(
+          children: [
+            Container(
+              height: 200,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                borderRadius: Functions.borderRadius(),
+                image: const DecorationImage(
+                  image: AssetImage('assets/images/concert-demo.jpg'),
+                  fit: BoxFit.cover,
+                ),
+              ),
+              child: Container(
+                color: Colors.black.withOpacity(0.2),
+              ),
+            ),
+            const AllSheetHeader(),
+          ],
+        ),
+        //////////////////////// qr code infos /////////////////////
+        ///////////////////////////////////////////////////////////
+        const Gap(5),
+        SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            child: Row(
+              children: [
+                Container(
+                  width: 150,
+                  height: 145,
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      width: 2,
+                      color: Palette.primaryColor,
+                    ),
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                  child: Container(
+                    decoration: const BoxDecoration(
+                      image: DecorationImage(
+                        image: AssetImage(
+                          'assets/images/qr-model.png',
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 5),
+                Expanded(
+                  child: Column(
+                    children: [
+                      InfosColumn(
+                        opacity: 0.1,
+                        label: 'Pass',
+                        widget: AppText.medium(
+                          ticket.pass.name,
+                          textOverflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                      InfosColumn(
+                        opacity: 0.1,
+                        label: 'Nom et prénoms',
+                        widget: AppText.medium(
+                          'KOUAKOU Anderson Yves',
+                          textOverflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                      InfosColumn(
+                        opacity: 0.1,
+                        label: 'Numéro',
+                        widget: AppText.medium(
+                          '07 098 095 78',
+                          textOverflow: TextOverflow.ellipsis,
+                        ),
+                      )
+                    ],
+                  ),
+                )
+              ],
+            ),
+          ),
+        ),
+        const SizedBox(height: 20),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10),
+          /* child: CustomButton(
+            color: Palette.secondaryColor,
+            width: double.infinity,
+            height: 35,
+            radius: 5,
+            text: 'Confirmer le scan',
+            onPress: () {
+              /*  Map<String, dynamic> data = {
+                "is_checked": 1,
+              }; */
+              EasyLoading.show(status: 'loading...');
+              Future.delayed(const Duration(seconds: 5))
+                  .then((value) => EasyLoading.dismiss());
+            },
+          ), */
+          child: RoundedLoadingButton(
+            elevation: 1,
+            height: 40,
+            borderRadius: 5,
+            color: Palette.primaryColor,
+            controller: _btnController,
+            onPressed: () {
+              //////////// implementer la validation du scan //////////////////
+              Map<String, dynamic> data = {"scanned": 1};
+              Functions.scanValidation(
+                data: data,
+                uniqueCode: ticket.uniqueCode,
+              ).then((response) {
+                if (response != null) {
+                  _btnController.success();
+                  EasyLoading.showToast(
+                    'Scan confirmé !',
+                    toastPosition: EasyLoadingToastPosition.bottom,
+                  );
+                } else {
+                  _btnController.reset();
+                  EasyLoading.showToast(
+                    'Try again !',
+                    toastPosition: EasyLoadingToastPosition.bottom,
+                  );
+                }
+              });
+
+              ////////:
+
+              ////////////////////////////////////////////////////////////////
+            },
+            child: const Text(
+              'Confirmer le scan',
+              style: TextStyle(color: Colors.white),
+            ),
+          ),
+        ),
+        ///////////////////////////////////////////////////////////
+        ///////////////////////////////////////////////////////////
+      ],
     );
   }
 }

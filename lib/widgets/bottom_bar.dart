@@ -40,7 +40,7 @@ class _BottomBarState extends State<BottomBar> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Palette.scafoldColor,
+        backgroundColor: Palette.whiteColor,
         elevation: 0,
         leading: const OpenSideBar(),
       ),
