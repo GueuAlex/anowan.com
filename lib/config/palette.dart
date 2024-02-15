@@ -40,9 +40,9 @@ class Palette {
   static const Color textColor = Color(0xFF3d3d3d);
   static const Color blueColor = Color(0xFF526799);
   static const Color redColor = Color(0xFFF37B67);
-  //static const Color primaryColor = Color(0xFF0434b5);
+  static const Color appBlack = Color(0xFF3c4c4c);
   static const Color secondaryColor = Color(0xFFe4662d);
-  //static const Color secondaryColor = Color(0xFFac4c84);
+  static const Color appRed = Color(0xFFb41434);
   /////////
   static const Color appPrimaryColor = Color(0xFFf5a535);
   static const Color appSecondaryColor = Color(0xFFf2c17e);

@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
 
 import '../../../config/app_text.dart';
 import '../../../config/palette.dart';
@@ -8,7 +9,9 @@ import '../../../widgets/custom_button.dart';
 
 class ErrorSheetContainer extends StatelessWidget {
   final String text;
-  const ErrorSheetContainer({super.key, required this.text});
+  final IconData icon;
+  const ErrorSheetContainer(
+      {super.key, required this.text, this.icon = CupertinoIcons.xmark});
 
   @override
   Widget build(BuildContext context) {
@@ -16,11 +19,11 @@ class ErrorSheetContainer extends StatelessWidget {
       children: [
         const AllSheetHeader(),
         Container(
-          margin: const EdgeInsets.only(bottom: 20),
+          margin: const EdgeInsets.only(bottom: 5),
           width: double.infinity,
-          height: 100,
+          height: 70,
           decoration: BoxDecoration(
-            color: Colors.grey.withOpacity(0.3),
+            color: Colors.grey.withOpacity(0.01),
             borderRadius: const BorderRadius.only(
               bottomLeft: Radius.elliptical(200, 10),
               bottomRight: Radius.elliptical(200, 10),
@@ -28,21 +31,32 @@ class ErrorSheetContainer extends StatelessWidget {
           ),
           child: Center(
             child: Container(
-              padding: const EdgeInsets.all(20),
+              // padding: const EdgeInsets.all(20),
               width: 70,
               height: 70,
               decoration: BoxDecoration(
                 color: Colors.black.withOpacity(0.1),
                 shape: BoxShape.circle,
               ),
-              child: const Center(
-                child: Icon(CupertinoIcons.xmark, size: 30),
+              child: Center(
+                child: Icon(
+                  icon,
+                  size: 30,
+                  color: Colors.red,
+                ),
               ),
             ),
           ),
         ),
-        AppText.medium(text),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+          child: AppText.medium(
+            text,
+            textAlign: TextAlign.center,
+          ),
+        ),
         //AppText.small('Veu')
+        Gap(8),
         Padding(
           padding: const EdgeInsets.only(
             top: 10,
@@ -50,7 +64,7 @@ class ErrorSheetContainer extends StatelessWidget {
             left: 50,
           ),
           child: CustomButton(
-            color: Palette.primaryColor,
+            color: Palette.appRed,
             width: double.infinity,
             height: 35,
             radius: 5,

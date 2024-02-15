@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ticketwave/config/palette.dart';
-import 'package:ticketwave/widgets/bottom_bar.dart';
+
+import '../admin/screens/scan/scan_screen.dart';
 
 class SplashSceen extends StatefulWidget {
   static String routeName = 'splash_screen';
@@ -15,7 +16,10 @@ class _SplashSceenState extends State<SplashSceen> {
   void initState() {
     Future.delayed(const Duration(seconds: 3)).then(
       (value) => Navigator.pushNamedAndRemoveUntil(
-          context, BottomBar.routeName, (route) => false),
+        context,
+        ScanScreen.routeName,
+        (route) => false,
+      ),
     );
     super.initState();
   }
@@ -32,7 +36,7 @@ class _SplashSceenState extends State<SplashSceen> {
             Center(
               child: CircularProgressIndicator.adaptive(
                 valueColor: AlwaysStoppedAnimation<Color>(
-                  Palette.primaryColor,
+                  Palette.appRed,
                 ),
               ),
             )

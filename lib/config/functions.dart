@@ -68,7 +68,17 @@ class Functions {
 
   /// renvoi un widget avec a l'intérieur un érreur 404
   static Widget widget404({required Size size, required BuildContext ctxt}) {
-    return SizedBox(
+    return Container(
+      /* width: double.infinity, */
+      height: 260,
+      /* margin: EdgeInsets.only(bottom: keyboardHeight), */
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: const BorderRadius.only(
+          topLeft: Radius.circular(15),
+          topRight: Radius.circular(15),
+        ),
+      ),
       //height: size.height / 1.5,
       width: size.width,
       child: Center(
@@ -110,41 +120,53 @@ class Functions {
   }
 
   static Widget inactifQrCode({required BuildContext ctxt}) {
-    return Column(
-      children: [
-        const AllSheetHeader(),
-        Padding(
-          padding: const EdgeInsets.only(top: 20, right: 20, left: 20),
-          child: Column(
-            children: [
-              Container(
-                width: 70,
-                height: 70,
-                decoration: const BoxDecoration(
-                  shape: BoxShape.circle,
-                  image: DecorationImage(
-                    image: AssetImage('assets/images/disconnect.jpg'),
-                    fit: BoxFit.cover,
+    return Container(
+      width: double.infinity,
+      height: 230,
+      /* margin: EdgeInsets.only(bottom: keyboardHeight), */
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: const BorderRadius.only(
+          topLeft: Radius.circular(15),
+          topRight: Radius.circular(15),
+        ),
+      ),
+      child: Column(
+        children: [
+          const AllSheetHeader(),
+          Padding(
+            padding: const EdgeInsets.only(top: 20, right: 20, left: 20),
+            child: Column(
+              children: [
+                Container(
+                  width: 70,
+                  height: 70,
+                  decoration: const BoxDecoration(
+                    shape: BoxShape.circle,
+                    image: DecorationImage(
+                      image: AssetImage('assets/images/disconnect.jpg'),
+                      fit: BoxFit.cover,
+                    ),
                   ),
                 ),
-              ),
-              AppText.medium('Oops !'),
-              AppText.small('Ce Qr code est suspendu !'),
-              const SizedBox(
-                height: 20,
-              ),
-              CustomButton(
-                color: Palette.primaryColor,
-                width: double.infinity,
-                height: 35,
-                radius: 5,
-                text: 'Retour',
-                onPress: () => Navigator.pop(ctxt),
-              )
-            ],
-          ),
-        )
-      ],
+                AppText.medium('Oops !'),
+                AppText.small('Ce Qr code est suspendu !'),
+                const SizedBox(
+                  height: 20,
+                ),
+                CustomButton(
+                  color: Palette.appRed,
+                  width: double.infinity,
+                  height: 35,
+                  radius: 5,
+                  text: 'Retour',
+                  onPress: () => Navigator.pop(ctxt),
+                )
+              ],
+            ),
+          )
+        ],
+      ),
     );
   }
 
@@ -163,5 +185,69 @@ class Functions {
       data: data,
     );
     return response;
+  }
+
+  // simple bottom sheet
+  static Future<void> showSimpleBottomSheet({
+    required BuildContext ctxt,
+    required Widget widget,
+  }) async {
+    return await showModalBottomSheet(
+      isDismissible: true,
+      enableDrag: true,
+      backgroundColor: Colors.transparent,
+      isScrollControlled: true,
+      useSafeArea: true,
+      context: ctxt,
+      builder: (context) {
+        return widget;
+      },
+    );
+  }
+
+  static TextField getTextField(
+      {required TextEditingController controller,
+      required String textFieldLabel,
+      required}) {
+    return TextField(
+      controller: controller,
+      style: const TextStyle(
+        color: Colors.black,
+        fontSize: 14,
+        fontWeight: FontWeight.w600,
+      ),
+      cursorColor: Colors.black,
+      decoration: InputDecoration(
+        hintText: textFieldLabel,
+        hintStyle: TextStyle(color: Colors.grey),
+
+        /* label: AppText.medium(
+          textFieldLabel,
+          color: Colors.grey.withOpacity(0.5),
+        ), */
+        border: InputBorder.none,
+      ),
+    );
+  }
+
+  static DateTime getToday() {
+    // renvoi la date du jour
+    return DateTime(
+      DateTime.now().year,
+      DateTime.now().month,
+      DateTime.now().day,
+    );
+  }
+
+  static bool containsCurrentDate(List<DateTime> dates) {
+    DateTime currentDate = DateTime.now();
+    for (DateTime date in dates) {
+      if (date.year == currentDate.year &&
+          date.month == currentDate.month &&
+          date.day == currentDate.day) {
+        return true;
+      }
+    }
+    return false;
   }
 }

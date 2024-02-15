@@ -3,9 +3,23 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:ticketwave/model/ticket_model.dart';
 
-///////////////// base uri//////////////
-//const baseUri = 'http://194.163.136.227:8087/api/';
-const baseUri = 'https://anowan.digifaz.com/api/';
+///////////////// base uri prod //////////////
+const baseUri = 'https://anowan.com/api/';
+
+///////////////// prod headers //////////////
+const headers = {
+  'Content-Type': 'application/json',
+  'Authorization': 'Bearer 2|jMbz5UFWgsAcMQofvUcqOIaK8KzDF79wcxAPQzWs156bc61c'
+};
+
+///////////////// base uri test //////////////
+//const baseUri = 'https://anowan.digifaz.com/api/';
+
+///////////////// test headers //////////////
+/* const headers = {
+  'Content-Type': 'application/json',
+  'Authorization': 'Bearer 1|rFzkHZKwWinlyzuGQC9uV7IIgW3bM9SWkfGrksvO'
+}; */
 
 ///////////////////////////////////////
 ///
@@ -26,9 +40,6 @@ class RemoteService {
     ///////////// encode email to json objet/////////
     var payload = jsonEncode(data);
     // http request headers
-    var headers = {
-      'Content-Type': 'application/json',
-    };
 
     var response = await client.put(url, body: payload, headers: headers);
     print('------------------------${response.statusCode}');
@@ -48,9 +59,9 @@ class RemoteService {
   ///
   Future<TicketModel?> getTicket({required String uniqueCode}) async {
     var uri = Uri.parse('${baseUri}tickets/$uniqueCode');
-    var response = await client.get(uri);
+    var response = await client.get(uri, headers: headers);
     //print('my user Dans remote /////////////////////////// : ${response.body}');
-    //print('Dans remote////////////////////////////// : ${response.statusCode}');
+    print('Dans remote////////////////////////////// : ${response.statusCode}');
     if (response.statusCode == 200 || response.statusCode == 201) {
       var json = response.body;
       print(response.body);
@@ -70,9 +81,9 @@ class RemoteService {
       "unique_id": uniqueId,
     };
     var payload = jsonEncode(data);
-    var headers = {
+    /*  var headers = {
       'Content-Type': 'application/json',
-    };
+    }; */
 
     var response = await client.post(
       url,
@@ -115,9 +126,9 @@ class RemoteService {
     // var payload = userToJson(user);
 
     // http request headers
-    var headers = {
+    /* var headers = {
       'Content-Type': 'application/json',
-    };
+    }; */
 
     //////////////// post user ////////////
     var response = await client.post(
@@ -154,9 +165,9 @@ class RemoteService {
     ///////////// encode email to json objet/////////
     var payload = jsonEncode(data);
     // http request headers
-    var headers = {
+    /* var headers = {
       'Content-Type': 'application/json',
-    };
+    }; */
 
     var response = await client.put(url, body: payload, headers: headers);
     print(

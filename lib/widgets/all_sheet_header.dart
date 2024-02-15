@@ -14,7 +14,7 @@ class AllSheetHeader extends StatelessWidget {
         height: 20,
         width: double.infinity,
         decoration: BoxDecoration(
-          color: Colors.grey.withOpacity(0.3),
+          color: Colors.grey.withOpacity(0.01),
           borderRadius: const BorderRadius.only(
             topLeft: Radius.circular(15),
             topRight: Radius.circular(15),
@@ -25,7 +25,7 @@ class AllSheetHeader extends StatelessWidget {
             width: 50,
             height: 5,
             decoration: BoxDecoration(
-              color: Colors.grey.withOpacity(0.8),
+              color: Colors.grey.withOpacity(0.3),
               borderRadius: BorderRadius.circular(5),
             ),
           ),

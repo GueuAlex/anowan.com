@@ -5,6 +5,7 @@ import 'package:gap/gap.dart';
 
 import '../../../config/app_text.dart';
 import '../../../config/palette.dart';
+import '../../../widgets/alert_1.dart';
 
 class SellStatus extends StatelessWidget {
   const SellStatus({
@@ -41,35 +42,16 @@ class SellStatus extends StatelessWidget {
               ),
             ),
             Gap(10),
-            Container(
-              padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 15),
-              decoration: BoxDecoration(
-                color: Color.fromARGB(73, 61, 118, 204),
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Row(
-                children: [
-                  Icon(
-                    FluentIcons.megaphone_24_filled,
-                    color: Color.fromARGB(255, 61, 118, 204),
-                    size: 16,
-                  ),
-                  Gap(8),
-                  AppText.medium(
-                    'Les ventes de billets se terminent bientôt !',
-                    fontSize: 16,
-                    fontWeight: FontWeight.w400,
-                  ),
-                ],
-              ),
-            )
+            Alert1(
+              alert: 'Les ventes de billets se terminent bientôt !',
+            ),
           ],
         ),
       ),
     );
   }
 
-  Container sallsClose() {
+  Container soldOut() {
     return Container(
       // lorsque l'evenement est gratuit
       decoration: BoxDecoration(
