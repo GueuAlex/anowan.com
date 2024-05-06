@@ -48,9 +48,7 @@
 		<key>UIApplicationSupportsIndirectInputEvents</key>
 		<true/>
 		<key>NSCameraUsageDescription</key>
-		<string>This app needs camera access to scan QR codes</string>
-		<key>NSPhotoLibraryUsageDescription</key>
-		<string>This app needs photos access to get QR code from photo library</string>
+		<string>L'autorisation d'accéder à l'appareil photo est nécessaire pour scanner les tickets.</string>
 		<key>UIStatusBarHidden</key>
 		<false/>
 	</dict>

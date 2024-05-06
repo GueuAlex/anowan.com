@@ -9,7 +9,7 @@ const baseUri = 'https://anowan.com/api/';
 ///////////////// prod headers //////////////
 const headers = {
   'Content-Type': 'application/json',
-  'Authorization': 'Bearer 2|jMbz5UFWgsAcMQofvUcqOIaK8KzDF79wcxAPQzWs156bc61c'
+  'Authorization': 'Bearer 1|5c90mMGGSpu6u5jqQd7op6PzAsD2INjDrCCirOD1ac9e8555'
 };
 
 ///////////////// base uri test //////////////

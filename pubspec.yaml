@@ -53,7 +53,7 @@ dependencies:
   flutter_map: ^6.0.0
   url_launcher: ^6.1.14
   geocoding: ^2.1.1
-  baseflow_plugin_template: ^2.1.2
+  rounded_loading_button_plus: ^3.0.1
   shared_preferences: ^2.2.2
 
 dev_dependencies:

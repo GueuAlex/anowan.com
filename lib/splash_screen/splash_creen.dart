@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:ticketwave/config/palette.dart';
 
 import '../admin/screens/scan/scan_screen.dart';
+//import '../screens/home/home_screen.dart';
+import '../widgets/bottom_bar.dart';
 
 class SplashSceen extends StatefulWidget {
   static String routeName = 'splash_screen';
@@ -17,7 +19,7 @@ class _SplashSceenState extends State<SplashSceen> {
     Future.delayed(const Duration(seconds: 3)).then(
       (value) => Navigator.pushNamedAndRemoveUntil(
         context,
-        ScanScreen.routeName,
+        BottomBar.routeName,
         (route) => false,
       ),
     );

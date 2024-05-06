@@ -5,7 +5,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:gap/gap.dart';
 import 'package:get/utils.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
-import 'package:rounded_loading_button/rounded_loading_button.dart';
+import 'package:rounded_loading_button_plus/rounded_loading_button.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ticketwave/config/app_text.dart';
 import 'package:ticketwave/config/functions.dart';
@@ -246,7 +246,7 @@ class _ScanScreenState extends State<ScanScreen> {
                       padding: const EdgeInsets.all(13.0),
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        color: Colors.white.withOpacity(0.3),
+                        color: Colors.white.withOpacity(0.2),
                       ),
                       child: InkWell(
                         onTap: () {
@@ -273,7 +273,9 @@ class _ScanScreenState extends State<ScanScreen> {
                       child: InkWell(
                         onTap: () {
                           Functions.showSimpleBottomSheet(
-                              ctxt: context, widget: TokenChecker());
+                            ctxt: context,
+                            widget: TokenChecker(),
+                          );
                         },
                         child: Icon(
                           color: Colors.white,
