@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:ticketwave/model/ticket_model.dart';
 import 'package:ticketwave/remote_service/remote_service.dart';
 import 'package:ticketwave/widgets/all_sheet_header.dart';
@@ -249,5 +250,26 @@ class Functions {
       }
     }
     return false;
+  }
+
+  static Size contextSize(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    return size;
+  }
+
+  static followOrganizer() {
+    debugPrint('follow organizer');
+  }
+
+  static showToast({required String msg}) {
+    Fluttertoast.showToast(
+      msg: msg,
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.BOTTOM,
+      timeInSecForIosWeb: 1,
+      backgroundColor: Palette.primaryColor,
+      textColor: Colors.white,
+      fontSize: 16.0,
+    );
   }
 }

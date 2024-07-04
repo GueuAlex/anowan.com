@@ -51,5 +51,8 @@
 		<string>L'autorisation d'accéder à l'appareil photo est nécessaire pour scanner les tickets.</string>
 		<key>UIStatusBarHidden</key>
 		<false/>
+		<key>NSCalendarsUsageDescription</key>
+		<string>Nous utilisons l'accès à votre calendrier pour ajouter des événements directement à votre agenda, ce qui vous permet de ne manquer aucune activité importante.</string>
+
 	</dict>
 </plist>

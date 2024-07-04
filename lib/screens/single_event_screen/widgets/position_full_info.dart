@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 import 'package:geocoding/geocoding.dart';
-import 'package:latlong2/latlong.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import '../../../config/app_text.dart';
 
@@ -18,20 +18,23 @@ class PositionFullInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // final size = MediaQuery.of(context).size;
     return FutureBuilder<List<Placemark>>(
       future: placemarkFromCoordinates(location.latitude, location.longitude,
           localeIdentifier: 'en'),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(child: CircularProgressIndicator());
+          return Center(
+            child: CircularProgressIndicator.adaptive(),
+          );
         } else if (snapshot.hasError) {
           return Center(child: Text('Erreur: ${snapshot.error}'));
         } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
           return Center(child: Text('Aucune donnée de lieu disponible'));
         }
         final placemark = snapshot.data![0];
-        final address =
-            '${placemark.country}, ${placemark.administrativeArea}, ${placemark.locality}, ${placemark.subLocality}';
+        final place = '${placemark.name}';
+        final address = '  ${placemark.locality}';
 
         return Positioned(
           bottom: 0,
@@ -39,7 +42,7 @@ class PositionFullInfo extends StatelessWidget {
           right: 0,
           child: Container(
             margin: const EdgeInsets.all(12),
-            padding: const EdgeInsets.all(20),
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
             width: double.infinity,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
@@ -48,26 +51,30 @@ class PositionFullInfo extends StatelessWidget {
             child: Column(
               children: [
                 AppText.medium(
-                  'Plateau',
+                  address,
                   fontSize: 15,
                   fontWeight: FontWeight.w600,
+                  maxLine: 1,
+                  textOverflow: TextOverflow.ellipsis,
                 ),
                 Gap(8),
                 AppText.medium(
-                  address,
+                  place,
                   fontSize: 15,
                   fontWeight: FontWeight.w300,
+                  textAlign: TextAlign.center,
+                  maxLine: 2,
                 ),
-                Gap(10),
+                Gap(15),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: List.generate(
                     icons.length,
                     (index) => Container(
                       padding: const EdgeInsets.all(15),
                       decoration: BoxDecoration(
                         color: Colors.blue.shade800.withOpacity(
-                          0.1,
+                          0.15,
                         ),
                         borderRadius: BorderRadius.circular(5),
                       ),

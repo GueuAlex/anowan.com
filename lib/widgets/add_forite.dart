@@ -1,4 +1,5 @@
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../config/palette.dart';
@@ -19,7 +20,7 @@ class AddForiteButton extends StatelessWidget {
       ),
       child: Center(
         child: Icon(
-          FluentIcons.heart_24_regular,
+          CupertinoIcons.bookmark,
           color: Palette.blackColor,
           size: 20,
         ),

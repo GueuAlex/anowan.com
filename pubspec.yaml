@@ -33,6 +33,7 @@ dependencies:
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
+  flutter_riverpod: ^2.5.1
   cupertino_icons: ^1.0.2
   fluentui_system_icons: ^1.1.210
   gap: ^3.0.1
@@ -47,7 +48,7 @@ dependencies:
   rounded_loading_button: ^2.1.0
   get: ^4.6.6
   http: ^1.1.0
-  intl: ^0.18.1
+  intl: ^0.19.0
   flutter_localizations:
     sdk: flutter
   flutter_map: ^6.0.0
@@ -55,6 +56,18 @@ dependencies:
   geocoding: ^2.1.1
   rounded_loading_button_plus: ^3.0.1
   shared_preferences: ^2.2.2
+  intl_phone_number_input: ^0.7.4
+  pin_plus_keyboard: ^2.0.6
+  google_maps_flutter: ^2.7.0
+  flutter_polyline_points: ^2.0.0
+  pull_to_refresh_flutter3: ^2.0.2
+  searchbar_animation: ^0.0.4
+  table_calendar: ^3.1.2
+  banner_carousel: ^1.2.1
+  dotted_border: ^2.1.0
+  carousel_slider: ^4.2.1
+  add_2_calendar: ^3.0.1
+  flutter_widget_from_html_core: ^0.15.1
 
 dev_dependencies:
   flutter_test:
@@ -94,6 +107,7 @@ flutter:
     - assets/icons/
     - assets/images/
     - assets/sound/
+    - assets/images/carousel/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

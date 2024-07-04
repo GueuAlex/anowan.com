@@ -36,7 +36,8 @@ class Palette {
   ///
   ///
   static const Color primaryColor = Color(0xFF687daf);
-  static const Color scafoldColor = Color(0xFFeeedf2);
+  static const Color scafoldColor = Color.fromARGB(255, 236, 238, 241);
+  static const Color separatorColor = Color.fromARGB(255, 225, 225, 225);
   static const Color textColor = Color(0xFF3d3d3d);
   static const Color blueColor = Color(0xFF526799);
   static const Color redColor = Color(0xFFF37B67);

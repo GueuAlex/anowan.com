@@ -46,4 +46,32 @@ class LocalizationModel {
         "longitude": longitude,
         "latitude": latitude,
       };
+
+  static List<LocalizationModel> localList = [
+    LocalizationModel(
+      id: 1,
+      dateEvent: DateTime.now(),
+      starttimeEvent: "10:00",
+      endtimeEvent: "12:00",
+      place: "Place de la maison",
+      longitude: "1.23",
+      latitude: "2.34",
+    ),
+    LocalizationModel(
+        id: 2,
+        dateEvent: DateTime.now(),
+        starttimeEvent: "10:00",
+        endtimeEvent: "12:00",
+        place: "Place de la maison",
+        longitude: "1.23",
+        latitude: "2.34"),
+    LocalizationModel(
+        id: 3,
+        dateEvent: DateTime.now(),
+        starttimeEvent: "10:00",
+        endtimeEvent: "12:00",
+        place: "Place de la maison",
+        longitude: "1.23",
+        latitude: "2.34"),
+  ];
 }

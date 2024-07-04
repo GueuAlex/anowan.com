@@ -1,12 +1,14 @@
-import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:gap/gap.dart';
-import 'package:ticketwave/config/app_text.dart';
-import 'package:ticketwave/config/palette.dart';
-
-import 'widgets/event_card.dart';
+import 'package:pull_to_refresh_flutter3/pull_to_refresh_flutter3.dart';
+import '../../../config/app_text.dart';
+import '../../../config/palette.dart';
+import '../../organizer/widgets/organizer_card.dart';
+import 'widgets/header_carousel.dart';
+import 'widgets/home_up_coming_events.dart';
+import 'widgets/hot_events.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -16,8 +18,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  ////////////////////:::
-  ///
   bool _isButtonVisible = true;
   ScrollController _scrollController = ScrollController();
 
@@ -41,109 +41,98 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
-  ///
-  /////////////////////////
+  List<String> items = ["1", "2", "3", "4", "5", "6", "7", "8"];
+  RefreshController _refreshController =
+      RefreshController(initialRefresh: false);
+
+  void _onRefresh() async {
+    await Future.delayed(Duration(milliseconds: 1000));
+    _refreshController.refreshCompleted();
+  }
+
+  void _onLoading() async {
+    await Future.delayed(Duration(milliseconds: 1000));
+    items.add((items.length + 1).toString());
+    if (mounted) setState(() {});
+    _refreshController.loadComplete();
+  }
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return Scaffold(
-      backgroundColor: Palette.whiteColor,
+      backgroundColor: Palette.scafoldColor,
       floatingActionButton: MyFloatingButton(isButtonVisible: _isButtonVisible),
-      body: ListView(
-        controller: _scrollController,
+      body: Column(
+        //controller: _scrollController,
+        // physics: const NeverScrollableScrollPhysics(),
         children: [
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: 15),
-            child: Column(
-              children: [
-                // const Gap(35),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        AppText.medium(
-                          'Good mrning',
-                          color: Colors.grey.shade500,
-                        ),
-                        const Gap(5),
-                        AppText.large('Événements populaires', fontSize: 18)
-                      ],
-                    ),
-                    Container(
-                      height: 50,
-                      width: 50,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        image: const DecorationImage(
-                          fit: BoxFit.cover,
-                          image: AssetImage('assets/images/logo-text.jpg'),
-                        ),
-                      ),
-                    )
-                  ],
+            padding: const EdgeInsets.only(bottom: 5),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              border: Border(
+                bottom: BorderSide(
+                  width: 0.8,
+                  color: Palette.separatorColor,
                 ),
-                const Gap(25),
-                Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 12,
-                    vertical: 10,
-                  ),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: Palette.primaryColor.withOpacity(0.1),
-                  ),
-                  child: Row(
-                    children: [
-                      Icon(
-                        FluentIcons.search_12_regular,
-                        color: Colors.grey.shade500,
-                        size: 22,
-                      ),
-                      const Gap(5),
-                      AppText.medium('Search', color: Colors.grey.shade500)
-                    ],
-                  ),
-                ),
-                const Gap(25),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    AppText.large(
-                      'Ce mois',
-                      fontSize: 18,
-                      fontWeight: FontWeight.w500,
-                    ),
-                    AppText.medium(
-                      'Voir tout',
-                      fontSize: 13,
-                      fontWeight: FontWeight.w400,
-                      color: Palette.textColor,
-                    ),
-                  ],
-                )
-
-                /////////
-                ///
-              ],
-            ),
-          ),
-          //////////////
-          ///
-          const Gap(15),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 15),
-            //color: Colors.red,
-            child: Column(
-              children: List.generate(
-                5,
-                (index) => EventCard(index: index),
               ),
             ),
-          )
-          ////////////
-          ///
+            child: headerCarousel(context: context),
+          ),
+          Expanded(
+            child: SmartRefresher(
+              onLoading: _onLoading,
+              onRefresh: _onRefresh,
+              enablePullDown: true,
+              enablePullUp: false,
+              controller: _refreshController,
+              physics: BouncingScrollPhysics(),
+              header: ClassicHeader(
+                completeText: "",
+                idleText: "",
+                refreshingText: "",
+                releaseText: "",
+              ),
+              child: SingleChildScrollView(
+                controller: _scrollController,
+                physics: const BouncingScrollPhysics(),
+                child: Column(
+                  children: [
+                    HomeUpcomingEvents(),
+                    HotEvents(),
+                    Gap(10),
+                    _topOrganizer(size: size),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Container _topOrganizer({required Size size}) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 15),
+      color: Colors.white,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Gap(25),
+          AppText.medium(
+            'Top organisateurs',
+            fontSize: (size.width * 0.042),
+            fontWeight: FontWeight.w500,
+          ),
+          Gap(10),
+          Row(
+            children: [
+              organizerCard(size: size),
+            ],
+          ),
+          Gap(25),
         ],
       ),
     );
@@ -173,22 +162,24 @@ class MyFloatingButton extends StatelessWidget {
             height: 35,
             decoration: BoxDecoration(
               color: Palette.whiteColor,
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.circular(5.5),
               boxShadow: [
                 BoxShadow(
                   color: Colors.black.withOpacity(0.3),
                   spreadRadius: 2,
                   blurRadius: 5,
-                  offset: Offset(0, 3), // changes position of shadow
+                  offset: Offset(0, 3),
                 ),
               ],
             ),
             child: Center(
               child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Icon(
-                    FluentIcons.location_24_filled,
-                    size: 15,
+                    Icons.location_on,
+                    size: 16,
                     color: Palette.primaryColor,
                   ),
                   Gap(5),

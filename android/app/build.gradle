@@ -28,6 +28,10 @@ if (keystorePropertiesFile.exists()) {
     keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 }
 
+def apikeyPropertiesFile = rootProject.file("apikey.properties")
+def apikeyProperties = new Properties()
+apikeyProperties.load(new FileInputStream(apikeyPropertiesFile))
+
 android {
     namespace "com.example.ticketwave"
     compileSdk 34
@@ -55,6 +59,9 @@ android {
         targetSdkVersion 34
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
+
+        // Ajouter cette ligne
+        resValue "string", "google_maps_api_key", apikeyProperties['MAPS_API_KEY']
     }
 
     buildTypes {

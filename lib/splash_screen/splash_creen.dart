@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ticketwave/config/palette.dart';
 
-import '../admin/screens/scan/scan_screen.dart';
 //import '../screens/home/home_screen.dart';
 import '../widgets/bottom_bar.dart';
 
@@ -20,6 +19,8 @@ class _SplashSceenState extends State<SplashSceen> {
       (value) => Navigator.pushNamedAndRemoveUntil(
         context,
         BottomBar.routeName,
+        /* RegistrationScreen.routeName, */
+        /* IntroScrenn.routeName, */
         (route) => false,
       ),
     );
@@ -30,19 +31,29 @@ class _SplashSceenState extends State<SplashSceen> {
   Widget build(BuildContext context) {
     return const Scaffold(
       backgroundColor: Colors.white,
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Center(
-              child: CircularProgressIndicator.adaptive(
-                valueColor: AlwaysStoppedAnimation<Color>(
-                  Palette.appRed,
+      body: SafeArea(
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              SizedBox(),
+              SizedBox(
+                width: 100,
+                child: Image(
+                  image: AssetImage('assets/images/logo-text-short.jpg'),
                 ),
               ),
-            )
-          ],
+              Padding(
+                padding: const EdgeInsets.only(bottom: 25),
+                child: CircularProgressIndicator.adaptive(
+                  valueColor: AlwaysStoppedAnimation<Color>(
+                    Palette.appRed,
+                  ),
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );

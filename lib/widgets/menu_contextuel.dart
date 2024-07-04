@@ -1,5 +1,6 @@
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 import 'package:ticketwave/config/app_text.dart';
 
@@ -56,7 +57,7 @@ class MenuContextuel extends StatelessWidget {
       child: Center(
         child: PopupMenuButton<int>(
           position: PopupMenuPosition.under,
-          icon: Icon(Icons.more_horiz, color: Palette.blackColor),
+          icon: SvgPicture.asset('assets/icons/menu-points.svg'),
           onSelected: (value) {
             print('Vous avez sélectionné : $value');
           },

@@ -1,4 +1,6 @@
 PODS:
+  - add_2_calendar (0.0.1):
+    - Flutter
   - audioplayers_darwin (0.0.1):
     - Flutter
   - device_info_plus (0.0.1):
@@ -11,10 +13,18 @@ PODS:
     - Toast
   - geocoding_ios (1.0.5):
     - Flutter
-  - GoogleDataTransport (9.2.3):
+  - google_maps_flutter_ios (0.0.1):
+    - Flutter
+    - GoogleMaps (< 9.0, >= 8.4)
+  - GoogleDataTransport (9.4.1):
     - GoogleUtilities/Environment (~> 7.7)
-    - nanopb (< 2.30910.0, >= 2.30908.0)
+    - nanopb (< 2.30911.0, >= 2.30908.0)
     - PromisesObjC (< 3.0, >= 1.2)
+  - GoogleMaps (8.4.0):
+    - GoogleMaps/Maps (= 8.4.0)
+  - GoogleMaps/Base (8.4.0)
+  - GoogleMaps/Maps (8.4.0):
+    - GoogleMaps/Base
   - GoogleMLKit/BarcodeScanning (3.2.0):
     - GoogleMLKit/MLKitCore
     - MLKitBarcodeScanning (~> 2.2.0)
@@ -32,15 +42,22 @@ PODS:
     - GoogleToolboxForMac/Defines (= 2.3.2)
     - "GoogleToolboxForMac/NSString+URLArguments (= 2.3.2)"
   - "GoogleToolboxForMac/NSString+URLArguments (2.3.2)"
-  - GoogleUtilities/Environment (7.11.1):
+  - GoogleUtilities/Environment (7.13.3):
+    - GoogleUtilities/Privacy
     - PromisesObjC (< 3.0, >= 1.2)
-  - GoogleUtilities/Logger (7.11.1):
+  - GoogleUtilities/Logger (7.13.3):
     - GoogleUtilities/Environment
-  - GoogleUtilities/UserDefaults (7.11.1):
+    - GoogleUtilities/Privacy
+  - GoogleUtilities/Privacy (7.13.3)
+  - GoogleUtilities/UserDefaults (7.13.3):
     - GoogleUtilities/Logger
+    - GoogleUtilities/Privacy
   - GoogleUtilitiesComponents (1.1.0):
     - GoogleUtilities/Logger
   - GTMSessionFetcher/Core (1.7.2)
+  - libphonenumber_plugin (0.0.1):
+    - Flutter
+    - PhoneNumberKit
   - MLImage (1.0.0-beta3)
   - MLKitBarcodeScanning (2.2.0):
     - MLKitCommon (~> 8.0)
@@ -64,32 +81,41 @@ PODS:
   - mobile_scanner (0.0.1):
     - Flutter
     - GoogleMLKit/BarcodeScanning (~> 3.2.0)
-  - nanopb (2.30909.0):
-    - nanopb/decode (= 2.30909.0)
-    - nanopb/encode (= 2.30909.0)
-  - nanopb/decode (2.30909.0)
-  - nanopb/encode (2.30909.0)
+  - nanopb (2.30910.0):
+    - nanopb/decode (= 2.30910.0)
+    - nanopb/encode (= 2.30910.0)
+  - nanopb/decode (2.30910.0)
+  - nanopb/encode (2.30910.0)
   - path_provider_foundation (0.0.1):
     - Flutter
     - FlutterMacOS
-  - PromisesObjC (2.2.0)
-  - Protobuf (3.23.4)
+  - PhoneNumberKit (3.7.10):
+    - PhoneNumberKit/PhoneNumberKitCore (= 3.7.10)
+    - PhoneNumberKit/UIKit (= 3.7.10)
+  - PhoneNumberKit/PhoneNumberKitCore (3.7.10)
+  - PhoneNumberKit/UIKit (3.7.10):
+    - PhoneNumberKit/PhoneNumberKitCore
+  - PromisesObjC (2.4.0)
+  - Protobuf (3.27.1)
   - shared_preferences_foundation (0.0.1):
     - Flutter
     - FlutterMacOS
-  - Toast (4.0.0)
+  - Toast (4.1.1)
   - url_launcher_ios (0.0.1):
     - Flutter
   - vibration (1.7.5):
     - Flutter
 
 DEPENDENCIES:
+  - add_2_calendar (from `.symlinks/plugins/add_2_calendar/ios`)
   - audioplayers_darwin (from `.symlinks/plugins/audioplayers_darwin/ios`)
   - device_info_plus (from `.symlinks/plugins/device_info_plus/ios`)
   - Flutter (from `Flutter`)
   - flutter_native_splash (from `.symlinks/plugins/flutter_native_splash/ios`)
   - fluttertoast (from `.symlinks/plugins/fluttertoast/ios`)
   - geocoding_ios (from `.symlinks/plugins/geocoding_ios/ios`)
+  - google_maps_flutter_ios (from `.symlinks/plugins/google_maps_flutter_ios/ios`)
+  - libphonenumber_plugin (from `.symlinks/plugins/libphonenumber_plugin/ios`)
   - mobile_scanner (from `.symlinks/plugins/mobile_scanner/ios`)
   - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/darwin`)
   - shared_preferences_foundation (from `.symlinks/plugins/shared_preferences_foundation/darwin`)
@@ -99,6 +125,7 @@ DEPENDENCIES:
 SPEC REPOS:
   trunk:
     - GoogleDataTransport
+    - GoogleMaps
     - GoogleMLKit
     - GoogleToolboxForMac
     - GoogleUtilities
@@ -109,11 +136,14 @@ SPEC REPOS:
     - MLKitCommon
     - MLKitVision
     - nanopb
+    - PhoneNumberKit
     - PromisesObjC
     - Protobuf
     - Toast
 
 EXTERNAL SOURCES:
+  add_2_calendar:
+    :path: ".symlinks/plugins/add_2_calendar/ios"
   audioplayers_darwin:
     :path: ".symlinks/plugins/audioplayers_darwin/ios"
   device_info_plus:
@@ -126,6 +156,10 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/fluttertoast/ios"
   geocoding_ios:
     :path: ".symlinks/plugins/geocoding_ios/ios"
+  google_maps_flutter_ios:
+    :path: ".symlinks/plugins/google_maps_flutter_ios/ios"
+  libphonenumber_plugin:
+    :path: ".symlinks/plugins/libphonenumber_plugin/ios"
   mobile_scanner:
     :path: ".symlinks/plugins/mobile_scanner/ios"
   path_provider_foundation:
@@ -138,32 +172,37 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/vibration/ios"
 
 SPEC CHECKSUMS:
+  add_2_calendar: 5eee66d5a3b99cd5e1487a7e03abd4e3ac4aff11
   audioplayers_darwin: 877d9a4d06331c5c374595e46e16453ac7eafa40
   device_info_plus: 97af1d7e84681a90d0693e63169a5d50e0839a0d
   Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
   flutter_native_splash: edf599c81f74d093a4daf8e17bd7a018854bc778
   fluttertoast: 9f2f8e81bb5ce18facb9748d7855bf5a756fe3db
   geocoding_ios: a389ea40f6f548de6e63006a2e31bf66ff80769a
-  GoogleDataTransport: f0308f5905a745f94fb91fea9c6cbaf3831cb1bd
+  google_maps_flutter_ios: c454f18e0e22df6ac0e9f2a4df340858f5a3680c
+  GoogleDataTransport: 6c09b596d841063d76d4288cc2d2f42cc36e1e2a
+  GoogleMaps: 8939898920281c649150e0af74aa291c60f2e77d
   GoogleMLKit: 0017a6a8372e1a182139b9def4d89be5d87ca5a7
   GoogleToolboxForMac: 8bef7c7c5cf7291c687cf5354f39f9db6399ad34
-  GoogleUtilities: 9aa0ad5a7bc171f8bae016300bfcfa3fb8425749
+  GoogleUtilities: ea963c370a38a8069cc5f7ba4ca849a60b6d7d15
   GoogleUtilitiesComponents: 679b2c881db3b615a2777504623df6122dd20afe
   GTMSessionFetcher: 5595ec75acf5be50814f81e9189490412bad82ba
+  libphonenumber_plugin: 48bf4078546377eedaab4aa54978cd0f6fa23072
   MLImage: 489dfec109f21da8621b28d476401aaf7a0d4ff4
   MLKitBarcodeScanning: d92fe1911001ec36870162c5a0eb206f612b7169
   MLKitCommon: f6da6c5659618c070b50a80db01248ebe2964175
   MLKitVision: 96c96571190b7f63eddf4a12068ce8a8689e0d2c
   mobile_scanner: 0cf06f3d5224576aa24ade02a6f73d8b2551c7bf
-  nanopb: b552cce312b6c8484180ef47159bc0f65a1f0431
+  nanopb: 438bc412db1928dac798aa6fd75726007be04262
   path_provider_foundation: 3784922295ac71e43754bd15e0653ccfd36a147c
-  PromisesObjC: 09985d6d70fbe7878040aa746d78236e6946d2ef
-  Protobuf: c6bc59bbab3d38a71c67f62d7cb7ca8f8ea4eca1
+  PhoneNumberKit: 3d9a20cfe8ee68f35c2a3ae9474093133f72a8a1
+  PromisesObjC: f5707f49cb48b9636751c5b2e7d227e43fba9f47
+  Protobuf: f1b82a3ffb1c8f13d20e141a838c411840e1c223
   shared_preferences_foundation: b4c3b4cddf1c21f02770737f147a3f5da9d39695
-  Toast: 91b396c56ee72a5790816f40d3a94dd357abc196
+  Toast: 1f5ea13423a1e6674c4abdac5be53587ae481c4e
   url_launcher_ios: 6116280ddcfe98ab8820085d8d76ae7449447586
   vibration: 7d883d141656a1c1a6d8d238616b2042a51a1241
 
-PODFILE CHECKSUM: c4c93c5f6502fe2754f48404d3594bf779584011
+PODFILE CHECKSUM: 775997f741c536251164e3eacf6e34abf2eb7a17
 
 COCOAPODS: 1.15.2

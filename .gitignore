@@ -42,3 +42,8 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+/android/apikey.properties
+
+# iOS 
+/ios/Runner/google_maps_api_key.txt
+

@@ -1,63 +1,39 @@
-import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_map/flutter_map.dart';
-import 'package:url_launcher/url_launcher.dart';
-import 'package:latlong2/latlong.dart';
-
-import '../../../config/palette.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class CustomMap extends StatelessWidget {
   const CustomMap({
     super.key,
-    required this.location,
+    required this.initialPosition,
+    required this.place,
   });
 
-  final LatLng location;
+  final LatLng initialPosition;
+  final String place;
 
   @override
   Widget build(BuildContext context) {
+    Set<Marker> _markers = {
+      Marker(
+        markerId: MarkerId('initialPosition'),
+        position: initialPosition,
+        infoWindow: InfoWindow(title: place),
+      ),
+    };
     return Container(
-      height: 350, // Hauteur de la carte
+      height: 250, // Hauteur de la carte
       child: ClipRRect(
-        borderRadius: BorderRadius.circular(20),
-        child: FlutterMap(
-          options: MapOptions(
-            initialCenter: location, // Centre de la carte
-            initialZoom: 19.0,
-            // Zoom de la carte
+        borderRadius: BorderRadius.circular(5),
+        child: GoogleMap(
+          myLocationEnabled: false,
+          myLocationButtonEnabled: false,
+          zoomControlsEnabled: false,
+          zoomGesturesEnabled: true,
+          initialCameraPosition: CameraPosition(
+            target: initialPosition,
+            zoom: 12.0,
           ),
-          children: [
-            TileLayer(
-              urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-              userAgentPackageName: 'com.digifaz.anowan',
-            ),
-            RichAttributionWidget(
-              attributions: [
-                TextSourceAttribution(
-                  'OpenStreetMap contributors',
-                  onTap: () => launchUrl(
-                    Uri.parse(
-                      'https://openstreetmap.org/copyright',
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            MarkerLayer(
-              markers: [
-                Marker(
-                  point: location,
-                  width: 80,
-                  height: 80,
-                  child: Icon(
-                    FluentIcons.location_24_filled,
-                    color: Palette.appRed,
-                    size: 30,
-                  ),
-                ),
-              ],
-            ),
-          ],
+          markers: _markers,
         ),
       ),
     );
