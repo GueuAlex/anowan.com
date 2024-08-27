@@ -60,7 +60,9 @@ class _BottomBarState extends State<BottomBar> {
         primary: true,
         elevation: 0,
         leading: const OpenSideBar(),
-        actions: [bottomMenuInitIndex == 4 ? profilLogo() : Container()],
+        actions: [
+          bottomMenuInitIndex == 4 ? profilLogo(context: context) : Container(),
+        ],
       ),
       //drawer: const CustomSiderBar(),
       body: Center(

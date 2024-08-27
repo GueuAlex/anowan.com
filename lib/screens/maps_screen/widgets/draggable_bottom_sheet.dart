@@ -55,7 +55,7 @@ class _DraggableBottomSheetState extends State<DraggableBottomSheet> {
           initialChildSize: 0.08,
           minChildSize: 0.08,
           maxChildSize: 1.0,
-          snapSizes: [1], // Permet de "snap" entre 30% et 100%
+          snapSizes: [0.5, 1], // Permet de "snap" entre 30% et 100%
           snap: true,
           shouldCloseOnMinExtent: true,
           controller: _scrollController,

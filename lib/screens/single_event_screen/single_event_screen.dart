@@ -7,6 +7,7 @@ import '../../model/localization_model.dart';
 import '../../widgets/add_forite.dart';
 import '../../widgets/customAnimateSlide.dart';
 import '../../widgets/custom_leading.dart';
+import '../../widgets/custome_divider.dart';
 import '../../widgets/menu_contextuel.dart';
 import 'widgets/bottom_area.dart';
 import 'widgets/date_selector.dart';
@@ -184,13 +185,4 @@ class _SingleEventScreenState extends State<SingleEventScreen> {
       ),
     );
   }
-
-  Container customDiveder() => Container(
-        padding: const EdgeInsets.symmetric(vertical: 8),
-        decoration: BoxDecoration(
-          border: Border(
-            bottom: BorderSide(color: Palette.separatorColor, width: 0.8),
-          ),
-        ),
-      );
 }

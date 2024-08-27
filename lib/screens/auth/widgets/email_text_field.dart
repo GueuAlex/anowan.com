@@ -7,6 +7,8 @@ import 'package:ticketwave/config/app_text.dart';
 import 'package:ticketwave/config/functions.dart';
 import 'package:ticketwave/config/palette.dart';
 
+import '../otp/otp_screen.dart';
+
 class EmailTextInput extends StatelessWidget {
   const EmailTextInput({
     super.key,
@@ -78,15 +80,17 @@ class EmailTextInput extends StatelessWidget {
           width: Functions.contextSize(context).width,
           height: (size.height * 0.05),
           child: ElevatedButton(
-            onPressed: () {},
+            onPressed: () => Navigator.of(context).pushNamed(
+              OtpScreen.routeName,
+            ),
             style: ButtonStyle(
-              elevation: MaterialStatePropertyAll(0),
-              shape: MaterialStatePropertyAll(
+              elevation: WidgetStatePropertyAll(0),
+              shape: WidgetStatePropertyAll(
                 RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(5),
                 ),
               ),
-              backgroundColor: MaterialStatePropertyAll(
+              backgroundColor: WidgetStatePropertyAll(
                 Palette.appRed,
               ),
             ),

@@ -34,13 +34,13 @@ class _FullScreenMapsState extends State<FullScreenMaps> {
   }
 
   Future<void> _setInitialPosition() async {
-    if (widget.localization.longitude.trim().isNotEmpty == true &&
-        widget.localization.latitude.trim().isNotEmpty == true) {
+    String? latitude = widget.localization.latitude;
+    String? longitude = widget.localization.longitude;
+
+    // Fonction pour mettre à jour la position initiale et les marqueurs
+    void _updatePosition(double lat, double lng) {
       setState(() {
-        _initialPosition = LatLng(
-          double.parse(widget.localization.latitude),
-          double.parse(widget.localization.longitude),
-        );
+        _initialPosition = LatLng(lat, lng);
         _markers.add(
           Marker(
             markerId: MarkerId('initialPosition'),
@@ -49,25 +49,26 @@ class _FullScreenMapsState extends State<FullScreenMaps> {
           ),
         );
       });
+    }
+
+    if ((latitude != null && longitude != null) &&
+        (latitude.trim().isNotEmpty && longitude.trim().isNotEmpty)) {
+      double? lat = double.tryParse(latitude);
+      double? lng = double.tryParse(longitude);
+
+      if (lat != null && lng != null) {
+        _updatePosition(lat, lng);
+      } else {
+        print('Erreur lors de la conversion des coordonnées');
+      }
     } else {
       try {
         List<Location> locations =
             await locationFromAddress(widget.localization.place);
         if (locations.isNotEmpty) {
-          setState(() {
-            _initialPosition =
-                LatLng(locations.first.latitude, locations.first.longitude);
-            _markers.add(
-              Marker(
-                markerId: MarkerId('initialPosition'),
-                position: _initialPosition!,
-                infoWindow: InfoWindow(title: widget.localization.place),
-              ),
-            );
-          });
+          _updatePosition(locations.first.latitude, locations.first.longitude);
         }
       } catch (e) {
-        // Gérer l'erreur de géocodage ici
         print('Erreur lors du géocodage de l\'adresse : $e');
       }
     }

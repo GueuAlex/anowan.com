@@ -6,9 +6,16 @@ import 'dart:convert';
 
 PrestatorMdel prestatorMdelFromJson(String str) =>
     PrestatorMdel.fromJson(json.decode(str));
-List<PrestatorMdel> prestatorMdelListFromJson(String str) =>
-    List<PrestatorMdel>.from(
-        json.decode(str).map((x) => PrestatorMdel.fromJson(x)));
+// Fonction pour décoder une liste de PrestatorMdel à partir d'une chaîne JSON
+List<PrestatorMdel> prestatorMdelListFromJson(String str) {
+  final jsonData = json.decode(str);
+
+  // Récupère la liste d'objets à partir de la clé 'data'
+  final data = jsonData['data'] as List;
+
+  // Convertit chaque élément en un objet PrestatorMdel
+  return List<PrestatorMdel>.from(data.map((x) => PrestatorMdel.fromJson(x)));
+}
 
 String prestatorMdelToJson(PrestatorMdel data) => json.encode(data.toJson());
 
@@ -164,7 +171,7 @@ class PrestatorMdel {
         "video": video,
       };
 
-  static List<PrestatorMdel> prestators = prestatorMdelListFromJson(jsonData);
+  static List<PrestatorMdel> prestators = [];
   //
   // Fonction pour obtenir tous les tags sans doublons
   static List<String> getAllUniqueTags(

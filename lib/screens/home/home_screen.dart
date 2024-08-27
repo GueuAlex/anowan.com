@@ -5,10 +5,10 @@ import 'package:gap/gap.dart';
 import 'package:pull_to_refresh_flutter3/pull_to_refresh_flutter3.dart';
 import '../../../config/app_text.dart';
 import '../../../config/palette.dart';
-import '../../organizer/widgets/organizer_card.dart';
 import 'widgets/header_carousel.dart';
 import 'widgets/home_up_coming_events.dart';
 import 'widgets/hot_events.dart';
+import 'widgets/top_oraniser.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -59,7 +59,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
+    //final size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: Palette.scafoldColor,
       floatingActionButton: MyFloatingButton(isButtonVisible: _isButtonVisible),
@@ -102,37 +102,12 @@ class _HomeScreenState extends State<HomeScreen> {
                     HomeUpcomingEvents(),
                     HotEvents(),
                     Gap(10),
-                    _topOrganizer(size: size),
+                    TopOrganizer(),
                   ],
                 ),
               ),
             ),
           ),
-        ],
-      ),
-    );
-  }
-
-  Container _topOrganizer({required Size size}) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 15),
-      color: Colors.white,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Gap(25),
-          AppText.medium(
-            'Top organisateurs',
-            fontSize: (size.width * 0.042),
-            fontWeight: FontWeight.w500,
-          ),
-          Gap(10),
-          Row(
-            children: [
-              organizerCard(size: size),
-            ],
-          ),
-          Gap(25),
         ],
       ),
     );

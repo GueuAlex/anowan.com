@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ticketwave/config/palette.dart';
 
-import '../notification/notification_screen.dart';
+import '../screens/notification_screen/notification_screen.dart';
 
 class OpenSideBar extends StatelessWidget {
   const OpenSideBar({super.key, this.isWhiteIcon = false});

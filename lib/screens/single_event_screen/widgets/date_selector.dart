@@ -35,7 +35,7 @@ class _DateSelectorState extends State<DateSelector> {
     setState(() {
       _selectedLocalization = widget.localizations[_selectedIndex];
     });
-    widget.localizations.addAll(LocalizationModel.localList);
+    //widget.localizations.addAll(LocalizationModel.localList);
     bool isMultipleLocalization = widget.localizations.length > 1;
 
     return Column(

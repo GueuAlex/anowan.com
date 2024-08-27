@@ -2,15 +2,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
-import '../../../config/app_text.dart';
 import '../../../config/functions.dart';
 import '../../../config/palette.dart';
 import '../../../model/pass_model.dart';
+import '../../../widgets/custome_divider.dart';
 import 'add_romve_button.dart';
 import 'pass_description_sheet.dart';
 
-class PassSeclector extends StatelessWidget {
-  const PassSeclector({
+class PassSelector extends StatelessWidget {
+  const PassSelector({
     super.key,
     required this.pass,
     required this.selectedCount,
@@ -26,92 +26,137 @@ class PassSeclector extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Container(
-      margin: const EdgeInsets.only(bottom: 8),
-      padding: const EdgeInsets.all(15),
+      margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 0),
       decoration: BoxDecoration(
-        border: Border.all(
-          width: 2,
-          color: Palette.primaryColor,
-        ),
-        borderRadius: BorderRadius.circular(8),
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(5),
+        boxShadow: [
+          BoxShadow(
+            color: Color.fromARGB(204, 236, 236, 236),
+            blurRadius: 10,
+            spreadRadius: 2,
+            offset: const Offset(1, 2),
+          ),
+        ],
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Expanded(
-                child: Row(
-                  children: [
-                    AppText.medium(
-                      pass.name,
-                      fontSize: 18,
-                      fontWeight: FontWeight.w500,
-                    ),
-                    Gap(8),
-                    Container(
-                      padding: const EdgeInsets.all(5),
-                      decoration: BoxDecoration(
-                        color: Palette.secondaryColor.withOpacity(0.08),
-                        shape: BoxShape.circle,
-                      ),
-                      child: InkWell(
-                        onTap: () => Functions.showBottomSheet(
-                            ctxt: context,
-                            widget: PassDecriptionSheet(),
-                            size: size),
-                        child: Center(
-                          child: Icon(
-                            CupertinoIcons.question,
-                            color: Palette.secondaryColor,
-                            size: 15,
-                          ),
+      child: ClipRRect(
+        child: Stack(
+          children: [
+            /* Positioned(
+              //top: 150,
+              bottom: 0,
+              left: 0,
+              right: 50,
+              child: Transform.rotate(
+                angle: 0.3,
+                child: pass.allmostFinish
+                    ? Alert1(
+                        alert: 'Bientôt épuisé !',
+                        color: Color.fromARGB(255, 209, 1, 70),
+                        icon: CupertinoIcons.exclamationmark_triangle,
+                      )
+                    : Container(),
+              ),
+            ), */
+            Container(
+              padding: const EdgeInsets.all(12),
+              //margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 0),
+
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              pass.name,
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: Palette.primaryColor,
+                              ),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            const Gap(4),
+                            Text(
+                              '${pass.price} FCFA',
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500,
+                                color: Palette.secondaryColor,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
-                    )
-                  ],
-                ),
-              ),
-              Row(
-                children: [
-                  AddButton(
-                    color: Palette.primaryColor.withOpacity(0.15),
-                    icon: CupertinoIcons.minus,
-                    onPressed: onMinus,
+                      IconButton(
+                        icon: Icon(
+                          CupertinoIcons.question_circle,
+                          color: Palette.secondaryColor,
+                        ),
+                        onPressed: () => Functions.showBottomSheet(
+                          ctxt: context,
+                          widget: PassDecriptionSheet(),
+                          size: size,
+                        ),
+                      ),
+                    ],
                   ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 8,
-                    ),
-                    child: AppText.large(
-                        '$selectedCount'), // Afficher ici le nombre sélectionné pour chaque pass
-                  ),
-                  AddButton(
-                    color: Palette.primaryColor,
-                    icon: CupertinoIcons.add,
-                    incoColor: Colors.white,
-                    onPressed: onAdd,
+                  customDiveder(),
+                  Gap(15),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      /*  Text(
+                        'Les ventes se terminent dans un jour',
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: Colors.grey[600],
+                        ),
+                      ), */
+                      Container(),
+                      Row(
+                        children: [
+                          AddButton(
+                            color: Colors.red.withOpacity(0.1),
+                            icon: CupertinoIcons.minus,
+                            onPressed: onMinus,
+                            incoColor: Colors.red,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 8),
+                            child: SizedBox(
+                              width: 25,
+                              child: Text(
+                                '$selectedCount',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ),
+                          AddButton(
+                            color: Palette.primaryColor,
+                            icon: CupertinoIcons.add,
+                            //iconColor: Colors.white,
+                            incoColor: Colors.white,
+                            onPressed: onAdd,
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
                 ],
-              )
-            ],
-          ),
-          const Padding(
-            padding: EdgeInsets.symmetric(vertical: 12),
-            child: Divider(),
-          ),
-          AppText.medium(
-            '${pass.price} FCFA',
-            fontSize: 20,
-            fontWeight: FontWeight.w500,
-          ),
-          Gap(8),
-          AppText.small(
-            'Les ventes se terminent dans un jour',
-            fontSize: 13,
-            fontWeight: FontWeight.w300,
-          )
-        ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -505,7 +505,7 @@ class _ScanSheetState extends State<ScanSheet> {
     /// si ticket est different de null
     if (ticket != null) {
       // vérifier l'existance de token
-      List<InspectorModel> inspectors = ticket.event.inspectors;
+      List<InspectorModel> inspectors = ticket.event.inspectors ?? [];
       if (inspectors.isEmpty) {
         // personne n'est autorisé a scanné les tickets de cet évènnement pour le moment!
         return Container(

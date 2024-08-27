@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../config/palette.dart';
-
 class CustomButton extends StatelessWidget {
   CustomButton(
       {required this.color,
@@ -10,10 +8,12 @@ class CustomButton extends StatelessWidget {
       required this.radius,
       required this.text,
       required this.onPress,
+      //this.opacity = 1,
       this.fontsize = 0,
       this.isSetting = false,
+      this.textColor = Colors.white,
       super.key});
-  final Color color;
+  final Color color, textColor;
   final double radius, width, height, fontsize;
   final String text;
   final bool isSetting;
@@ -44,11 +44,11 @@ class CustomButton extends StatelessWidget {
               ? Theme.of(context)
                   .textTheme
                   .bodyLarge!
-                  .copyWith(color: Palette.whiteColor)
+                  .copyWith(color: textColor)
               : Theme.of(context)
                   .textTheme
                   .bodyLarge!
-                  .copyWith(fontSize: fontsize, color: Palette.whiteColor),
+                  .copyWith(fontSize: fontsize, color: textColor),
         ),
       ),
     );

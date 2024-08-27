@@ -8,6 +8,7 @@ import '../../../model/prestator_model.dart';
 Container prestatorCard({
   required PrestatorMdel prestator,
   required Size size,
+  required VoidCallback onTap,
   required BuildContext context,
 }) =>
     Container(
@@ -26,30 +27,68 @@ Container prestatorCard({
           ),
         ],
       ),
-      child: Column(
-        children: [
-          Stack(
-            alignment: Alignment.center,
-            children: [
-              Column(
-                children: [
-                  Container(
-                    width: double.infinity,
-                    height: size.width * 0.25,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(5),
-                        topRight: Radius.circular(5),
+      child: InkWell(
+        onTap: onTap,
+        child: Column(
+          children: [
+            Stack(
+              alignment: Alignment.center,
+              children: [
+                Column(
+                  children: [
+                    Container(
+                      width: double.infinity,
+                      height: size.width * 0.25,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(5),
+                          topRight: Radius.circular(5),
+                        ),
+                      ),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(5),
+                          topRight: Radius.circular(5),
+                        ),
+                        child: FadeInImage.assetNetwork(
+                          placeholder: 'assets/images/anowan-placeholder.png',
+                          image: prestator.images[0].url,
+                          fit: BoxFit.cover,
+                          imageErrorBuilder: (context, error, stackTrace) {
+                            return Image.asset(
+                              'assets/images/anowan-placeholder.png',
+                              fit: BoxFit.cover,
+                            );
+                          },
+                          width: double.infinity,
+                          height: size.width * 0.25,
+                        ),
                       ),
                     ),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(5),
-                        topRight: Radius.circular(5),
+                    Container(
+                      height: 35,
+                      width: double.infinity,
+                      color: Colors.white,
+                    ),
+                  ],
+                ),
+                Positioned(
+                  bottom: 0,
+                  child: Container(
+                    width: 80,
+                    height: 80,
+                    decoration: BoxDecoration(
+                      color: Colors.black,
+                      border: Border.all(
+                        width: 5,
+                        color: Colors.white,
                       ),
+                      shape: BoxShape.circle,
+                    ),
+                    child: ClipOval(
                       child: FadeInImage.assetNetwork(
                         placeholder: 'assets/images/anowan-placeholder.png',
-                        image: prestator.images[0].url,
+                        image: prestator.logo,
                         fit: BoxFit.cover,
                         imageErrorBuilder: (context, error, stackTrace) {
                           return Image.asset(
@@ -57,52 +96,17 @@ Container prestatorCard({
                             fit: BoxFit.cover,
                           );
                         },
-                        width: double.infinity,
-                        height: size.width * 0.25,
+                        width: 80,
+                        height: 80,
                       ),
                     ),
                   ),
-                  Container(
-                    height: 35,
-                    width: double.infinity,
-                    color: Colors.white,
-                  ),
-                ],
-              ),
-              Positioned(
-                bottom: 0,
-                child: Container(
-                  width: 80,
-                  height: 80,
-                  decoration: BoxDecoration(
-                    color: Colors.black,
-                    border: Border.all(
-                      width: 5,
-                      color: Colors.white,
-                    ),
-                    shape: BoxShape.circle,
-                  ),
-                  child: ClipOval(
-                    child: FadeInImage.assetNetwork(
-                      placeholder: 'assets/images/anowan-placeholder.png',
-                      image: prestator.logo,
-                      fit: BoxFit.cover,
-                      imageErrorBuilder: (context, error, stackTrace) {
-                        return Image.asset(
-                          'assets/images/anowan-placeholder.png',
-                          fit: BoxFit.cover,
-                        );
-                      },
-                      width: 80,
-                      height: 80,
-                    ),
-                  ),
                 ),
-              ),
-            ],
-          ),
-          _prestatorDetails(size, prestator),
-        ],
+              ],
+            ),
+            _prestatorDetails(size, prestator),
+          ],
+        ),
       ),
     );
 

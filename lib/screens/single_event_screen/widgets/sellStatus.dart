@@ -1,4 +1,5 @@
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
@@ -29,21 +30,24 @@ class SellStatus extends StatelessWidget {
         child: Row(
           children: [
             Container(
-              padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 15),
+              padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 15),
               decoration: BoxDecoration(
                 color:
-                    const Color.fromARGB(255, 104, 175, 168).withOpacity(0.4),
-                borderRadius: BorderRadius.circular(10),
+                    const Color.fromARGB(255, 104, 175, 168).withOpacity(0.15),
+                borderRadius: BorderRadius.circular(3),
               ),
               child: AppText.medium(
                 'Ajouté récemment !',
                 fontSize: 16,
                 fontWeight: FontWeight.w400,
+                color: Color.fromARGB(255, 17, 85, 78),
               ),
             ),
             Gap(10),
             Alert1(
               alert: 'Les ventes de billets se terminent bientôt !',
+              color: Colors.red,
+              icon: CupertinoIcons.exclamationmark_triangle,
             ),
           ],
         ),

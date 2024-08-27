@@ -9,23 +9,40 @@ class CustomeAnimatedSlide extends StatefulWidget {
   _CustomeAnimatedSlideState createState() => _CustomeAnimatedSlideState();
 }
 
-class _CustomeAnimatedSlideState extends State<CustomeAnimatedSlide> {
-  double _slideValue = 0.0;
+class _CustomeAnimatedSlideState extends State<CustomeAnimatedSlide>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<Offset> _offsetAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      duration: const Duration(milliseconds: 700),
+      vsync: this,
+    );
+
+    _offsetAnimation = Tween<Offset>(
+      begin: const Offset(0.0, 1.0),
+      end: Offset.zero,
+    ).animate(CurvedAnimation(
+      parent: _controller,
+      curve: Curves.easeInOut,
+    ));
+
+    _controller.forward();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedBuilder(
-      animation: CurvedAnimation(
-        parent: ModalRoute.of(context)!.animation!,
-        curve: Curves.easeInOut,
-      ),
-      builder: (context, child) {
-        _slideValue = 1.0 - ModalRoute.of(context)!.animation!.value;
-        return Transform.translate(
-          offset: Offset(0.0, _slideValue * MediaQuery.of(context).size.height),
-          child: child,
-        );
-      },
+    return SlideTransition(
+      position: _offsetAnimation,
       child: widget.child,
     );
   }

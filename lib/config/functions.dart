@@ -209,9 +209,10 @@ class Functions {
   static TextField getTextField(
       {required TextEditingController controller,
       required String textFieldLabel,
-      required}) {
+      TextInputType keyboardType = TextInputType.name}) {
     return TextField(
       controller: controller,
+      keyboardType: keyboardType,
       style: const TextStyle(
         color: Colors.black,
         fontSize: 14,

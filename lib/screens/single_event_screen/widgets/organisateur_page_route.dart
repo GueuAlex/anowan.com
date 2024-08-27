@@ -3,6 +3,7 @@ import 'package:gap/gap.dart';
 
 import '../../../config/app_text.dart';
 import '../../../config/palette.dart';
+import '../../organizer_screen/organizer_screen.dart';
 
 class OrganisateurPageRoute extends StatelessWidget {
   const OrganisateurPageRoute({
@@ -35,7 +36,10 @@ class OrganisateurPageRoute extends StatelessWidget {
                     color: const Color.fromARGB(255, 35, 41, 54),
                   ),
                   InkWell(
-                    onTap: () => print('go to orgasiteur profil'),
+                    onTap: () => Navigator.of(context).pushNamed(
+                      OrganizerScreen.routeName,
+                      arguments: 'Captain Shrine - La Maison du Rhum',
+                    ),
                     child: AppText.medium(
                       'Captain Shrine - La Maison du Rhum',
                       textOverflow: TextOverflow.ellipsis,

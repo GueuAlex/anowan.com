@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pull_to_refresh_flutter3/pull_to_refresh_flutter3.dart';
 
 import '../../config/palette.dart';
-import '../../organizer/organizer_suggestion.dart';
+import '../organizer_screen/widgets/organizer_suggestion.dart';
 import 'widgets/centre_interet.dart';
 import 'widgets/up_coming_events.dart';
 

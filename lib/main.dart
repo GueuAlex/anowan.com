@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'admin/screens/scan/scan_screen.dart';
 import 'config/palette.dart';
-import 'notification/notification_screen.dart';
+import 'screens/notification_screen/notification_screen.dart';
 import 'screens/auth/new_pass_code/confirm_pass_code.dart';
 import 'screens/auth/new_pass_code/new_pass_code.dart';
 import 'screens/auth/otp/otp_screen.dart';
@@ -15,11 +16,19 @@ import 'screens/checkout_screen/checkout_screen.dart';
 import 'screens/intro/intro_screen.dart';
 import 'screens/maps_screen/maps_screen.dart';
 import 'screens/order_screen/order_screen.dart';
+import 'screens/organizer_screen/organizer_screen.dart';
+import 'screens/prestator_screen/prestator_screen.dart';
 import 'screens/single_event_screen/single_event_screen.dart';
+import 'screens/suggestion_screen/suggestion_screen.dart';
+import 'screens/tickets_swap_screen/tickets_swap_screen.dart';
+import 'screens/user_details_screen/profil_settings/profil_settings.dart';
+import 'screens/user_details_screen/user_details_screen.dart';
 import 'splash_screen/splash_creen.dart';
 import 'widgets/bottom_bar.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await dotenv.load(fileName: ".env");
   runApp(
     ProviderScope(
       child: MyApp(),
@@ -74,6 +83,12 @@ class MyApp extends StatelessWidget {
             const ConfirmPassCodeScreen(),
         NotificationScreen.routeName: (ctxt) => const NotificationScreen(),
         MapsScreen.routeName: (ctxt) => const MapsScreen(),
+        OrganizerScreen.routeName: (ctxt) => const OrganizerScreen(),
+        PrestatorScreen.routeName: (ctxt) => const PrestatorScreen(),
+        UserDetailsScreen.routeName: (ctxt) => const UserDetailsScreen(),
+        TicketsSwapScreen.routeName: (ctxt) => const TicketsSwapScreen(),
+        ProfilSettings.routeName: (ctxt) => const ProfilSettings(),
+        SuggestionScreen.routeName: (ctxt) => const SuggestionScreen(),
       },
     );
   }

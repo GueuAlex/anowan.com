@@ -14,6 +14,8 @@ class InspectorModel {
   String firstname;
   String phone;
   String email;
+  // ajout d'un nouveau champs "bool isAsigned = false par defaut
+  // et mettre a jour lorsque le scanToken est utilisé"
   String scanToken;
 
   InspectorModel({

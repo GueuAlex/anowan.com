@@ -106,13 +106,13 @@ class PhoneInput extends StatelessWidget {
               OtpScreen.routeName,
             ),
             style: ButtonStyle(
-              elevation: MaterialStatePropertyAll(0),
-              shape: MaterialStatePropertyAll(
+              elevation: WidgetStatePropertyAll(0),
+              shape: WidgetStatePropertyAll(
                 RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(5),
                 ),
               ),
-              backgroundColor: MaterialStatePropertyAll(
+              backgroundColor: WidgetStatePropertyAll(
                 Palette.appRed,
               ),
             ),

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:ticketwave/config/palette.dart';
 
-//import '../screens/home/home_screen.dart';
 import '../widgets/bottom_bar.dart';
+
+//import '../screens/home/home_screen.dart';
+//import '../screens/intro/intro_screen.dart';
 
 class SplashSceen extends StatefulWidget {
   static String routeName = 'splash_screen';
@@ -21,6 +23,8 @@ class _SplashSceenState extends State<SplashSceen> {
         BottomBar.routeName,
         /* RegistrationScreen.routeName, */
         /* IntroScrenn.routeName, */
+        /*  ScanScreen.routeName, */
+        /* ScanScreen.routeName, */
         (route) => false,
       ),
     );
