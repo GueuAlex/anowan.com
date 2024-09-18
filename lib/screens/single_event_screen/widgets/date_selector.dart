@@ -137,8 +137,8 @@ class _DateSelectorState extends State<DateSelector> {
         IconRow(
           onTap: _showShareLocation,
           icon: FluentIcons.location_24_regular,
-          title: 'Nom du lieu',
-          subtitle: 'Adresse complète du lieu de l\'événement',
+          title: _selectedLocalization.place,
+          subtitle: 'Abidjan - Côte d\'Ivoire',
         ),
         IconRow(
           onTap: _launchUrl,

@@ -1,11 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_google_maps_webservices/geocoding.dart';
 import 'package:gap/gap.dart';
-import 'package:geocoding/geocoding.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:ticketwave/screens/single_event_screen/widgets/full_screen_maps.dart';
 
 import '../../../config/app_text.dart';
+import '../../../constants/constants.dart';
 import '../../../model/localization_model.dart';
 import 'custom_map.dart';
 import 'position_full_info.dart';
@@ -22,6 +23,8 @@ class GoogleMapContainer extends StatefulWidget {
 }
 
 class _GoogleMapContainerState extends State<GoogleMapContainer> {
+  GoogleMapsGeocoding geocoding = GoogleMapsGeocoding(apiKey: mapsApiKey);
+
   LatLng? _initialPosition;
   Set<Marker> _markers = {};
 
@@ -61,11 +64,20 @@ class _GoogleMapContainerState extends State<GoogleMapContainer> {
       }
     } else {
       try {
-        print(widget.localization.place);
-        List<Location> locations =
-            await locationFromAddress(widget.localization.place);
-        if (locations.isNotEmpty) {
-          _updatePosition(locations.first.latitude, locations.first.longitude);
+        print(
+            'Recherche des coordonnées pour ----> ${widget.localization.place}');
+
+        final geocodingResponse = await geocoding
+            .searchByAddress(widget.localization.place, components: [
+          Component('country', 'CI')
+        ]); // CI pour Côte d'Ivoire);
+
+        if (geocodingResponse.isOkay && geocodingResponse.results.isNotEmpty) {
+          final location = geocodingResponse.results.first.geometry.location;
+          _updatePosition(location.lat, location.lng);
+        } else {
+          print(
+              'Erreur lors du géocodage de l\'adresse : ${geocodingResponse.errorMessage}');
         }
       } catch (e) {
         print('Erreur lors du géocodage de l\'adresse : $e');

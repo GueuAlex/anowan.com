@@ -13,13 +13,13 @@ class AddForiteButton extends StatelessWidget {
       height: 35,
       width: 35,
       decoration: BoxDecoration(
-        color: Palette.whiteColor.withOpacity(0.9),
+        color: Palette.blackColor.withOpacity(0.9),
         shape: BoxShape.circle,
       ),
       child: Center(
         child: Icon(
           CupertinoIcons.bookmark,
-          color: Palette.blackColor,
+          color: Palette.whiteColor,
           size: 20,
         ),
       ),

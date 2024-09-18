@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 Color primaryColor = const Color(0xff115e38);
 Color secondaryColor = const Color(0xff4dd07f);
@@ -24,3 +25,5 @@ var btnTextStyle = TextStyle(fontSize: kfontSize);
 
 String networtImgPlaceholder =
     'https://oifoeivdflxzgtj0.public.blob.vercel-storage.com/anowan-placeholder-tAFlbGkVichP1J33x41uuo0DBpKV4Q.png';
+
+final String mapsApiKey = dotenv.env['MAPS_APIKEY']!;

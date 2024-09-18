@@ -4,32 +4,32 @@ import '../../../config/app_text.dart';
 import '../../../model/event_model.dart';
 import '../../../widgets/envent_card_column.dart';
 
-Widget popularEvents({required Size size, required BuildContext context}) {
-  List<EventModel> _pEvents = [
-    EventModel.eventList[4],
-    EventModel.eventList[0],
-    EventModel.eventList[2]
-  ];
+Widget popularEvents(
+    {required Size size,
+    required BuildContext context,
+    required List<EventModel> events}) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
-      AppText.small(
+      AppText.medium(
         "Populaire",
-        fontSize: 13,
+        fontSize: 18,
         fontWeight: FontWeight.w600,
+        color: Colors.black54,
       ),
       SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         child: Row(
-          children: _pEvents
-              .map(
-                (event) => eventCardColumn(
-                  event: event,
-                  size: size,
-                  context: context,
-                ),
-              )
-              .toList(),
+          children: events.map(
+            (event) {
+              //print(event.id);
+              return eventCardColumn(
+                event: event,
+                size: size,
+                context: context,
+              );
+            },
+          ).toList(),
         ),
       ),
     ],

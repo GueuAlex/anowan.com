@@ -4,7 +4,6 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'package:ticketwave/model/event_model.dart';
 import 'package:ticketwave/model/organizer_model.dart';
-import 'package:ticketwave/model/ticket_model.dart';
 
 import '../model/prestator_model.dart';
 
@@ -53,18 +52,13 @@ class RemoteService {
 
   //////////////////////////////// get single user by id //////////////////////
   ///
-  Future<TicketModel?> getTicket({required String uniqueCode}) async {
+  Future<http.Response> getTicket({required String uniqueCode}) async {
     var uri = Uri.parse('${baseUri}tickets/$uniqueCode');
     var response = await client.get(uri, headers: headers);
     //print('my user Dans remote /////////////////////////// : ${response.body}');
     print('Dans remote////////////////////////////// : ${response.statusCode}');
-    if (response.statusCode == 200 || response.statusCode == 201) {
-      var json = response.body;
-      print(response.body);
-      TicketModel user = ticketModelFromJson(json);
-      return user;
-    }
-    return null;
+
+    return response;
   }
 
   /////// fetch all organizers
@@ -110,11 +104,11 @@ class RemoteService {
         return events;
       } else {
         throw Exception(
-            'Failed to load organizers. Status code: ${response.statusCode}');
+            'Failed to load events. Status code: ${response.statusCode}');
       }
     } catch (e) {
-      print('Error fetching organizers: $e');
-      throw Exception('Error fetching organizers: $e');
+      print('Error fetching events: $e');
+      throw Exception('Error fetching events: $e');
     }
   }
 

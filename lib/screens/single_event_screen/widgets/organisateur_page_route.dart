@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:ticketwave/model/organizer_model.dart';
 
 import '../../../config/app_text.dart';
 import '../../../config/palette.dart';
+import '../../../constants/constants.dart';
 import '../../organizer_screen/organizer_screen.dart';
 
 class OrganisateurPageRoute extends StatelessWidget {
   const OrganisateurPageRoute({
     super.key,
+    required this.organizer,
   });
-  //final Organi
+  final OrganizerModel organizer;
 
   @override
   Widget build(BuildContext context) {
@@ -38,10 +41,10 @@ class OrganisateurPageRoute extends StatelessWidget {
                   InkWell(
                     onTap: () => Navigator.of(context).pushNamed(
                       OrganizerScreen.routeName,
-                      arguments: 'Captain Shrine - La Maison du Rhum',
+                      arguments: organizer,
                     ),
                     child: AppText.medium(
-                      'Captain Shrine - La Maison du Rhum',
+                      organizer.name,
                       textOverflow: TextOverflow.ellipsis,
                       fontSize: size.width * 0.045,
                     ),
@@ -57,7 +60,7 @@ class OrganisateurPageRoute extends StatelessWidget {
                         borderRadius: BorderRadius.circular(3),
                       ),
                       child: AppText.medium(
-                        '59 abonnés',
+                        '0 abonnés',
                         fontSize: 14,
                         color: Colors.white,
                         fontWeight: FontWeight.w600,
@@ -101,7 +104,10 @@ class OrganisateurPageRoute extends StatelessWidget {
                 shape: BoxShape.circle,
                 image: DecorationImage(
                   image: NetworkImage(
-                      "https://anowan.com/organizers/images/pastorale-pour-la-propagation-de-levangile-2024-05-20-093152.jpg"),
+                    organizer.avatar.trim().isNotEmpty
+                        ? organizer.avatar
+                        : networtImgPlaceholder,
+                  ),
                   fit: BoxFit.cover,
                 ),
               ),

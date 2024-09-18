@@ -50,7 +50,7 @@ Widget eventCardColumn(
             children: [
               Container(
                 width: double.infinity,
-                height: MediaQuery.of(context).size.height / 7.1,
+                height: MediaQuery.of(context).size.height / 6.8,
                 /*  decoration: BoxDecoration(
                   image: DecorationImage(
                     image: NetworkImage(event.image),
@@ -108,7 +108,7 @@ Widget eventCardColumn(
                         Padding(
                           padding: const EdgeInsets.only(bottom: 0),
                           child: AppText.small(
-                            'Nom de l\'organisateur ici',
+                            event.organizer.name,
                             fontSize: (size.width * 0.033),
                             fontWeight: FontWeight.w300,
                             maxLine: 1,
@@ -130,7 +130,7 @@ Widget eventCardColumn(
                                   Icon(
                                     Icons.location_on,
                                     color: Color.fromARGB(255, 141, 141, 141),
-                                    size: 16,
+                                    size: 23,
                                   ),
                                   Gap(2),
                                   Flexible(
@@ -158,7 +158,7 @@ Widget eventCardColumn(
                                       105,
                                       105,
                                     ),
-                                    size: 16,
+                                    size: 20,
                                   ),
                                 ),
                                 Gap(14),
@@ -172,7 +172,7 @@ Widget eventCardColumn(
                                       105,
                                       105,
                                     ),
-                                    size: 16,
+                                    size: 20,
                                   ),
                                 ),
                               ],

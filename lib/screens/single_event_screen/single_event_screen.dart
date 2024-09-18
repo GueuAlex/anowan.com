@@ -82,7 +82,7 @@ class _SingleEventScreenState extends State<SingleEventScreen> {
               elevation: 0,
               backgroundColor: Colors.white,
               expandedHeight: 250,
-              leadingWidth: 35,
+              leadingWidth: 45,
               centerTitle: !isAppBarExpanded,
               leading: AnimatedSwitcher(
                 duration: Duration(milliseconds: 300),
@@ -157,7 +157,9 @@ class _SingleEventScreenState extends State<SingleEventScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         SellStatus(),
-                        OrganisateurPageRoute(),
+                        OrganisateurPageRoute(
+                          organizer: event.organizer,
+                        ),
                         DateSelector(
                           localizations: localizations,
                           title: event.name,
@@ -171,9 +173,9 @@ class _SingleEventScreenState extends State<SingleEventScreen> {
                         GoogleMapContainer(
                           localization: localizations[0],
                         ),
-                        customDiveder(),
+                        /* customDiveder(), */
                         TageContainer(),
-                        MoreEventContainer(categoryId: 1)
+                        MoreEventContainer(categoryId: event.categoryId)
                       ],
                     ),
                   )

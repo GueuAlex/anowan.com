@@ -35,3 +35,12 @@ final organizeEventsProvider =
 final selectedCategoryProvider = StateProvider<String>((ref) {
   return "Tout"; // Catégorie par défaut
 });
+
+// FutureProvider pour charger les events une seule fois
+final eventsProvider = FutureProvider<List<EventModel>>((ref) async {
+  final apiService = ref.watch(apiServiceProvider);
+  return apiService.getEvents();
+});
+
+// keyboard state provider
+final keyboardVisibilityProvider = StateProvider<bool>((ref) => false);

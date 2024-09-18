@@ -44,6 +44,8 @@ class IconRow extends StatelessWidget {
                 children: [
                   AppText.medium(
                     title,
+                    maxLine: 1,
+                    textOverflow: TextOverflow.ellipsis,
                     fontWeight: FontWeight.w500,
                   ),
                   Gap(5),
@@ -51,6 +53,8 @@ class IconRow extends StatelessWidget {
                     subtitle,
                     fontWeight: FontWeight.w300,
                     fontSize: 15,
+                    maxLine: 1,
+                    textOverflow: TextOverflow.ellipsis,
                   ),
                 ],
               ),

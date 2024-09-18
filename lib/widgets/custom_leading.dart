@@ -14,16 +14,17 @@ class CustomLeading extends StatelessWidget {
     return InkWell(
       onTap: () => Navigator.pop(context),
       child: Container(
+        margin: const EdgeInsets.only(left: 10),
         decoration: BoxDecoration(
           shape: BoxShape.circle,
-          color: Palette.whiteColor.withOpacity(0.9),
+          color: Palette.blackColor.withOpacity(0.9),
         ),
         child: Center(
           child: Icon(
             Platform.isIOS
                 ? CupertinoIcons.chevron_back
                 : CupertinoIcons.arrow_left,
-            color: Palette.blackColor,
+            color: Palette.whiteColor,
             size: 20,
           ),
         ),

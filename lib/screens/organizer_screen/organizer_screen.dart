@@ -5,7 +5,7 @@ import 'package:pull_to_refresh_flutter3/pull_to_refresh_flutter3.dart';
 import 'package:ticketwave/config/app_text.dart';
 import 'package:ticketwave/config/palette.dart';
 
-import '../../model/event_model.dart';
+import '../../config/functions.dart';
 import '../../model/organizer_model.dart';
 import '../../providers/providers.dart';
 import 'widgets/Organize_header.dart';
@@ -116,8 +116,8 @@ class _OrganizerScreenState extends ConsumerState<OrganizerScreen>
                     data: (events) {
                       // Filtrer les événements dont la date est dans le futur
                       final upcomingEvents =
-                          filterAndSortUpcomingEvents(events);
-                      final pastEvents = eventsHistory(events);
+                          Functions.filterAndSortUpcomingEvents(events);
+                      final pastEvents = Functions.eventsHistory(events);
                       return TabBarView(controller: _tabController, children: [
                         // Contenu de l'onglet "Prochains"
 
@@ -144,50 +144,4 @@ class _OrganizerScreenState extends ConsumerState<OrganizerScreen>
       ),
     );
   }
-}
-
-List<EventModel> filterAndSortUpcomingEvents(List<EventModel> events) {
-  return events.where((event) {
-    // Filtrer les événements dont au moins une date de localisation est dans le futur
-    return event.localizations.any(
-      (location) => location.dateEvent.isAfter(DateTime.now()),
-    );
-  }).toList()
-    ..sort((a, b) {
-      // Trouver la date la plus proche dans les localisations de chaque événement
-      final aClosestDate = a.localizations
-          .where((location) => location.dateEvent.isAfter(DateTime.now()))
-          .map((location) => location.dateEvent)
-          .reduce((date1, date2) => date1.isBefore(date2) ? date1 : date2);
-
-      final bClosestDate = b.localizations
-          .where((location) => location.dateEvent.isAfter(DateTime.now()))
-          .map((location) => location.dateEvent)
-          .reduce((date1, date2) => date1.isBefore(date2) ? date1 : date2);
-
-      return aClosestDate.compareTo(bClosestDate);
-    });
-}
-
-List<EventModel> eventsHistory(List<EventModel> events) {
-  return events.where((event) {
-    // Filtrer les événements dont au moins une date de localisation est dans le futur
-    return event.localizations.any(
-      (location) => location.dateEvent.isBefore(DateTime.now()),
-    );
-  }).toList()
-    ..sort((a, b) {
-      // Trouver la date la plus proche dans les localisations de chaque événement
-      final aClosestDate = a.localizations
-          .where((location) => location.dateEvent.isBefore(DateTime.now()))
-          .map((location) => location.dateEvent)
-          .reduce((date1, date2) => date1.isBefore(date2) ? date1 : date2);
-
-      final bClosestDate = b.localizations
-          .where((location) => location.dateEvent.isBefore(DateTime.now()))
-          .map((location) => location.dateEvent)
-          .reduce((date1, date2) => date1.isBefore(date2) ? date1 : date2);
-
-      return aClosestDate.compareTo(bClosestDate);
-    });
 }

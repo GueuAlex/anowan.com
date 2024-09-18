@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:ticketwave/model/ticket_model.dart';
 import 'package:ticketwave/remote_service/remote_service.dart';
 import 'package:ticketwave/widgets/all_sheet_header.dart';
 
+import '../model/event_model.dart';
+import '../model/localization_model.dart';
 import '../widgets/custom_button.dart';
 import 'app_text.dart';
 import 'palette.dart';
@@ -103,8 +104,9 @@ class Functions {
                   const SizedBox(
                     height: 20,
                   ),
+                  //Expanded(child: Container()),
                   CustomButton(
-                    color: Palette.primaryColor,
+                    color: Palette.appRed,
                     width: double.infinity,
                     height: 35,
                     radius: 5,
@@ -171,10 +173,10 @@ class Functions {
     );
   }
 
-  static Future<TicketModel?> getTicketFromApi(
+/*   static Future<TicketModel?> getTicketFromApi(
       {required String uniqueCode}) async {
     return await RemoteService().getTicket(uniqueCode: uniqueCode);
-  }
+  } */
 
   // met a jour un user
   static Future<dynamic> scanValidation({
@@ -273,4 +275,125 @@ class Functions {
       fontSize: 16.0,
     );
   }
+
+/* // events du plus proche au plus future
+  static List<EventModel> filterAndSortUpcomingEvents(List<EventModel> events) {
+    return events.where((event) {
+      // Filtrer les événements dont au moins une date de localisation est dans le futur
+      return event.visibility &&
+          event.published &&
+          event.localizations.any(
+            (location) => location.dateEvent.isAfter(DateTime.now()),
+          );
+    }).toList()
+      ..sort((a, b) {
+        // Trouver la date la plus proche dans les localisations de chaque événement
+        final aClosestDate = a.localizations
+            .where((location) => location.dateEvent.isAfter(DateTime.now()))
+            .map((location) => location.dateEvent)
+            .reduce((date1, date2) => date1.isBefore(date2) ? date1 : date2);
+
+        final bClosestDate = b.localizations
+            .where((location) => location.dateEvent.isAfter(DateTime.now()))
+            .map((location) => location.dateEvent)
+            .reduce((date1, date2) => date1.isBefore(date2) ? date1 : date2);
+
+        return aClosestDate.compareTo(bClosestDate);
+      });
+  } */
+
+// events ordonnées par date du plus future au plus en ancien (incluet les events déjà passés)
+  static List<EventModel> filterAndSortUpcomingEvents(List<EventModel> events) {
+    DateTime today = DateTime.now();
+
+    // Function to find the nearest date in localizations
+    DateTime getNearestDate(EventModel event) {
+      return event.localizations
+          .map((localization) => localization.dateEvent)
+          .reduce((current, next) => current.isBefore(next) ? current : next);
+    }
+
+    // Split the events into three categories
+    List<EventModel> todayEvents = [];
+    List<EventModel> futureEvents = [];
+    List<EventModel> pastEvents = [];
+
+    for (var event in events) {
+      // Only process events that are published and visible
+      if (event.published && event.visibility) {
+        DateTime nearestDate = getNearestDate(event);
+
+        if (nearestDate.isAtSameMomentAs(today)) {
+          todayEvents.add(event);
+        } else if (nearestDate.isAfter(today)) {
+          futureEvents.add(event);
+        } else {
+          pastEvents.add(event);
+        }
+      }
+    }
+
+    // Sort future events by nearest date (from nearest to furthest)
+    futureEvents.sort((a, b) => getNearestDate(a).compareTo(getNearestDate(b)));
+
+    // Sort past events by nearest date (from most recent to oldest)
+    pastEvents.sort((a, b) => getNearestDate(b).compareTo(getNearestDate(a)));
+
+    // Combine the lists
+    return [...todayEvents, ...futureEvents, ...pastEvents];
+  }
+
+  static List<EventModel> eventsHistory(List<EventModel> events) {
+    return events.where((event) {
+      // Filtrer les événements dont au moins une date de localisation est dans le futur
+      return event.localizations.any(
+        (location) => location.dateEvent.isBefore(DateTime.now()),
+      );
+    }).toList()
+      ..sort((a, b) {
+        // Trouver la date la plus proche dans les localisations de chaque événement
+        final aClosestDate = a.localizations
+            .where((location) => location.dateEvent.isBefore(DateTime.now()))
+            .map((location) => location.dateEvent)
+            .reduce((date1, date2) => date1.isBefore(date2) ? date1 : date2);
+
+        final bClosestDate = b.localizations
+            .where((location) => location.dateEvent.isBefore(DateTime.now()))
+            .map((location) => location.dateEvent)
+            .reduce((date1, date2) => date1.isBefore(date2) ? date1 : date2);
+
+        return aClosestDate.compareTo(bClosestDate);
+      });
+  }
+
+  static List<LocalizationModel> filterAndSortLocalizations(
+      List<LocalizationModel> localizations) {
+    return localizations.where((localization) {
+      // Filtrer les localisations dont la date est dans le futur
+      return localization.dateEvent.isAfter(DateTime.now());
+    }).toList()
+      ..sort((a, b) {
+        // Trier par date la plus proche
+        return a.dateEvent.compareTo(b.dateEvent);
+      });
+  }
+
+  //
+  static List<EventModel> filterEventsByCategory(
+    List<EventModel> events,
+    String category,
+  ) {
+    return events
+        .where((event) =>
+            event.category.trim().toLowerCase() ==
+            category.trim().toLowerCase())
+        .toList();
+  }
 }
+
+
+// est ce que tu peux écrire une fonction qui filtre les évènements de la manière suivante :
+// les évents dont la date est également aux d'aujourd'hui sont en tete de la liste
+// suivi des évents dont les dates sont proches (future en fonction) de la date de aujourd'hui
+// Et enfin les évents dont la date est déjà passé classée du plus recent au plus ancien
+

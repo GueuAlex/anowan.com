@@ -51,13 +51,19 @@ class MenuContextuel extends StatelessWidget {
       width: 35,
       //padding: const EdgeInsets.only(right: 50),
       decoration: BoxDecoration(
-        color: Palette.whiteColor.withOpacity(0.9),
+        color: Palette.blackColor.withOpacity(0.9),
         shape: BoxShape.circle,
       ),
       child: Center(
         child: PopupMenuButton<int>(
           position: PopupMenuPosition.under,
-          icon: SvgPicture.asset('assets/icons/menu-points.svg'),
+          icon: SvgPicture.asset(
+            'assets/icons/menu-points.svg',
+            colorFilter: ColorFilter.mode(
+              Colors.white,
+              BlendMode.srcIn,
+            ),
+          ),
           onSelected: (value) {
             print('Vous avez sélectionné : $value');
           },
