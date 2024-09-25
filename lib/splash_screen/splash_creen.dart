@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:ticketwave/config/palette.dart';
 
-import '../admin/screens/scan/scan_screen.dart';
 import '../config/preferences.dart';
+import '../screens/intro/intro_screen.dart';
 
 //import '../screens/home/home_screen.dart';
 //import '../screens/intro/intro_screen.dart';
@@ -21,14 +21,14 @@ class _SplashSceenState extends State<SplashSceen> {
   void initState() {
     setinitPositiob();
     Future.delayed(const Duration(seconds: 3)).then(
-      (value) => Navigator.pushNamedAndRemoveUntil(
+      (value) => Navigator.pushReplacementNamed(
         context,
         /* BottomBar.routeName, */
         /* RegistrationScreen.routeName, */
-        /* IntroScrenn.routeName, */
+        IntroScrenn.routeName,
         /*  ScanScreen.routeName, */
-        ScanScreen.routeName,
-        (route) => false,
+        /* ScanScreen.routeName, */
+        /* (route) => false, */
       ),
     );
     super.initState();

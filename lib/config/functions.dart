@@ -3,6 +3,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:ticketwave/remote_service/remote_service.dart';
 import 'package:ticketwave/widgets/all_sheet_header.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../model/event_model.dart';
 import '../model/localization_model.dart';
@@ -208,17 +209,24 @@ class Functions {
     );
   }
 
-  static TextField getTextField(
-      {required TextEditingController controller,
-      required String textFieldLabel,
-      TextInputType keyboardType = TextInputType.name}) {
+  static TextField getTextField({
+    required TextEditingController controller,
+    required String textFieldLabel,
+    TextInputType keyboardType = TextInputType.name,
+    double fontSize = 14,
+    FontWeight fontWeight = FontWeight.w600,
+    bool obscureText = false,
+    void Function(String)? onChanged,
+  }) {
     return TextField(
+      onChanged: onChanged,
+      obscureText: obscureText,
       controller: controller,
       keyboardType: keyboardType,
-      style: const TextStyle(
+      style: TextStyle(
         color: Colors.black,
-        fontSize: 14,
-        fontWeight: FontWeight.w600,
+        fontSize: fontSize,
+        fontWeight: fontWeight,
       ),
       cursorColor: Colors.black,
       decoration: InputDecoration(
@@ -264,11 +272,14 @@ class Functions {
     debugPrint('follow organizer');
   }
 
-  static showToast({required String msg}) {
+  static showToast({
+    required String msg,
+    ToastGravity gravity = ToastGravity.TOP,
+  }) {
     Fluttertoast.showToast(
       msg: msg,
       toastLength: Toast.LENGTH_SHORT,
-      gravity: ToastGravity.BOTTOM,
+      gravity: gravity,
       timeInSecForIosWeb: 1,
       backgroundColor: Palette.primaryColor,
       textColor: Colors.white,
@@ -388,6 +399,14 @@ class Functions {
             event.category.trim().toLowerCase() ==
             category.trim().toLowerCase())
         .toList();
+  }
+
+  static Future<void> launchUri({required String url}) async {
+    final Uri _url = Uri.parse(url);
+
+    if (!await launchUrl(_url)) {
+      Functions.showToast(msg: 'Could not launch $_url');
+    }
   }
 }
 

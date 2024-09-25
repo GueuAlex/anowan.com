@@ -11,6 +11,7 @@ class InfosColumn extends StatelessWidget {
     //required this.text,
     required this.widget,
     this.opacity = 0,
+    this.labelFontSize = 14,
   });
   final double height;
   final double width;
@@ -18,6 +19,7 @@ class InfosColumn extends StatelessWidget {
   //final String text;
   final Widget widget;
   final double opacity;
+  final double labelFontSize;
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +37,7 @@ class InfosColumn extends StatelessWidget {
         children: [
           AppText.small(
             label,
-            fontSize: 11,
+            fontSize: labelFontSize,
             fontWeight: FontWeight.w500,
             color: Colors.grey,
           ),

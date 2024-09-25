@@ -12,9 +12,9 @@ Container organizerCard({
   required OrganizerModel organizer,
 }) =>
     Container(
-      padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
-      width: size.width * 0.50,
-      height: size.height * 0.23,
+      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 8),
+      width: size.width * 0.45,
+      //height: size.height * 0.23,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(5),
         border: Border.all(
@@ -54,41 +54,42 @@ Container organizerCard({
                 // organizer name
                 AppText.medium(
                   organizer.name,
-                  maxLine: 2,
+                  maxLine: 1,
                   textAlign: TextAlign.center,
                   fontSize: (size.width * 0.045),
                   fontWeight: FontWeight.w600,
                 ),
               ],
             ),
-            Gap(25),
+            Gap(10),
             // follow button
             Container(
-                // height: size.height * 0.055,
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 10,
-                  vertical: 6,
+              // height: size.height * 0.055,
+              padding: const EdgeInsets.symmetric(
+                horizontal: 10,
+                vertical: 6,
+              ),
+              margin: const EdgeInsets.symmetric(horizontal: 10),
+              decoration: BoxDecoration(
+                border: Border.all(
+                  width: 0.8,
+                  color: Palette.primaryColor.withOpacity(0.5),
                 ),
-                margin: const EdgeInsets.symmetric(horizontal: 10),
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    width: 0.8,
-                    color: Palette.primaryColor.withOpacity(0.5),
+                color: Palette.primaryColor.withOpacity(0.12),
+                borderRadius: BorderRadius.circular(50),
+              ),
+              child: InkWell(
+                onTap: () => print("Follw process"),
+                child: Center(
+                  child: AppText.medium(
+                    'Suivre',
+                    fontSize: 16,
+                    color: Palette.primaryColor,
+                    fontWeight: FontWeight.w600,
                   ),
-                  color: Palette.primaryColor.withOpacity(0.12),
-                  borderRadius: BorderRadius.circular(50),
                 ),
-                child: InkWell(
-                  onTap: () => print("Follw process"),
-                  child: Center(
-                    child: AppText.medium(
-                      'Suivre',
-                      fontSize: 16,
-                      color: Palette.primaryColor,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                )),
+              ),
+            ),
           ],
         ),
       ),

@@ -117,10 +117,10 @@ class _PositionFullInfoState extends State<PositionFullInfo> {
         child: CircularProgressIndicator.adaptive(),
       );
     }
-
-    if (error != null) {
+    //affiche l'erreur si une erreur est rencontrée
+    /*   if (error != null) {
       return Center(child: Text(error!));
-    }
+    } */
 
     if (place == null || address == null) {
       return Center(child: Text('Aucune donnée de lieu disponible'));

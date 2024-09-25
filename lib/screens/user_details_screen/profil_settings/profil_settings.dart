@@ -175,6 +175,11 @@ class ProfilSettings extends StatelessWidget {
     );
   }
 
+/////////////////////////////////////////
+  ///
+  ///
+  ///
+  ///
   Container _buildPrivacy({
     required String title,
     required String subTitle,

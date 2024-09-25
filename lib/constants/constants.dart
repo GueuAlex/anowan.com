@@ -27,3 +27,5 @@ String networtImgPlaceholder =
     'https://oifoeivdflxzgtj0.public.blob.vercel-storage.com/anowan-placeholder-tAFlbGkVichP1J33x41uuo0DBpKV4Q.png';
 
 final String mapsApiKey = dotenv.env['MAPS_APIKEY']!;
+
+final String termsOFus = 'https://anowan.com/terms-and-policies/privacy-policy';

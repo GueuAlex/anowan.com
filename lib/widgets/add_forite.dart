@@ -13,7 +13,7 @@ class AddForiteButton extends StatelessWidget {
       height: 35,
       width: 35,
       decoration: BoxDecoration(
-        color: Palette.blackColor.withOpacity(0.9),
+        color: Palette.blackColor.withOpacity(0.7),
         shape: BoxShape.circle,
       ),
       child: Center(

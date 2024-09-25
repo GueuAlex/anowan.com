@@ -6,12 +6,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'admin/screens/scan/scan_screen.dart';
 import 'config/palette.dart';
+import 'screens/auth/auth_screen.dart';
+import 'screens/auth/user_infos/take_user_infos.dart';
 import 'screens/notification_screen/notification_screen.dart';
 import 'screens/auth/new_pass_code/confirm_pass_code.dart';
 import 'screens/auth/new_pass_code/new_pass_code.dart';
 import 'screens/auth/otp/otp_screen.dart';
 import 'screens/auth/pass_code/pass_code_screen.dart';
-import 'screens/auth/registration/registration.dart';
 import 'screens/checkout_screen/checkout_screen.dart';
 import 'screens/intro/intro_screen.dart';
 import 'screens/maps_screen/maps_screen.dart';
@@ -74,7 +75,12 @@ class MyApp extends StatelessWidget {
         SingleEventScreen.routeName: (ctxt) => const SingleEventScreen(),
         OrderScreen.routeName: (ctxt) => const OrderScreen(),
         CheckoutScreen.routeName: (ctxt) => const CheckoutScreen(),
-        RegistrationScreen.routeName: (ctxt) => const RegistrationScreen(),
+        /*  LoginRegistrationScreen.routeName: (ctxt) =>
+            const LoginRegistrationScreen(), */
+        AuthScreen.routeName: (context) => const AuthScreen(),
+        /* RegistrationScreen.routeName: (ctxt) => const RegistrationScreen(), */
+        /*   LoginScreen.routeName: (ctxt) => const LoginScreen(), */
+        TakeUserInfos.routeName: (ctxt) => const TakeUserInfos(),
         IntroScrenn.routeName: (ctxt) => const IntroScrenn(),
         OtpScreen.routeName: (ctxt) => const OtpScreen(),
         PassCodeScreen.routeName: (ctxt) => const PassCodeScreen(),

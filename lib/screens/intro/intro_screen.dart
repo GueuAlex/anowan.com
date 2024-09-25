@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:ticketwave/config/palette.dart';
 
-import '../auth/registration/registration.dart';
+import '../auth/auth_screen.dart';
 
 class IntroScrenn extends StatelessWidget {
   static String routeName = "introScreen";
@@ -71,12 +71,15 @@ class IntroScrenn extends StatelessWidget {
             const Spacer(flex: 3),
             FittedBox(
               child: TextButton(
-                  onPressed: () => Navigator.pushNamedAndRemoveUntil(
+                  onPressed: () => Navigator.pushReplacementNamed(
                         context,
                         /* BottomBar.routeName, */
-                        RegistrationScreen.routeName,
+                        /*  LoginRegistrationScreen.routeName, */
+                        /* RegistrationScreen.routeName, */
+                        AuthScreen.routeName,
+                        /*  IntroScrenn.routeName, */
                         /* IntroScrenn.routeName, */
-                        (route) => false,
+                        /* (route) => false, */
                       ),
                   child: Row(
                     children: [

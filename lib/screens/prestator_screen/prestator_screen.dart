@@ -35,7 +35,7 @@ class PrestatorScreen extends StatelessWidget {
             buildIcon(
               svgPath: 'assets/icons/angle-petit-gauche.svg',
               onTap: () => Navigator.of(context).pop(),
-              bgOpacity: 0.8,
+              bgOpacity: 0.7,
             ),
             Expanded(
               child: Row(

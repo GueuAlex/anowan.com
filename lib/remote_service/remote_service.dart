@@ -61,6 +61,26 @@ class RemoteService {
     return response;
   }
 
+  //////////////////////////////// get single user by id //////////////////////
+  ///
+  Future<http.Response> postSomethings(
+      {required String api, required Map<String, dynamic> data}) async {
+    ////////// parse our url /////////////////////
+
+    var uri = Uri.parse('$baseUri$api');
+    print(uri);
+    var _payload = jsonEncode(data);
+    var response = await client.post(
+      uri,
+      body: _payload,
+      headers: headers,
+    );
+    print('$data was posted  /////////////////////////// : ${response.body}');
+    print('response statut code //////////////////// : ${response.statusCode}');
+
+    return response;
+  }
+
   /////// fetch all organizers
   ///ameliore cette fonction (try catch et throw les exceptions)
   Future<List<OrganizerModel>> getOrganisers() async {

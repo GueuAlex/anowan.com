@@ -51,7 +51,7 @@ class MenuContextuel extends StatelessWidget {
       width: 35,
       //padding: const EdgeInsets.only(right: 50),
       decoration: BoxDecoration(
-        color: Palette.blackColor.withOpacity(0.9),
+        color: Palette.blackColor.withOpacity(0.7),
         shape: BoxShape.circle,
       ),
       child: Center(

@@ -3,20 +3,19 @@ import 'package:flutter/material.dart';
 
 import 'package:gap/gap.dart';
 
-import 'package:ticketwave/config/app_text.dart';
-import 'package:ticketwave/config/functions.dart';
 import 'package:ticketwave/config/palette.dart';
-
-import '../otp/otp_screen.dart';
+import 'package:ticketwave/widgets/custom_button.dart';
 
 class EmailTextInput extends StatelessWidget {
   const EmailTextInput({
     super.key,
     required this.controller,
     required this.size,
+    required this.onSubmit,
   });
   final TextEditingController controller;
   final Size size;
+  final VoidCallback onSubmit;
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +24,8 @@ class EmailTextInput extends StatelessWidget {
     return Column(
       children: [
         Container(
-            padding: const EdgeInsets.all(3),
+            height: (size.height * 0.05),
+            //padding: const EdgeInsets.all(3),
             decoration: BoxDecoration(
               color: Color.fromARGB(5, 61, 68, 74),
               border: Border.all(
@@ -76,33 +76,14 @@ class EmailTextInput extends StatelessWidget {
               ),
             )),
         Gap(10),
-        SizedBox(
-          width: Functions.contextSize(context).width,
-          height: (size.height * 0.05),
-          child: ElevatedButton(
-            onPressed: () => Navigator.of(context).pushNamed(
-              OtpScreen.routeName,
-            ),
-            style: ButtonStyle(
-              elevation: WidgetStatePropertyAll(0),
-              shape: WidgetStatePropertyAll(
-                RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(5),
-                ),
-              ),
-              backgroundColor: WidgetStatePropertyAll(
-                Palette.appRed,
-              ),
-            ),
-            child: Center(
-              child: AppText.medium(
-                'Contiuner',
-                fontSize: 14,
-                color: Palette.whiteColor,
-              ),
-            ),
-          ),
-        )
+        CustomButton(
+          color: Palette.appRed,
+          width: double.infinity,
+          height: 40,
+          radius: 5,
+          text: 'Continuer',
+          onPress: onSubmit,
+        ),
       ],
     );
   }

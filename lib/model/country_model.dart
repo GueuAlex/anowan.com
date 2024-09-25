@@ -13,6 +13,12 @@ class CountryModel {
 
   static List<CountryModel> get list => [
         CountryModel(
+          name: 'Côte d\'Ivoire',
+          code: 'ci',
+          flag: 'assets/icons/flags/ci.svg',
+          zipCode: '225',
+        ),
+        CountryModel(
           name: 'Burkina Faso',
           code: 'bf',
           flag: 'assets/icons/flags/bf.svg',
@@ -29,12 +35,6 @@ class CountryModel {
           code: 'cg',
           flag: 'assets/icons/flags/cg.svg',
           zipCode: '242',
-        ),
-        CountryModel(
-          name: 'Côte d\'Ivoire',
-          code: 'ci',
-          flag: 'assets/icons/flags/ci.svg',
-          zipCode: '225',
         ),
         CountryModel(
           name: 'Cameroun',

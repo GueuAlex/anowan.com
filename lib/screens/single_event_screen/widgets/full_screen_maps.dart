@@ -2,10 +2,10 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:geocoding/geocoding.dart';
+import 'package:flutter_google_maps_webservices/geocoding.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:ticketwave/config/palette.dart';
 
+import '../../../constants/constants.dart';
 import '../../../model/event_model.dart';
 import '../../../model/localization_model.dart';
 import '../../../widgets/event_card_row.dart';
@@ -24,6 +24,7 @@ class FullScreenMaps extends StatefulWidget {
 
 class _FullScreenMapsState extends State<FullScreenMaps> {
   //late GoogleMapController _mapController;
+  GoogleMapsGeocoding geocoding = GoogleMapsGeocoding(apiKey: mapsApiKey);
   LatLng? _initialPosition;
   Set<Marker> _markers = {};
 
@@ -63,10 +64,20 @@ class _FullScreenMapsState extends State<FullScreenMaps> {
       }
     } else {
       try {
-        List<Location> locations =
-            await locationFromAddress(widget.localization.place);
-        if (locations.isNotEmpty) {
-          _updatePosition(locations.first.latitude, locations.first.longitude);
+        print(
+            'Recherche des coordonnées pour ----> ${widget.localization.place}');
+
+        final geocodingResponse = await geocoding
+            .searchByAddress(widget.localization.place, components: [
+          Component('country', 'CI')
+        ]); // CI pour Côte d'Ivoire);
+
+        if (geocodingResponse.isOkay && geocodingResponse.results.isNotEmpty) {
+          final location = geocodingResponse.results.first.geometry.location;
+          _updatePosition(location.lat, location.lng);
+        } else {
+          print(
+              'Erreur lors du géocodage de l\'adresse : ${geocodingResponse.errorMessage}');
         }
       } catch (e) {
         print('Erreur lors du géocodage de l\'adresse : $e');
@@ -87,12 +98,7 @@ class _FullScreenMapsState extends State<FullScreenMaps> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  SafeArea(
-                    child: Icon(
-                      CupertinoIcons.back,
-                      size: 18,
-                    ),
-                  ),
+                  Container(),
                   Center(
                     child: CircularProgressIndicator(),
                   ),
@@ -141,7 +147,7 @@ class _FullScreenMapsState extends State<FullScreenMaps> {
                         padding: const EdgeInsets.all(0),
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
-                          color: Palette.appRed,
+                          color: Colors.black.withOpacity(0.7),
                         ),
                         child: IconButton(
                           icon: Icon(
@@ -159,7 +165,7 @@ class _FullScreenMapsState extends State<FullScreenMaps> {
                         padding: const EdgeInsets.only(bottom: 2),
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
-                          color: Palette.appRed,
+                          color: Colors.black.withOpacity(0.7),
                         ),
                         child: IconButton(
                           icon: Icon(

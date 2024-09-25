@@ -4,12 +4,21 @@ import 'package:ticketwave/config/app_text.dart';
 
 import '../config/palette.dart';
 
-Row sheetCloserCross({required BuildContext ctxt, String text = ''}) => Row(
+Row sheetCloserCross({
+  required BuildContext ctxt,
+  String text = '',
+  FontWeight fontWeight = FontWeight.w600,
+}) =>
+    Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Gap(35),
         Expanded(
-          child: AppText.medium(text, textAlign: TextAlign.center),
+          child: AppText.medium(
+            text,
+            textAlign: TextAlign.center,
+            fontWeight: fontWeight,
+          ),
         ),
         InkWell(
           onTap: () => Navigator.pop(ctxt),

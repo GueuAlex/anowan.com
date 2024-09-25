@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ticketwave/model/event_model.dart';
 
+import '../model/country_model.dart';
 import '../model/organizer_model.dart';
 import '../model/prestator_model.dart';
 import 'api_service.provider.dart';
@@ -44,3 +45,8 @@ final eventsProvider = FutureProvider<List<EventModel>>((ref) async {
 
 // keyboard state provider
 final keyboardVisibilityProvider = StateProvider<bool>((ref) => false);
+
+//slected countru provider
+// StateProvider pour le pays sélectionné
+final selectedCountryProvider =
+    StateProvider<CountryModel?>((ref) => CountryModel.list[0]);

@@ -17,7 +17,7 @@ class CustomLeading extends StatelessWidget {
         margin: const EdgeInsets.only(left: 10),
         decoration: BoxDecoration(
           shape: BoxShape.circle,
-          color: Palette.blackColor.withOpacity(0.9),
+          color: Palette.blackColor.withOpacity(0.7),
         ),
         child: Center(
           child: Icon(
