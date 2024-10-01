@@ -146,6 +146,34 @@ class _OtpScreenState extends State<OtpScreen> {
         }
         EasyLoading.dismiss();
       });
+    } else {
+      Map<String, dynamic> _payload = {
+        'phone': args.login,
+        'zip_code': args.zipCode,
+      };
+      await RemoteService()
+          .postSomethings(
+        api: 'users/verify',
+        data: _payload,
+      )
+          .then((r) {
+        EasyLoading.dismiss();
+        if (r.statusCode == 401 || r.statusCode == 200 || r.statusCode == 201) {
+          Functions.showToast(
+            msg: 'Un nouveau code a été envoyé à votre adresse mail',
+          );
+          var json = jsonDecode(r.body);
+          int? _apiOtp = int.tryParse(json['otp']);
+          if (_apiOtp != null) {
+            setState(() {
+              _otpCode = _apiOtp;
+            });
+          } else {
+            Functions.showToast(msg: 'Erreur lors de l\'envoi du code');
+          }
+        }
+        EasyLoading.dismiss();
+      });
     }
   }
 

@@ -206,9 +206,48 @@ class _AuthScreenState extends ConsumerState<AuthScreen>
         Functions.showToast(msg: 'Renseignez votre numéro de téléphone');
         return;
       }
-      //
+      if (_phoneController.text.length < 6) {
+        Functions.showToast(msg: 'Nouméro invalide !');
+        return;
+      }
+
+      EasyLoading.show();
       final zipcode = await ref.read(selectedCountryProvider)?.zipCode;
       print(zipcode);
+      Map<String, dynamic> _payload = {
+        'phone': _phoneController.text,
+        'zip_code': zipcode,
+      };
+
+      print(_payload);
+      //return;
+      await RemoteService()
+          .postSomethings(
+        api: 'users/verify',
+        data: _payload,
+      )
+          .then((r) {
+        EasyLoading.dismiss();
+        if (r.statusCode == 401) {
+          var json = jsonDecode(r.body);
+          Navigator.of(context).pushNamed(
+            OtpScreen.routeName,
+            arguments: OTPScrenArgs(
+              login: _phoneController.text,
+              isEmail: false,
+              otp: json['otp'],
+              zipCode: zipcode,
+              title: 'Vérification de votre numéro de téléphone',
+            ),
+          );
+        } else if (r.statusCode == 200 || r.statusCode == 201) {
+          // take user infos
+          Functions.showToast(msg: 'Un compte existe déjà pour cet email');
+          _toggleHeight();
+        }
+      });
+
+      //
     }
   }
 }

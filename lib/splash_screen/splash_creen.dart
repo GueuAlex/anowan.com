@@ -3,6 +3,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:ticketwave/config/palette.dart';
 
 import '../config/preferences.dart';
+import '../screens/auth/setup/setup_screen.dart';
 import '../screens/intro/intro_screen.dart';
 
 //import '../screens/home/home_screen.dart';
@@ -25,7 +26,8 @@ class _SplashSceenState extends State<SplashSceen> {
         context,
         /* BottomBar.routeName, */
         /* RegistrationScreen.routeName, */
-        IntroScrenn.routeName,
+        /* IntroScrenn.routeName, */
+        SetupScreen.routeName,
         /*  ScanScreen.routeName, */
         /* ScanScreen.routeName, */
         /* (route) => false, */

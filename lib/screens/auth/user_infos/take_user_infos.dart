@@ -7,6 +7,7 @@ import 'package:intl/intl.dart';
 import 'package:ticketwave/config/app_text.dart';
 import 'package:ticketwave/config/functions.dart';
 import 'package:ticketwave/config/palette.dart';
+import 'package:ticketwave/screens/auth/setup/setup_screen.dart';
 import 'package:ticketwave/widgets/custom_button.dart';
 import 'package:ticketwave/widgets/horizontal_separator.dart';
 import 'package:ticketwave/widgets/infos_column.dart';
@@ -50,7 +51,7 @@ class _TakeUserInfosState extends State<TakeUserInfos> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10),
             child: InkWell(
-              onTap: () {},
+              onTap: () => _submit(args),
               child: AppText.medium(
                 'Inscription',
                 fontWeight: FontWeight.w400,
@@ -224,37 +225,17 @@ class _TakeUserInfosState extends State<TakeUserInfos> {
                 ),
               ),
               Gap(20),
+              //if (!Platform.isIOS)
               Padding(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
                 child: CustomButton(
                   color: Palette.appRed,
                   width: double.infinity,
-                  height: 40,
+                  height: 35,
                   radius: 5,
                   text: 'Inscription',
-                  onPress: () {
-                    if (_firstnameController.text.trim().isEmpty) {
-                      Functions.showToast(msg: 'Renseignez votre nom');
-                      return;
-                    }
-                    if (_lastNameController.text.trim().isEmpty) {
-                      Functions.showToast(msg: 'Renseignez votre prénom');
-                      return;
-                    }
-                    if (_passwordController.text.trim().isEmpty) {
-                      Functions.showToast(msg: 'Renseignez un mot de passe');
-                      return;
-                    }
-                    if (_passwordController.text.trim().length < 8) {
-                      Functions.showToast(
-                        msg:
-                            'Le mot de passe doit contenir au moins 8 caractères',
-                      );
-                      return;
-                    }
-                    _submit(args);
-                  },
+                  onPress: () => _submit(args),
                 ),
               ),
             ],
@@ -325,38 +306,63 @@ class _TakeUserInfosState extends State<TakeUserInfos> {
       ));
 
   void _submit(OTPScrenArgs args) async {
+    if (_firstnameController.text.trim().isEmpty) {
+      Functions.showToast(msg: 'Renseignez votre nom');
+      return;
+    }
+    if (_lastNameController.text.trim().isEmpty) {
+      Functions.showToast(msg: 'Renseignez votre prénom');
+      return;
+    }
+    if (_passwordController.text.trim().isEmpty) {
+      Functions.showToast(msg: 'Renseignez un mot de passe');
+      return;
+    }
+    if (_passwordController.text.trim().length < 8) {
+      Functions.showToast(
+        msg: 'Le mot de passe doit contenir au moins 8 caractères',
+      );
+      return;
+    }
     EasyLoading.show();
     Map<String, dynamic> _payload = {};
-    if (args.isEmail) {
-      _payload = {
-        'firstname': _lastNameController.text,
-        'name': _firstnameController.text,
-        "email": args.login,
-        'password': _passwordController.text,
-        "gender": _selectedGender,
-        "birth_date": _selectedDate.toIso8601String(),
-      };
-    } else {
-      _payload = {
-        'firstname': _lastNameController.text,
-        'name': _firstnameController.text,
-        'password': _passwordController.text,
-        "gender": _selectedGender,
-        "birth_date": _selectedDate.toIso8601String(),
-      };
-    }
+
+    _payload = {
+      'firstname': _lastNameController.text,
+      'name': _firstnameController.text,
+      /* "email": args.login, */
+      'password': _passwordController.text,
+      "gender": _selectedGender,
+      "birth_date": _selectedDate.toIso8601String(),
+    };
+
     // print(_payload);
     /* EasyLoading.dismiss();
     return; */
     await RemoteService()
         .postSomethings(
       api: 'users/register',
-      data: _payload,
+      data: args.isEmail
+          ? {..._payload, 'email': args.login}
+          : {..._payload, 'phone': args.login, 'zip_code': args.zipCode},
     )
-        .then((r) {
+        .then((r) async {
       print(r.statusCode);
       print(r.body);
-      EasyLoading.dismiss();
+
+      if (r.statusCode == 200 || r.statusCode == 201) {
+        //Functions.showToast(msg: 'Inscription réussie');
+        await Future.delayed(const Duration(seconds: 5));
+        EasyLoading.dismiss();
+        Navigator.of(context).pushReplacementNamed(
+          /*  NewPassCodeScreen.routeName, */ /* PassCodeScreen.routeName, */
+          SetupScreen.routeName,
+          arguments: args,
+        );
+      } else /* if (r.statusCode == 400 || r.statusCode == 422) */ {
+        EasyLoading.dismiss();
+        Functions.showToast(msg: 'Erreur lors de l\'inscription');
+      }
     });
     EasyLoading.dismiss();
   }

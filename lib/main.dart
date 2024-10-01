@@ -7,6 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'admin/screens/scan/scan_screen.dart';
 import 'config/palette.dart';
 import 'screens/auth/auth_screen.dart';
+import 'screens/auth/setup/setup_screen.dart';
 import 'screens/auth/user_infos/take_user_infos.dart';
 import 'screens/notification_screen/notification_screen.dart';
 import 'screens/auth/new_pass_code/confirm_pass_code.dart';
@@ -75,12 +76,9 @@ class MyApp extends StatelessWidget {
         SingleEventScreen.routeName: (ctxt) => const SingleEventScreen(),
         OrderScreen.routeName: (ctxt) => const OrderScreen(),
         CheckoutScreen.routeName: (ctxt) => const CheckoutScreen(),
-        /*  LoginRegistrationScreen.routeName: (ctxt) =>
-            const LoginRegistrationScreen(), */
         AuthScreen.routeName: (context) => const AuthScreen(),
-        /* RegistrationScreen.routeName: (ctxt) => const RegistrationScreen(), */
-        /*   LoginScreen.routeName: (ctxt) => const LoginScreen(), */
         TakeUserInfos.routeName: (ctxt) => const TakeUserInfos(),
+        SetupScreen.routeName: (ctxt) => const SetupScreen(),
         IntroScrenn.routeName: (ctxt) => const IntroScrenn(),
         OtpScreen.routeName: (ctxt) => const OtpScreen(),
         PassCodeScreen.routeName: (ctxt) => const PassCodeScreen(),
