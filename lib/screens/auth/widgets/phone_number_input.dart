@@ -32,8 +32,8 @@ class PhoneInput extends ConsumerWidget {
           decoration: BoxDecoration(
             color: Color.fromARGB(5, 61, 68, 74),
             border: Border.all(
-              width: 0.3,
-              color: const Color.fromARGB(255, 61, 68, 74),
+              width: 0.35,
+              color: const Color.fromARGB(255, 201, 201, 201),
             ),
             borderRadius: BorderRadius.circular(5),
           ),

@@ -14,6 +14,7 @@ import '../../../../remote_service/remote_service.dart';
 import '../../../../widgets/all_sheet_header.dart';
 import '../../../../widgets/error_sheet_container.dart';
 import '../../../../widgets/infos_column.dart';
+import 'phical_ticket_sheet.dart';
 import 'scan_sheet.dart';
 
 class SearchTicket extends StatefulWidget {
@@ -92,6 +93,11 @@ class _SearchTicketState extends State<SearchTicket> {
 
                     int? _tickeCode = int.tryParse(_ticketCodeController.text);
                     if (_tickeCode != null) {
+                      // check if is a valid event code
+                      if (_tickeCode.toString().length <= 10) {
+                        // fetch physical ticket data
+                        return _fetchPysicalTicket(code: _tickeCode);
+                      }
                       // juste pour le fun
                       // print(id);
                       //_btnController.success();
@@ -113,7 +119,7 @@ class _SearchTicketState extends State<SearchTicket> {
                         } else {
                           print('-------->');
                           EasyLoading.dismiss();
-                          error(size: size, context: context);
+                          error(context: context);
                         }
                       });
                     } else {
@@ -146,5 +152,22 @@ class _SearchTicketState extends State<SearchTicket> {
         ],
       ),
     );
+  }
+
+  void _fetchPysicalTicket({required int code}) {
+    RemoteService().getEvent(uniqueCode: code.toString()).then((res) async {
+      if (res.statusCode == 200 || res.statusCode == 201) {
+        // EventModel _ticket = eventModelFromJson(res.body);
+        EasyLoading.dismiss();
+        await AudioPlayer().play(AssetSource('images/soung.mp3'));
+        Functions.showSimpleBottomSheet(
+          ctxt: context,
+          widget: PhicalTicketSheet(code: code),
+        );
+      } else {
+        EasyLoading.dismiss();
+        error(context: context);
+      }
+    });
   }
 }

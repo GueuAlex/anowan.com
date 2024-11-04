@@ -79,6 +79,7 @@ class _AuthScreenState extends ConsumerState<AuthScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: InkWell(
         splashColor: Colors.transparent,
         focusColor: Colors.transparent,

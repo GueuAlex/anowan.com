@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:date_field/date_field.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -7,12 +9,14 @@ import 'package:intl/intl.dart';
 import 'package:ticketwave/config/app_text.dart';
 import 'package:ticketwave/config/functions.dart';
 import 'package:ticketwave/config/palette.dart';
+import 'package:ticketwave/local_service/local_service.dart';
 import 'package:ticketwave/screens/auth/setup/setup_screen.dart';
 import 'package:ticketwave/widgets/custom_button.dart';
 import 'package:ticketwave/widgets/horizontal_separator.dart';
 import 'package:ticketwave/widgets/infos_column.dart';
 import 'package:ticketwave/widgets/vertical_separator.dart';
 
+import '../../../model/user_model.dart';
 import '../../../remote_service/remote_service.dart';
 import '../../../widgets/sheet_closer_cross.dart';
 import '../otp/otp_screen.dart';
@@ -46,7 +50,7 @@ class _TakeUserInfosState extends State<TakeUserInfos> {
     return Scaffold(
       backgroundColor: Palette.scafoldColor,
       appBar: AppBar(
-        title: AppText.medium('Mes informatios'),
+        title: AppText.medium('Mes informatios', fontSize: 16),
         actions: [
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -54,6 +58,7 @@ class _TakeUserInfosState extends State<TakeUserInfos> {
               onTap: () => _submit(args),
               child: AppText.medium(
                 'Inscription',
+                fontSize: 15,
                 fontWeight: FontWeight.w400,
                 color: Palette.appRed,
               ),
@@ -182,7 +187,7 @@ class _TakeUserInfosState extends State<TakeUserInfos> {
                           context: context,
                           mode: DateTimeFieldPickerMode.date,
                           initialPickerDateTime: DateTime.now(),
-                          //lastDate: DateTime(year),
+                          lastDate: DateTime.now(),
                           pickerPlatform: DateTimeFieldPickerPlatform.adaptive,
                         );
                         setState(() {
@@ -336,6 +341,8 @@ class _TakeUserInfosState extends State<TakeUserInfos> {
       "birth_date": _selectedDate.toIso8601String(),
     };
 
+    LocalService localService = LocalService();
+
     // print(_payload);
     /* EasyLoading.dismiss();
     return; */
@@ -352,6 +359,17 @@ class _TakeUserInfosState extends State<TakeUserInfos> {
 
       if (r.statusCode == 200 || r.statusCode == 201) {
         //Functions.showToast(msg: 'Inscription réussie');
+        var json = jsonDecode(r.body);
+        // Ajout de la clé supplémentaire dans le JSON
+        json['active'] = 1;
+
+        // ensure any previous user is removed
+        await localService.clearUserTable();
+        //save user to local storage
+        localService.saveUser(UserModel.fromJson(json));
+        // set logged state
+        await Functions.setLoggedState(isLogged: true);
+        // wait for 5 seconds and redirect to setup screen
         await Future.delayed(const Duration(seconds: 5));
         EasyLoading.dismiss();
         Navigator.of(context).pushReplacementNamed(

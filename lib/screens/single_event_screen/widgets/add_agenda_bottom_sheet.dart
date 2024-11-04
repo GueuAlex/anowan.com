@@ -1,7 +1,7 @@
 import 'package:add_2_calendar/add_2_calendar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:gap/gap.dart';
 import 'package:ticketwave/config/functions.dart';
 
 import '../../../config/app_text.dart';
@@ -25,7 +25,7 @@ class AddToAgendaContainer extends StatelessWidget {
     final size = MediaQuery.of(context).size;
     return Container(
       width: double.infinity,
-      height: size.height * 0.5,
+      height: size.height * 0.35,
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(5),
@@ -33,7 +33,7 @@ class AddToAgendaContainer extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -64,33 +64,62 @@ class AddToAgendaContainer extends StatelessWidget {
                 ),
               ],
             ),
-            Container(
-              height: 200,
-              width: 200,
-              //padding: const EdgeInsets.all(50),
-              child: SvgPicture.asset('assets/icons/add-to-agenda.svg'),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 15,
-              ),
-              child: AppText.medium(
-                "Ne manquez plus jamais un événement important ! Ajoutez-le dès maintenant à votre agenda et restez organisé.",
-                fontSize: 17,
-                fontWeight: FontWeight.w300,
-                textAlign: TextAlign.center,
-              ),
-            ),
-            SafeArea(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 15),
-                child: CustomButton(
-                  color: Palette.appRed,
-                  width: double.infinity,
-                  height: 45,
-                  radius: 5,
-                  text: 'Ajouter à mon agenda',
-                  onPress: () => _addToCalendar(),
+            Expanded(
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(20.0),
+                      height: 100,
+                      width: 100,
+                      decoration: BoxDecoration(
+                        color: Palette.appRed.withOpacity(0.12),
+                        shape: BoxShape.circle,
+                      ),
+                      child: Container(
+                        width: double.infinity,
+                        height: 80,
+                        decoration: BoxDecoration(
+                          color: Palette.appRed.withOpacity(0.25),
+                          shape: BoxShape.circle,
+                        ),
+                        child: Center(
+                          child: Icon(
+                            size: 24,
+                            color: Palette.appRed,
+                            /* FluentIcons.calendar_add_24_regular, */
+                            CupertinoIcons.calendar_badge_plus,
+                          ),
+                        ),
+                      ),
+                    ),
+                    Gap(8),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 15,
+                      ),
+                      child: AppText.medium(
+                        "Ne manquez plus jamais un événement important ! Ajoutez-le dès maintenant à votre agenda et restez organisé.",
+                        fontSize: 14,
+                        fontWeight: FontWeight.w300,
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                    Gap(30.0),
+                    SafeArea(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 15),
+                        child: CustomButton(
+                          color: Palette.appRed,
+                          width: double.infinity,
+                          height: 35,
+                          radius: 5,
+                          text: 'Ajouter à mon agenda',
+                          onPress: () => _addToCalendar(),
+                        ),
+                      ),
+                    )
+                  ],
                 ),
               ),
             ) //écrir une phrase attrayante et accrocheur

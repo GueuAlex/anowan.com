@@ -67,10 +67,11 @@ class _FullScreenMapsState extends State<FullScreenMaps> {
         print(
             'Recherche des coordonnées pour ----> ${widget.localization.place}');
 
-        final geocodingResponse = await geocoding
-            .searchByAddress(widget.localization.place, components: [
-          Component('country', 'CI')
-        ]); // CI pour Côte d'Ivoire);
+        final geocodingResponse = await geocoding.searchByAddress(
+            widget.localization.place ?? 'Abidjan',
+            components: [
+              Component('country', 'CI')
+            ]); // CI pour Côte d'Ivoire);
 
         if (geocodingResponse.isOkay && geocodingResponse.results.isNotEmpty) {
           final location = geocodingResponse.results.first.geometry.location;

@@ -61,6 +61,16 @@ class RemoteService {
     return response;
   }
 
+  ///
+  Future<http.Response> getEvent({required String uniqueCode}) async {
+    var uri = Uri.parse('${baseUri}events/$uniqueCode');
+    var response = await client.get(uri, headers: headers);
+    //print('my user Dans remote /////////////////////////// : ${response.body}');
+    print('Dans remote////////////////////////////// : ${response.statusCode}');
+
+    return response;
+  }
+
   //////////////////////////////// get single user by id //////////////////////
   ///
   Future<http.Response> postSomethings(

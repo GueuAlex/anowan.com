@@ -40,91 +40,88 @@ class _DateSelectorState extends State<DateSelector> {
 
     return Column(
       children: [
-        isMultipleLocalization
-            ? Container(
-                width: double.infinity,
-                padding: const EdgeInsets.only(bottom: 10),
-                //height: 100,
-                child: SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                    children: List.generate(
-                      widget.localizations.length,
-                      (index) => InkWell(
-                        child: GestureDetector(
-                          onTap: () => _selectLocalization(index),
-                          child: Container(
-                            //width: 100,
-                            //height: 150,
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 8, horizontal: 25),
-                            margin: const EdgeInsets.symmetric(horizontal: 5),
-                            decoration: BoxDecoration(
-                              color: Palette.primaryColor.withOpacity(0.1),
-                              borderRadius: BorderRadius.circular(8),
-                              border: Border.all(
-                                width: 2,
-                                color: _selectedIndex == index
-                                    ? Palette.primaryColor
-                                    : Palette.primaryColor.withOpacity(0.1),
+        if (isMultipleLocalization)
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.only(bottom: 10),
+            //height: 100,
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: List.generate(
+                  widget.localizations.length,
+                  (index) => InkWell(
+                    child: GestureDetector(
+                      onTap: () => _selectLocalization(index),
+                      child: Container(
+                        //width: 100,
+                        //height: 150,
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 8, horizontal: 25),
+                        margin: const EdgeInsets.symmetric(horizontal: 5),
+                        decoration: BoxDecoration(
+                          color: Palette.primaryColor.withOpacity(0.1),
+                          borderRadius: BorderRadius.circular(8),
+                          border: Border.all(
+                            width: 2,
+                            color: _selectedIndex == index
+                                ? Palette.primaryColor
+                                : Palette.primaryColor.withOpacity(0.1),
+                          ),
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            AppText.medium(
+                              DateFormat('EEEE', 'fr_FR').format(
+                                  widget.localizations[index].dateEvent),
+                              fontWeight: FontWeight.w300,
+                            ),
+                            Container(
+                              //width: 150,
+                              padding: const EdgeInsets.symmetric(
+                                vertical: 8,
+                                horizontal: 20,
+                              ),
+                              //height: 60,
+                              margin: const EdgeInsets.symmetric(vertical: 5),
+                              decoration: BoxDecoration(
+                                color: const Color.fromARGB(255, 37, 47, 47),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              child: Column(
+                                children: [
+                                  AppText.medium(
+                                    DateFormat('dd', 'fr_FR').format(
+                                        widget.localizations[index].dateEvent),
+                                    color: Palette.whiteColor,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                  //Gap(5),
+                                  AppText.medium(
+                                    DateFormat('MMM', 'fr_FR').format(
+                                      widget.localizations[index].dateEvent,
+                                    ),
+                                    color: Palette.appRed,
+                                  ),
+                                ],
                               ),
                             ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                AppText.medium(
-                                  DateFormat('EEEE', 'fr_FR').format(
-                                      widget.localizations[index].dateEvent),
-                                  fontWeight: FontWeight.w300,
-                                ),
-                                Container(
-                                  //width: 150,
-                                  padding: const EdgeInsets.symmetric(
-                                    vertical: 8,
-                                    horizontal: 20,
-                                  ),
-                                  //height: 60,
-                                  margin:
-                                      const EdgeInsets.symmetric(vertical: 5),
-                                  decoration: BoxDecoration(
-                                    color:
-                                        const Color.fromARGB(255, 37, 47, 47),
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                  child: Column(
-                                    children: [
-                                      AppText.medium(
-                                        DateFormat('dd', 'fr_FR').format(widget
-                                            .localizations[index].dateEvent),
-                                        color: Palette.whiteColor,
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                      //Gap(5),
-                                      AppText.medium(
-                                        DateFormat('MMM', 'fr_FR').format(
-                                          widget.localizations[index].dateEvent,
-                                        ),
-                                        color: Palette.appRed,
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                AppText.medium(
-                                  widget.localizations[index].starttimeEvent,
-                                  fontWeight: FontWeight.w300,
-                                ),
-                              ],
+                            AppText.medium(
+                              widget.localizations[index].starttimeEvent,
+                              fontWeight: FontWeight.w300,
                             ),
-                          ),
+                          ],
                         ),
                       ),
                     ),
                   ),
                 ),
-              )
-            : Container(),
+              ),
+            ),
+          ),
         ////////
         IconRow(
           onTap: _addToCalendar,
@@ -137,7 +134,7 @@ class _DateSelectorState extends State<DateSelector> {
         IconRow(
           onTap: _showShareLocation,
           icon: FluentIcons.location_24_regular,
-          title: _selectedLocalization.place,
+          title: _selectedLocalization.place ?? '',
           subtitle: 'Abidjan - Côte d\'Ivoire',
         ),
         IconRow(

@@ -11,9 +11,9 @@ String inspectorToJson(InspectorModel data) => json.encode(data.toJson());
 
 class InspectorModel {
   String name;
-  String firstname;
-  String phone;
-  String email;
+  String? firstname;
+  String? phone;
+  String? email;
   // ajout d'un nouveau champs "bool isAsigned = false par defaut
   // et mettre a jour lorsque le scanToken est utilisé"
   String scanToken;

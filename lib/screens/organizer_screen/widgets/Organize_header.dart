@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
 import '../../../config/palette.dart';
+import '../../../constants/constants.dart';
 import '../../../model/organizer_model.dart';
 import '../../../widgets/counter.dart';
 import '../../../widgets/vertical_separator.dart';
@@ -35,7 +36,7 @@ class OrganizerHeader extends StatelessWidget {
               borderRadius: BorderRadius.circular(100),
               child: FadeInImage.assetNetwork(
                 placeholder: 'assets/images/anowan-placeholder.png',
-                image: organizer.avatar,
+                image: organizer.avatar ?? networtImgPlaceholder,
                 fit: BoxFit.cover,
                 imageErrorBuilder: (context, error, stackTrace) {
                   return Image.asset(

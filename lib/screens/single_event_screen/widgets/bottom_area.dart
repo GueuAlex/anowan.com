@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:ticketwave/config/functions.dart';
 import 'package:ticketwave/config/palette.dart';
 import 'package:ticketwave/screens/order_screen/order_screen.dart';
 
@@ -28,12 +29,12 @@ class BottomArea extends StatelessWidget {
         color: Palette.greyColor.withOpacity(0.03),
         border: Border(
           top: BorderSide(
-            width: 2,
-            color: Palette.greyColor.withOpacity(0.2),
+            width: 1,
+            color: Palette.separatorColor,
           ),
         ),
       ),
-      child: freeRow(ctxt: context),
+      child: event.free ? freeRow(ctxt: context) : noFreeRow(ctxt: context),
     );
   }
 
@@ -48,16 +49,12 @@ class BottomArea extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   AppText.small(
-                    'À partir de',
-                    fontWeight: FontWeight.w300,
+                    'Accessible à partir de',
                   ),
-                  Flexible(
-                    child: AppText.medium(
-                      '2000 FCFA',
-                      fontSize: 18,
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
+                  AppText.large(
+                    '${Functions.numberFormat(event.passes![0].price.toString())} ₣',
+                    textAlign: TextAlign.right,
+                  )
                 ],
               ),
             ),
@@ -70,7 +67,7 @@ class BottomArea extends StatelessWidget {
                 ),
                 elevation: WidgetStatePropertyAll(1),
                 backgroundColor: WidgetStatePropertyAll(
-                  Palette.primaryColor,
+                  Palette.appRed,
                 ),
               ),
               onPressed: () => Navigator.pushNamed(

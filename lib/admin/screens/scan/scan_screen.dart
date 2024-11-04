@@ -16,6 +16,7 @@ import '../../../config/palette.dart';
 import '../../../providers/providers.dart';
 import '../../../widgets/error_sheet_container.dart';
 import 'widgets/error_sheet.dart';
+import 'widgets/phical_ticket_sheet.dart';
 import 'widgets/scan_sheet.dart';
 import 'widgets/search_ticket.dart';
 import 'widgets/token_checker.dart';
@@ -37,9 +38,6 @@ class _ScanScreenState extends ConsumerState<ScanScreen> {
   //bool showGif = false;
   /////////////////////////////////////////////////////////
   MobileScannerController mobileScannerController = MobileScannerController();
-  void closeScreen() {
-    isScanCompleted = false;
-  }
 
   //////////// sonnette /////////////:
   ////////////////
@@ -58,18 +56,18 @@ class _ScanScreenState extends ConsumerState<ScanScreen> {
           MobileScanner(
             fit: BoxFit.cover,
             controller: mobileScannerController,
-            allowDuplicates: true,
+            // allowDuplicates: true,
             ///////////////////////////////////
             /// Lorsque le qrcode est détecté
             ///
-            onDetect: (barcodes, args) async {
+            onDetect: (barcodes) async {
               if (!isScanCompleted) {
                 ////////://///////////////
                 /// on montre le gif de detection
 
                 ////////////////
                 /// data =  données que le qrcode continet
-                String data = barcodes.rawValue ?? '';
+                String data = barcodes.barcodes.first.rawValue ?? '';
                 //debugPrint(data);
 
                 //////////////
@@ -93,12 +91,14 @@ class _ScanScreenState extends ConsumerState<ScanScreen> {
                 /// donc on int.tryParse code pour etre sur de
                 /// son type
                 int? _tickeCode = int.tryParse(data);
+                //_tickeCode.bitLength;
                 if (_tickeCode != null) {
-                  // juste pour le fun
-                  // print(id);
-                  EasyLoading.show(
-                    status: ' ',
-                  );
+                  EasyLoading.show();
+                  // check if is a valid event code
+                  if (_tickeCode.toString().length <= 10) {
+                    // fetch physical ticket data
+                    return _fetchPysicalTicket(code: _tickeCode);
+                  }
 
                   await RemoteService()
                       .getTicket(
@@ -114,12 +114,16 @@ class _ScanScreenState extends ConsumerState<ScanScreen> {
                       ).whenComplete(() {
                         setState(() {
                           isScanCompleted = false;
+                          // print('scan completed');
                         });
                       });
                       EasyLoading.dismiss();
                     } else {
                       EasyLoading.dismiss();
-                      error(size: size, context: context);
+                      await error(context: context);
+                      setState(() {
+                        isScanCompleted = false;
+                      });
                     }
                   });
                   EasyLoading.dismiss();
@@ -150,7 +154,9 @@ class _ScanScreenState extends ConsumerState<ScanScreen> {
           ),
           Visibility(
             visible: !isKeyboardVisible,
-            child: const QRScannerOverlay(overlayColour: Colors.transparent),
+            child: QRScannerOverlay(
+              overlayColour: Colors.transparent.withOpacity(0.45),
+            ),
           ),
 
           /////////////// top widgets menu//s///////////
@@ -314,13 +320,39 @@ class _ScanScreenState extends ConsumerState<ScanScreen> {
                 ),
               ),
             ),
-          )
+          ),
+
+          ///
+          ///TICKET TYPE SELECTOR
+          // TicketTypeSelector()
 
           //////////////////////////////////////////////
         ],
       ),
     );
   }
-}
 
-// token checker
+  void _fetchPysicalTicket({required int code}) {
+    RemoteService().getEvent(uniqueCode: code.toString()).then((res) async {
+      if (res.statusCode == 200 || res.statusCode == 201) {
+        // EventModel _ticket = eventModelFromJson(res.body);
+        EasyLoading.dismiss();
+        await AudioPlayer().play(AssetSource('images/soung.mp3'));
+        Functions.showSimpleBottomSheet(
+          ctxt: context,
+          widget: PhicalTicketSheet(code: code),
+        ).whenComplete(() {
+          setState(() {
+            isScanCompleted = false;
+          });
+        });
+      } else {
+        EasyLoading.dismiss();
+        await error(context: context);
+        setState(() {
+          isScanCompleted = false;
+        });
+      }
+    });
+  }
+}

@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get/get.dart';
+import 'package:intl/intl.dart';
+import 'package:ticketwave/config/preferences.dart';
 import 'package:ticketwave/remote_service/remote_service.dart';
 import 'package:ticketwave/widgets/all_sheet_header.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -8,6 +11,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../model/event_model.dart';
 import '../model/localization_model.dart';
 import '../widgets/custom_button.dart';
+import '../widgets/snackbar_widget.dart';
 import 'app_text.dart';
 import 'palette.dart';
 
@@ -179,13 +183,25 @@ class Functions {
     return await RemoteService().getTicket(uniqueCode: uniqueCode);
   } */
 
-  // met a jour un user
+  // method to PUT  ticket
   static Future<dynamic> scanValidation({
     required Map<String, dynamic> data,
     required String uniqueCode,
   }) async {
     var response = await RemoteService().putSomethings(
       api: 'tickets/$uniqueCode/scan',
+      data: data,
+    );
+    return response;
+  }
+
+  // method to add scan history
+  static Future<dynamic> scanValidation2({
+    required Map<String, dynamic> data,
+    /*  required String uniqueCode, */
+  }) async {
+    var response = await RemoteService().postSomethings(
+      api: 'tickets/scan',
       data: data,
     );
     return response;
@@ -313,8 +329,9 @@ class Functions {
       });
   } */
 
-// events ordonnées par date du plus future au plus en ancien (incluet les events déjà passés)
-  static List<EventModel> filterAndSortUpcomingEvents(List<EventModel> events) {
+// events ordonnées par date du plus future proche au plus en ancien (ajout un param bool withPassEvents = false pour inclu les events déjà passés ou non)
+  static List<EventModel> filterAndSortUpcomingEvents(
+      {required List<EventModel> events, bool withPassEvents = true}) {
     DateTime today = DateTime.now();
 
     // Function to find the nearest date in localizations
@@ -351,7 +368,8 @@ class Functions {
     pastEvents.sort((a, b) => getNearestDate(b).compareTo(getNearestDate(a)));
 
     // Combine the lists
-    return [...todayEvents, ...futureEvents, ...pastEvents];
+    if (withPassEvents) return [...todayEvents, ...futureEvents, ...pastEvents];
+    return [...todayEvents, ...futureEvents];
   }
 
   static List<EventModel> eventsHistory(List<EventModel> events) {
@@ -407,6 +425,74 @@ class Functions {
     if (!await launchUrl(_url)) {
       Functions.showToast(msg: 'Could not launch $_url');
     }
+  }
+
+  static String? getFirstWord(String? text) {
+    if (text == null || text.isEmpty) {
+      return null;
+    }
+    // Séparer les mots par espace et retourner le premier mot
+    return text.split(',').first.trim();
+  }
+
+  static Future<void> setLoggedState({required bool isLogged}) async {
+    final prefs = await Preferences();
+    await prefs.setBool('isLogged', isLogged);
+  }
+
+  static Future<bool> getLoggedState() async {
+    final prefs = await Preferences();
+    return prefs.getBool('isLogged') ?? false;
+  }
+
+  ///
+  static String numberFormat(String input) {
+    // Supprimer les espaces et vérifier si l'entrée est un nombre valide
+    String cleanedInput = input.replaceAll(' ', '');
+
+    // Supprimer le ".0" à la fin de la chaîne si présent
+    if (cleanedInput.endsWith('.0')) {
+      cleanedInput = cleanedInput.substring(0, cleanedInput.length - 2);
+    }
+
+    // Convertir la chaîne nettoyée en entier
+    int? number = int.tryParse(cleanedInput);
+
+    // Si la conversion réussit, formater avec des espaces
+    if (number != null) {
+      final formattedNumber = NumberFormat('#,###', 'fr_FR').format(number);
+      return formattedNumber.replaceAll(',', ' ');
+    }
+
+    // Si la conversion échoue, renvoyer la chaîne d'origine
+    return input;
+  }
+
+  static String stringToTimeOfDay(String heureVisite) {
+    final parsedTime = heureVisite
+        .split(':'); // Sépare la chaîne en heures, minutes et secondes
+    int hour = int.parse(parsedTime[0]); // Convertir les heures en int
+    int minute = int.parse(parsedTime[1]); // Convertir les minutes en int
+    if (minute == 0) {
+      return '$hour:${minute}0';
+    }
+    return '$hour:$minute'; // Retourner un TimeOfDay
+  }
+
+  static void getSnackbar({required String messageText, IconData? icon}) {
+    Get.rawSnackbar(
+      messageText: SnackbarWidget(
+        icon: icon,
+        text: messageText,
+      ),
+      isDismissible: false,
+      duration: const Duration(days: 1),
+      backgroundColor: Colors.transparent,
+      padding: const EdgeInsets.only(top: 2, bottom: 0),
+      margin: EdgeInsets.only(bottom: 15, left: 15, right: 15),
+      snackStyle: SnackStyle.GROUNDED,
+      snackPosition: SnackPosition.TOP,
+    );
   }
 }
 

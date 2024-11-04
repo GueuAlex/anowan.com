@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 
 import '../config/app_text.dart';
 import '../config/palette.dart';
+import '../constants/constants.dart';
 import '../model/event_model.dart';
 import '../screens/single_event_screen/single_event_screen.dart';
 
@@ -60,7 +61,7 @@ Widget eventCardColumn(
                 ), */
                 child: FadeInImage.assetNetwork(
                   placeholder: 'assets/images/anowan-placeholder.png',
-                  image: event.image,
+                  image: event.image ?? networtImgPlaceholder,
                   fit: BoxFit.cover,
                   imageErrorBuilder: (context, error, stackTrace) {
                     return Image.asset(
@@ -108,7 +109,7 @@ Widget eventCardColumn(
                         Padding(
                           padding: const EdgeInsets.only(bottom: 0),
                           child: AppText.small(
-                            event.organizer.name,
+                            event.organizer.name ?? '',
                             fontSize: (size.width * 0.033),
                             fontWeight: FontWeight.w300,
                             maxLine: 1,

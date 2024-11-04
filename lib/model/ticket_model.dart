@@ -26,19 +26,19 @@ class TicketModel {
   final int orderId;
   final int passId;
   final String uniqueCode;
-  final String pdfPath;
+  final String? pdfPath;
   final String? qrcode;
   final bool scanned;
   final DateTime? scannedAt;
   final bool active;
-  final String nameOnTicket;
-  final String firstnameOnTicket;
-  final String sendToEmail;
-  final String sendToPhone;
-  final int participantId;
+  final String? nameOnTicket;
+  final String? firstnameOnTicket;
+  final String? sendToEmail;
+  final String? sendToPhone;
+  final int? participantId;
   /* final String participantType; */
-  final String peopleNumber;
-  final String shortUrl;
+  final String peopleNumber; // default 1
+  final String? shortUrl;
   final PassModel pass;
   final EventModel event;
   final OrderModel order;

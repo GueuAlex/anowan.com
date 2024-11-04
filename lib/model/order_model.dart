@@ -25,13 +25,13 @@ class OrderModel {
   final int orderableId;
   /* final String orderableType; */
 
-  final String fees;
-  final String smsFees;
-  final String amountAvailable;
-  final String packLevy;
-  final String amountHt;
+  final String? fees;
+  final String? smsFees;
+  final String? amountAvailable;
+  final String? packLevy;
+  final String? amountHt;
   final String? comments;
-  final int smsQuantity;
+  final int? smsQuantity;
 
   OrderModel({
     required this.id,

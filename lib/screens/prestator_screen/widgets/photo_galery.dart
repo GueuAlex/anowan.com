@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 import '../../../config/palette.dart';
+import '../../../constants/constants.dart';
 import '../../../model/prestator_model.dart';
 import 'open_photos.dart';
 
@@ -79,7 +80,7 @@ class PhotoGalery extends StatelessWidget {
                     ),
                   ),
                   child: Image.network(
-                    images[index].url,
+                    images[index].url ?? networtImgPlaceholder,
                     fit: BoxFit.cover,
                     loadingBuilder: (context, child, loadingProgress) {
                       if (loadingProgress == null) return child;

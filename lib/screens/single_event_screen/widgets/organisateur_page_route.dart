@@ -44,7 +44,7 @@ class OrganisateurPageRoute extends StatelessWidget {
                       arguments: organizer,
                     ),
                     child: AppText.medium(
-                      organizer.name,
+                      organizer.name ?? '',
                       textOverflow: TextOverflow.ellipsis,
                       fontSize: size.width * 0.045,
                     ),
@@ -104,8 +104,8 @@ class OrganisateurPageRoute extends StatelessWidget {
                 shape: BoxShape.circle,
                 image: DecorationImage(
                   image: NetworkImage(
-                    organizer.avatar.trim().isNotEmpty
-                        ? organizer.avatar
+                    organizer.avatar!.trim().isNotEmpty
+                        ? organizer.avatar ?? networtImgPlaceholder
                         : networtImgPlaceholder,
                   ),
                   fit: BoxFit.cover,

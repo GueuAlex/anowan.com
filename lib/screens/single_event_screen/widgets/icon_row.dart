@@ -6,23 +6,28 @@ import '../../../config/app_text.dart';
 import '../../../config/palette.dart';
 
 class IconRow extends StatelessWidget {
-  const IconRow({
-    super.key,
-    required this.icon,
-    required this.title,
-    required this.subtitle,
-    required this.onTap,
-  });
+  const IconRow(
+      {super.key,
+      required this.icon,
+      required this.title,
+      required this.subtitle,
+      required this.onTap,
+      this.showIcon = true});
   final IconData icon;
   final String title;
   final String subtitle;
   final VoidCallback onTap;
+  final bool showIcon;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8),
       child: InkWell(
+        focusColor: Colors.transparent,
+        hoverColor: Colors.transparent,
+        overlayColor: WidgetStatePropertyAll(Colors.transparent),
+        highlightColor: Colors.transparent,
         splashColor: Colors.transparent,
         onTap: onTap,
         child: Row(
@@ -48,7 +53,6 @@ class IconRow extends StatelessWidget {
                     textOverflow: TextOverflow.ellipsis,
                     fontWeight: FontWeight.w500,
                   ),
-                  Gap(5),
                   AppText.medium(
                     subtitle,
                     fontWeight: FontWeight.w300,
@@ -59,14 +63,15 @@ class IconRow extends StatelessWidget {
                 ],
               ),
             ),
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 15),
-              child: Icon(
-                FluentIcons.chevron_right_24_regular,
-                size: 16,
-                color: Color.fromARGB(255, 50, 50, 50),
-              ),
-            )
+            if (showIcon)
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 15),
+                child: Icon(
+                  FluentIcons.chevron_right_24_regular,
+                  size: 16,
+                  color: Color.fromARGB(255, 50, 50, 50),
+                ),
+              )
           ],
         ),
       ),

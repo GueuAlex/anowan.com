@@ -55,7 +55,7 @@ class _OrganizerScreenState extends ConsumerState<OrganizerScreen>
       appBar: AppBar(
         elevation: 0,
         title: AppText.medium(
-          organizer.name,
+          organizer.name ?? '',
           maxLine: 1,
           textOverflow: TextOverflow.ellipsis,
         ),
@@ -116,7 +116,7 @@ class _OrganizerScreenState extends ConsumerState<OrganizerScreen>
                     data: (events) {
                       // Filtrer les événements dont la date est dans le futur
                       final upcomingEvents =
-                          Functions.filterAndSortUpcomingEvents(events);
+                          Functions.filterAndSortUpcomingEvents(events: events);
                       final pastEvents = Functions.eventsHistory(events);
                       return TabBarView(controller: _tabController, children: [
                         // Contenu de l'onglet "Prochains"

@@ -4,6 +4,7 @@ import 'package:gap/gap.dart';
 
 import '../../../config/app_text.dart';
 import '../../../config/palette.dart';
+import '../../../constants/constants.dart';
 import '../../../model/prestator_model.dart';
 import '../../../widgets/horizontal_separator.dart';
 import '../../../widgets/vertical_separator.dart';
@@ -41,7 +42,7 @@ class PrestatorHeader extends StatelessWidget {
                   decoration: BoxDecoration(),
                   child: FadeInImage.assetNetwork(
                     placeholder: 'assets/images/anowan-placeholder.png',
-                    image: prestator.images[0].url,
+                    image: prestator.images[0].url ?? networtImgPlaceholder,
                     fit: BoxFit.cover,
                     imageErrorBuilder: (context, error, stackTrace) {
                       return Image.asset(
@@ -71,7 +72,7 @@ class PrestatorHeader extends StatelessWidget {
                       borderRadius: BorderRadius.circular(100),
                       child: FadeInImage.assetNetwork(
                         placeholder: 'assets/images/anowan-placeholder.png',
-                        image: prestator.logo,
+                        image: prestator.logo ?? networtImgPlaceholder,
                         fit: BoxFit.cover,
                         imageErrorBuilder: (context, error, stackTrace) {
                           return Image.asset(
@@ -99,7 +100,7 @@ class PrestatorHeader extends StatelessWidget {
             ),
           ),
           AppText.medium(
-            prestator.shortDescription,
+            prestator.shortDescription ?? '',
             maxLine: 3,
             textAlign: TextAlign.center,
             textOverflow: TextOverflow.ellipsis,

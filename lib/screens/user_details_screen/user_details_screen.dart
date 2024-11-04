@@ -10,6 +10,7 @@ import 'package:ticketwave/config/palette.dart';
 import '../../widgets/build_icon.dart';
 import '../../widgets/counter.dart';
 import '../../widgets/vertical_separator.dart';
+import '../organizer_screen/widgets/organizer_row.dart';
 import 'profil_settings/profil_settings.dart';
 import 'settings/app_settings_screen.dart';
 import 'widgets/centre_interet_2.dart';
@@ -176,77 +177,25 @@ class UserDetailsScreen extends StatelessWidget {
             color: Colors.black54,
           ),
           Gap(10),
-          _organizerRow(
-              assets: 'assets/images/lunch.jpg',
-              name: 'Noblesse Sweetness & Food',
-              followers: '45k',
-              events: '+99 événements'),
+          OrganizerRow(
+            assets: 'assets/images/lunch.jpg',
+            name: 'Noblesse Sweetness & Food',
+            followers: '45k',
+            events: '+99 événements',
+            organizerId: '1',
+          ),
           Gap(8),
-          _organizerRow(
-              assets: 'assets/images/expert.jpeg',
-              name: 'Expert consultant',
-              followers: '250k',
-              events: '47 événements'),
+          OrganizerRow(
+            assets: 'assets/images/expert.jpeg',
+            name: 'Expert consultant',
+            followers: '250k',
+            events: '47 événements',
+            organizerId: '2',
+          ),
           Gap(8),
           _beOrganizerRow(),
         ],
       ),
-    );
-  }
-
-  Row _organizerRow({
-    required String name,
-    required String followers,
-    required String events,
-    required String assets,
-  }) {
-    return Row(
-      children: [
-        Container(
-          width: 50,
-          height: 50,
-          decoration: BoxDecoration(
-            color: Palette.separatorColor,
-            borderRadius: BorderRadius.circular(5),
-            image: DecorationImage(
-              image: AssetImage(assets),
-              fit: BoxFit.cover,
-            ),
-          ),
-          child: Container(
-            width: double.infinity,
-            height: double.infinity,
-            decoration: BoxDecoration(
-              color: Colors.black.withOpacity(0.15),
-              borderRadius: BorderRadius.circular(5),
-            ),
-          ),
-        ),
-        Gap(8.0),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            //mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              AppText.medium(
-                name,
-                fontWeight: FontWeight.w400,
-                fontSize: 16,
-              ),
-              AppText.small(
-                '$followers followers \u2022 $events',
-                fontWeight: FontWeight.w300,
-              ),
-              Gap(5),
-            ],
-          ),
-        ),
-        Icon(
-          CupertinoIcons.chevron_right,
-          color: Colors.black54,
-          size: 16,
-        )
-      ],
     );
   }
 

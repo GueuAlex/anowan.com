@@ -50,3 +50,13 @@ final keyboardVisibilityProvider = StateProvider<bool>((ref) => false);
 // StateProvider pour le pays sélectionné
 final selectedCountryProvider =
     StateProvider<CountryModel?>((ref) => CountryModel.list[0]);
+
+// Provider pour le lieu sélectionné
+final selectedPlaceProvider = StateProvider<String?>((ref) => null);
+
+///// order screen
+// Provider for managing selected passes
+final selectedPassProvider = StateProvider<Map<int, int>>((ref) => {});
+
+// Provider for managing total price
+final totalPriceProvider = StateProvider<int>((ref) => 0);

@@ -41,7 +41,7 @@ dependencies:
   fluttertoast: any
   google_fonts: any
   double_back_to_close_app: ^2.1.0
-  mobile_scanner: ^2.1.0
+  mobile_scanner: ^6.0.2
   audioplayers: ^5.2.0
   vibration: ^1.7.7
   flutter_easyloading: ^3.0.5
@@ -56,7 +56,6 @@ dependencies:
   geocoding: ^2.1.1
   rounded_loading_button_plus: ^3.0.1
   shared_preferences: ^2.2.2
-  intl_phone_number_input: ^0.7.4
   pin_plus_keyboard: ^2.0.6
   google_maps_flutter: ^2.7.0
   flutter_polyline_points: ^2.0.0
@@ -75,6 +74,8 @@ dependencies:
   flutter_google_maps_webservices: ^1.1.1
   date_field: ^5.2.1
   uuid: ^4.5.1
+  sqflite: ^2.3.3+2
+  lottie: ^3.1.2
 
 dev_dependencies:
   flutter_test:

@@ -25,17 +25,17 @@ class OrganisationNameAndDesc extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           AppText.medium(
-            organizer.name,
+            organizer.name ?? '',
             maxLine: 1,
             fontSize: 16,
             fontWeight: FontWeight.w700,
             color: Color.fromARGB(255, 32, 32, 32),
           ),
           Gap(5),
-          if (organizer.shortDescription.trim().isNotEmpty)
+          if (organizer.shortDescription!.trim().isNotEmpty)
             _description(context),
           Gap(8),
-          if (organizer.website.trim().isNotEmpty) _link(),
+          if (organizer.website!.trim().isNotEmpty) _link(),
         ],
       ),
     );
@@ -55,7 +55,7 @@ class OrganisationNameAndDesc extends StatelessWidget {
         Gap(5),
         Expanded(
           child: AppText.medium(
-            organizer.website,
+            organizer.website ?? '',
             color: CupertinoColors.activeBlue,
             fontSize: 16.5,
             fontWeight: FontWeight.w300,
@@ -71,7 +71,7 @@ class OrganisationNameAndDesc extends StatelessWidget {
     return Stack(
       children: [
         AppText.small(
-          organizer.shortDescription,
+          organizer.shortDescription ?? '',
           fontSize: 14,
           color: Colors.black87,
           fontWeight: FontWeight.w400,
@@ -84,7 +84,7 @@ class OrganisationNameAndDesc extends StatelessWidget {
             onTap: () => Functions.showSimpleBottomSheet(
               ctxt: context,
               widget: prestatorDescriptionSheet(
-                html: organizer.description,
+                html: organizer.description ?? '',
                 ctxt: context,
               ),
             ),

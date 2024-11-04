@@ -36,7 +36,7 @@ class TopOrganizer extends ConsumerWidget {
               data: (organizers) {
                 return Row(
                   children: organizers.map((organizer) {
-                    if (organizer.avatar.trim().isEmpty) {
+                    if (organizer.avatar!.trim().isEmpty) {
                       return Container();
                     }
                     return Padding(

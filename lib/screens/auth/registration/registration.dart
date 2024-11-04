@@ -7,6 +7,7 @@ import 'package:ticketwave/widgets/horizontal_separator.dart';
 import '../../../config/app_text.dart';
 import '../../../config/functions.dart';
 import '../../../constants/constants.dart';
+import '../../../widgets/text_middle.dart';
 import '../widgets/email_text_field.dart';
 import '../widgets/redirect_to.dart';
 import '../widgets/terms_of_us.dart';
@@ -86,7 +87,7 @@ class RegistrationScreen extends StatelessWidget {
                   ),
           ),
         ),
-        Container(
+        /*  Container(
           margin: const EdgeInsets.symmetric(vertical: 10),
           child: Center(
             child: AppText.medium(
@@ -95,6 +96,10 @@ class RegistrationScreen extends StatelessWidget {
               fontWeight: FontWeight.w300,
             ),
           ),
+        ), */
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 120, vertical: 10),
+          child: textMidleLine(text: 'ou'),
         ),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 15),
@@ -106,9 +111,14 @@ class RegistrationScreen extends StatelessWidget {
               color: Color.fromARGB(46, 61, 68, 74),
             ),
             child: InkWell(
+              focusColor: Colors.transparent,
+              splashColor: Colors.transparent,
+              highlightColor: Colors.transparent,
+              hoverColor: Colors.transparent,
+              overlayColor: WidgetStatePropertyAll(Colors.transparent),
               onTap: () => toggleTextField(),
               child: Center(
-                child: isEmail
+                child: !isEmail
                     ? continuerWith(
                         icon: FluentIcons.mail_24_filled,
                         text: 'Continuer avec email',
@@ -142,7 +152,11 @@ class RegistrationScreen extends StatelessWidget {
             vertical: 10,
           ),
           child: InkWell(
+            focusColor: Colors.transparent,
             splashColor: Colors.transparent,
+            highlightColor: Colors.transparent,
+            hoverColor: Colors.transparent,
+            overlayColor: WidgetStatePropertyAll(Colors.transparent),
             onTap: () => Functions.launchUri(
               url: termsOFus,
             ),

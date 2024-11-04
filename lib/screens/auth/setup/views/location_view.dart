@@ -2,29 +2,30 @@ import 'dart:convert';
 
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+
+///import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
-import 'package:ticketwave/config/app_text.dart';
-import 'package:ticketwave/config/functions.dart';
-import 'package:ticketwave/config/palette.dart';
 import 'package:uuid/uuid.dart';
 import 'package:http/http.dart' as http;
 
+import '../../../../config/app_text.dart';
+import '../../../../config/functions.dart';
+import '../../../../config/palette.dart';
 import '../../../../constants/constants.dart';
+import '../../../../providers/providers.dart';
 
-class LocationView extends StatefulWidget {
+class LocationView extends ConsumerStatefulWidget {
   const LocationView({super.key});
 
   @override
-  State<LocationView> createState() => _LocationViewState();
+  ConsumerState<LocationView> createState() => _LocationViewState();
 }
 
-class _LocationViewState extends State<LocationView> {
+class _LocationViewState extends ConsumerState<LocationView> {
   final TextEditingController _placeController = TextEditingController();
-
   var uuid = const Uuid().v4();
-
   List<dynamic> listOfLocations = [];
 
   @override
@@ -40,15 +41,11 @@ class _LocationViewState extends State<LocationView> {
   }
 
   placeSuggestion(String place) async {
-    //const String apki = mapsApiKey;
     try {
       final String url =
           'https://maps.googleapis.com/maps/api/place/autocomplete/json?input=$place&key=$mapsApiKey&sessiontoken=$uuid';
       final response = await http.get(Uri.parse(url));
       var data = jsonDecode(response.body);
-      if (kDebugMode) {
-        print(data);
-      }
       if (response.statusCode == 200) {
         setState(() {
           listOfLocations = data['predictions'];
@@ -62,13 +59,23 @@ class _LocationViewState extends State<LocationView> {
   }
 
   @override
+  void dispose() {
+    _placeController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    // Utilisation de selectedPlaceProvider
+    // final selectedPlace = ref.watch(selectedPlaceProvider);
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          AppText.large('Où etes-vous ?'),
+          AppText.large('Où êtes-vous ?'),
+          Gap(3),
           AppText.medium(
             'Indiquez votre localisation pour trouver les événements et les prestataires de services évènementiels proches de vous.',
             fontWeight: FontWeight.w300,
@@ -82,15 +89,14 @@ class _LocationViewState extends State<LocationView> {
             decoration: BoxDecoration(
               color: Colors.grey.withOpacity(0.03),
               border: Border.all(
-                color: Palette.appRed,
-                width: 1.5,
+                color: Palette.separatorColor,
+                width: 0.8,
               ),
               borderRadius: BorderRadius.circular(5),
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
-              //mainAxisSize: MainAxisSize.min,
               children: [
                 Icon(
                   CupertinoIcons.search,
@@ -106,40 +112,47 @@ class _LocationViewState extends State<LocationView> {
                 Container(
                   padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
-                    color: Colors.grey.withOpacity(0.2),
+                    color: Palette.appRed.withOpacity(0.15),
                     shape: BoxShape.circle,
                   ),
                   child: InkWell(
                     onTap: () => setState(() {
                       _placeController.clear();
+                      listOfLocations.clear(); // Clear suggestions
                     }),
                     child: Icon(
-                      CupertinoIcons.xmark,
+                      Icons.my_location,
                       size: 14,
+                      color: Palette.appRed,
                     ),
                   ),
                 )
               ],
             ),
           ),
-          /*  TextField(
-            controller: _placeController,
-            decoration: const InputDecoration(hintText: 'Searche place'),
-            onChanged: (value) {
-              setState(() {});
-            },
-          ), */
           Gap(5),
           Visibility(
             visible: _placeController.text.isNotEmpty,
             child: Expanded(
               child: ListView.builder(
                 shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
+                physics: AlwaysScrollableScrollPhysics(),
                 itemCount: listOfLocations.length,
                 itemBuilder: (context, index) {
                   return GestureDetector(
-                    onTap: () {},
+                    onTap: () async {
+                      //EasyLoading.show();
+                      String _place = listOfLocations[index]['description'];
+
+                      // Mettre à jour le provider selectedPlaceProvider
+                      ref.read(selectedPlaceProvider.notifier).state = _place;
+
+                      setState(() {
+                        _placeController.text = _place;
+                        listOfLocations.clear(); // Clear suggestions
+                      });
+                      // EasyLoading.dismiss();
+                    },
                     child: Container(
                       padding: const EdgeInsets.symmetric(vertical: 5),
                       child: Row(
@@ -158,7 +171,7 @@ class _LocationViewState extends State<LocationView> {
                 },
               ),
             ),
-          )
+          ),
         ],
       ),
     );

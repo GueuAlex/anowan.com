@@ -21,7 +21,7 @@ class ShowShareLocationBottomSheet extends StatelessWidget {
     final size = MediaQuery.of(context).size;
     return Container(
       width: double.infinity,
-      height: size.height * 0.3,
+      height: size.height * 0.35,
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(5),
@@ -60,36 +60,43 @@ class ShowShareLocationBottomSheet extends StatelessWidget {
                 ),
               ],
             ),
-            Gap(35),
-            //écrir une phrase attrayante et accrocheur
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15),
+            Expanded(
+                child: SingleChildScrollView(
               child: Column(
                 children: [
-                  IconRow(
-                    icon: CupertinoIcons.share,
-                    title: 'Partager la localisation',
-                    subtitle: 'Faites savoir à vos amis où vous serez',
-                    onTap: () {
-                      // Action de partage de la localisation
-                    },
-                  ),
-                  Gap(10),
-                  IconRow(
-                    icon: Icons.location_on,
-                    title: 'Afficher sur la carte',
-                    subtitle: 'Découvrez le lieu en un coup d\'œil',
-                    onTap: () => Navigator.of(context).push(
-                      CupertinoPageRoute(
-                        builder: (context) => FullScreenMaps(
-                          localization: localization,
+                  Gap(35),
+                  //écrir une phrase attrayante et accrocheur
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 15),
+                    child: Column(
+                      children: [
+                        IconRow(
+                          icon: CupertinoIcons.share,
+                          title: 'Partager la localisation',
+                          subtitle: 'Faites savoir à vos amis où vous serez',
+                          onTap: () {
+                            // Action de partage de la localisation
+                          },
                         ),
-                      ),
+                        Gap(10),
+                        IconRow(
+                          icon: Icons.location_on,
+                          title: 'Afficher sur la carte',
+                          subtitle: 'Découvrez le lieu en un coup d\'œil',
+                          onTap: () => Navigator.of(context).push(
+                            CupertinoPageRoute(
+                              builder: (context) => FullScreenMaps(
+                                localization: localization,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                  ),
+                  )
                 ],
               ),
-            )
+            ))
           ],
         ),
       ),

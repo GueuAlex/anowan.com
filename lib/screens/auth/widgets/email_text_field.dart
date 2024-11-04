@@ -30,7 +30,7 @@ class EmailTextInput extends StatelessWidget {
               color: Color.fromARGB(5, 61, 68, 74),
               border: Border.all(
                 width: 0.3,
-                color: const Color.fromARGB(255, 61, 68, 74),
+                color: const Color.fromARGB(255, 201, 201, 201),
               ),
               borderRadius: BorderRadius.circular(5),
             ),
@@ -60,7 +60,7 @@ class EmailTextInput extends StatelessWidget {
                     border: Border(
                       right: BorderSide(
                         color: const Color.fromARGB(
-                            255, 61, 68, 74), // Change the color as needed
+                            255, 193, 193, 193), // Change the color as needed
                         width: 1.0, // Change the width as needed
                       ),
                     ),

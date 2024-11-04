@@ -3,6 +3,7 @@ import 'package:gap/gap.dart';
 import 'package:ticketwave/config/app_text.dart';
 
 import '../../../config/palette.dart';
+import '../../../constants/constants.dart';
 import '../../../model/prestator_model.dart';
 
 Container prestatorCard({
@@ -52,7 +53,8 @@ Container prestatorCard({
                         ),
                         child: FadeInImage.assetNetwork(
                           placeholder: 'assets/images/anowan-placeholder.png',
-                          image: prestator.images[0].url,
+                          image:
+                              prestator.images[0].url ?? networtImgPlaceholder,
                           fit: BoxFit.cover,
                           imageErrorBuilder: (context, error, stackTrace) {
                             return Image.asset(
@@ -88,7 +90,7 @@ Container prestatorCard({
                     child: ClipOval(
                       child: FadeInImage.assetNetwork(
                         placeholder: 'assets/images/anowan-placeholder.png',
-                        image: prestator.logo,
+                        image: prestator.logo ?? networtImgPlaceholder,
                         fit: BoxFit.cover,
                         imageErrorBuilder: (context, error, stackTrace) {
                           return Image.asset(
@@ -162,7 +164,7 @@ Container _prestatorDetails(Size size, PrestatorMdel prestator) {
         ),
         Gap(4),
         AppText.medium(
-          prestator.shortDescription,
+          prestator.shortDescription ?? '',
           maxLine: 2,
           fontWeight: FontWeight.w300,
         )

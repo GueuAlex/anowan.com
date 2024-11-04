@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../config/app_text.dart';
 import '../../../config/palette.dart';
 
-Row textMidleLine({String text = 'Continuer le paiement avec'}) {
+Row textMidleLine({String text = 'Payer avec'}) {
   return Row(
     mainAxisAlignment: MainAxisAlignment.center,
     crossAxisAlignment: CrossAxisAlignment.center,

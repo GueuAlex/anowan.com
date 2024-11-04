@@ -15,16 +15,29 @@ UserModel userModelFromJson(String str) => UserModel.fromJson(json.decode(str));
 
 String userModelToJson(UserModel data) => json.encode(data.toJson());
 
+//// crée une class LocalService qui utilise sqflite: ^2.3.3+2 pour gerer le stockage local.
+///voici un exemple de cette class.
+///
+
+// voici notre premier objet (table) à créer
+// écrire une methode de classe UserModel qui va interagire avec localservice pour créer un user.
 class UserModel {
   final int id;
   final String name;
-  final String firstname;
-  final String phone;
-  final String email;
-  final DateTime? emailVerifiedAt;
-  final String avatar;
+  final String? firstname;
+  final String? phone;
+  final String? email;
+  final String? avatar;
   final bool active;
-  final String phoneCode;
+  final String? phoneCode;
+  final String? gender;
+  final DateTime? birthDate;
+  final List<String> interests;
+  final List<String> bookmarkedOrganizersId;
+  final String? bio;
+  final String? favoriteLocation;
+  final List<String> about;
+  final List<String> bookmarkedEventsId;
 
   UserModel({
     required this.id,
@@ -32,10 +45,17 @@ class UserModel {
     required this.firstname,
     required this.phone,
     required this.email,
-    required this.emailVerifiedAt,
     required this.avatar,
     required this.active,
     required this.phoneCode,
+    required this.gender,
+    required this.birthDate,
+    this.bookmarkedEventsId = const [],
+    this.interests = const [],
+    this.bookmarkedOrganizersId = const [],
+    this.bio,
+    this.favoriteLocation,
+    this.about = const [],
   });
 
   factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
@@ -44,12 +64,13 @@ class UserModel {
         firstname: json["firstname"] ?? "",
         phone: json["phone"] ?? "",
         email: json["email"] ?? "",
-        emailVerifiedAt: json["email_verified_at"] != null
-            ? DateTime.parse(json["email_verified_at"])
-            : null,
         avatar: json["avatar"] ?? "",
         active: json["active"] == 0 ? false : true,
         phoneCode: json["phone_code"] ?? "",
+        gender: json["gender"],
+        birthDate: json["birth_date"] != null
+            ? DateTime.parse(json["birth_date"])
+            : null,
       );
 
   Map<String, dynamic> toJson() => {
@@ -58,7 +79,6 @@ class UserModel {
         "firstname": firstname,
         "phone": phone,
         "email": email,
-        "email_verified_at": emailVerifiedAt!.toIso8601String(),
         "avatar": avatar,
         "active": active,
         "phone_code": phoneCode,

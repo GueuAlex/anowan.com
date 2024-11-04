@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:ticketwave/model/organizer_model.dart';
-import 'package:ticketwave/screens/organizer_screen/organizer_screen.dart';
 
 import '../../../config/app_text.dart';
 import '../../../config/palette.dart';
+import '../../../constants/constants.dart';
+import '../../../model/organizer_model.dart';
+import '../organizer_screen.dart';
 
 Container organizerCard({
   required Size size,
@@ -45,7 +46,7 @@ Container organizerCard({
                     ),
                     image: DecorationImage(
                       image: NetworkImage(
-                        organizer.avatar,
+                        organizer.avatar ?? networtImgPlaceholder,
                       ),
                     ),
                   ),
@@ -53,7 +54,7 @@ Container organizerCard({
                 Gap(5),
                 // organizer name
                 AppText.medium(
-                  organizer.name,
+                  organizer.name ?? '',
                   maxLine: 1,
                   textAlign: TextAlign.center,
                   fontSize: (size.width * 0.045),

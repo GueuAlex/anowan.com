@@ -35,7 +35,7 @@ class AboutPrestator extends StatelessWidget {
                 onTap: () => Functions.showSimpleBottomSheet(
                   ctxt: context,
                   widget: prestatorDescriptionSheet(
-                    html: prestator.description,
+                    html: prestator.description ?? '',
                     ctxt: context,
                   ),
                 ),

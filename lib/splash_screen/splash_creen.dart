@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:ticketwave/config/palette.dart';
+import 'package:lottie/lottie.dart';
 
+import '../admin/screens/scan/scan_screen.dart';
+
+import '../config/palette.dart';
 import '../config/preferences.dart';
-import '../screens/auth/setup/setup_screen.dart';
-import '../screens/intro/intro_screen.dart';
-
-//import '../screens/home/home_screen.dart';
-//import '../screens/intro/intro_screen.dart';
 
 class SplashSceen extends StatefulWidget {
   static String routeName = 'splash_screen';
@@ -17,28 +15,61 @@ class SplashSceen extends StatefulWidget {
   State<SplashSceen> createState() => _SplashSceenState();
 }
 
-class _SplashSceenState extends State<SplashSceen> {
+class _SplashSceenState extends State<SplashSceen>
+    with TickerProviderStateMixin {
+  late final AnimationController _controller;
+  bool _showLoading = false;
+
   @override
   void initState() {
+    // dropTable();
     setinitPositiob();
-    Future.delayed(const Duration(seconds: 3)).then(
-      (value) => Navigator.pushReplacementNamed(
-        context,
-        /* BottomBar.routeName, */
-        /* RegistrationScreen.routeName, */
-        /* IntroScrenn.routeName, */
-        SetupScreen.routeName,
-        /*  ScanScreen.routeName, */
-        /* ScanScreen.routeName, */
-        /* (route) => false, */
-      ),
-    );
     super.initState();
+
+    // Initialiser le contrôleur d'animation
+    _controller = AnimationController(vsync: this);
+
+    // Écouter l'état de l'animation pour savoir quand elle est terminée
+    _controller.addStatusListener((status) async {
+      if (status == AnimationStatus.completed) {
+        // Action à effectuer à la fin de l'animation
+        /* Navigator.pushReplacementNamed(context, IntroScrenn.routeName); */
+        _toggleLoading();
+        // get logged state
+        // bool isLogged = await Functions.getLoggedState();
+        Future.delayed(const Duration(seconds: 3)).then(
+          (value) => Navigator.pushReplacementNamed(
+            context,
+            /* BottomBar.routeName, */
+            /* RegistrationScreen.routeName, */
+            /*  !isLogged ? IntroScrenn.routeName : BottomBar.routeName, */
+            /* SetupScreen.routeName, */
+            /*  WelcomeScreen.routeName, */
+            /* SetupScreen.routeName, */
+            /*  ScanScreen.routeName, */
+            ScanScreen.routeName,
+            /* (route) => false, */
+          ),
+        );
+      }
+    });
+  }
+
+  /*  void dropTable() async {
+    LocalService localService = LocalService();
+    int r = await localService.dropTable();
+    print(r);
+  } */
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
         child: Center(
@@ -46,26 +77,43 @@ class _SplashSceenState extends State<SplashSceen> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              SizedBox(),
+              const SizedBox(),
               SizedBox(
-                width: 100,
-                child: Image(
-                  image: AssetImage('assets/images/logo-text-short.jpg'),
+                width: 350,
+                child: Lottie.asset(
+                  'assets/images/simple-dot.json',
+                  controller: _controller,
+                  animate: true,
+                  onLoaded: (composition) {
+                    // Configure the AnimationController with the duration of the Lottie file and start the animation.
+                    _controller
+                      ..duration = composition.duration
+                      ..forward();
+                  },
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.only(bottom: 25),
-                child: CircularProgressIndicator.adaptive(
-                  valueColor: AlwaysStoppedAnimation<Color>(
-                    Palette.appRed,
-                  ),
-                ),
-              )
+              Container(
+                  width: 40,
+                  height: 40,
+                  margin: const EdgeInsets.only(bottom: 40),
+                  child: _showLoading
+                      ? CircularProgressIndicator.adaptive(
+                          valueColor: AlwaysStoppedAnimation<Color>(
+                            Palette.appRed,
+                          ),
+                        )
+                      : Container())
             ],
           ),
         ),
       ),
     );
+  }
+
+  _toggleLoading() {
+    setState(() {
+      _showLoading = !_showLoading;
+    });
   }
 }
 

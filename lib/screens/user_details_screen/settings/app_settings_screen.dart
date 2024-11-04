@@ -1,8 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:gap/gap.dart';
+import 'package:ticketwave/config/functions.dart';
 import 'package:ticketwave/config/palette.dart';
+import 'package:ticketwave/screens/intro/intro_screen.dart';
 
 import '../../../config/app_text.dart';
 
@@ -103,7 +105,16 @@ class AppSettingsScreen extends StatelessWidget {
             ),
             Gap(33),
             _lougoutRoute(
-              onTap: () {},
+              onTap: () async {
+                EasyLoading.show();
+                await Functions.setLoggedState(isLogged: false);
+                await Future.delayed(const Duration(seconds: 5));
+                EasyLoading.dismiss();
+                Navigator.of(context).pushNamedAndRemoveUntil(
+                  IntroScrenn.routeName,
+                  (route) => false,
+                );
+              },
               title: 'Déconnexion',
               color: Color.fromARGB(255, 9, 126, 136),
             ),
@@ -189,7 +200,7 @@ class AppSettingsScreen extends StatelessWidget {
             ),
           )),
       child: InkWell(
-        onTap: () {},
+        onTap: onTap,
         child: AppText.medium(
           title,
           fontSize: 16.5,

@@ -3,6 +3,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:ticketwave/screens/welcome/welcome_screen.dart';
 
 import 'admin/screens/scan/scan_screen.dart';
 import 'config/palette.dart';
@@ -32,7 +33,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: ".env");
   runApp(
-    ProviderScope(
+    const ProviderScope(
       child: MyApp(),
     ),
   );
@@ -93,6 +94,7 @@ class MyApp extends StatelessWidget {
         TicketsSwapScreen.routeName: (ctxt) => const TicketsSwapScreen(),
         ProfilSettings.routeName: (ctxt) => const ProfilSettings(),
         SuggestionScreen.routeName: (ctxt) => const SuggestionScreen(),
+        WelcomeScreen.routeName: (ctxt) => const WelcomeScreen(),
       },
     );
   }

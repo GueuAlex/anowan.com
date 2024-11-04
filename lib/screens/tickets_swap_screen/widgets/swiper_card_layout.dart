@@ -21,7 +21,7 @@ class CardLayout extends StatelessWidget {
       decoration: BoxDecoration(
         image: DecorationImage(
           image: NetworkImage(
-            tickest[0].event.image,
+            tickest[0].event.image ?? networtImgPlaceholder,
           ),
           fit: BoxFit.cover,
         ),

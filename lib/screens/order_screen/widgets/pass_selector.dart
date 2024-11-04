@@ -24,9 +24,8 @@ class PassSelector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
     return Container(
-      margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 0),
+      margin: const EdgeInsets.only(bottom: 1.5),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(5),
@@ -74,36 +73,38 @@ class PassSelector extends StatelessWidget {
                             Text(
                               pass.name,
                               style: TextStyle(
-                                fontSize: 18,
+                                fontSize: 12,
                                 fontWeight: FontWeight.bold,
                                 color: Palette.primaryColor,
                               ),
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                             ),
-                            const Gap(4),
+                            //const Gap(4),
                             Text(
-                              '${pass.price} FCFA',
+                              '${Functions.numberFormat(pass.price.toString())} ₣',
                               style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500,
+                                fontSize: 23,
+                                fontWeight: FontWeight.w600,
                                 color: Palette.secondaryColor,
                               ),
                             ),
                           ],
                         ),
                       ),
-                      IconButton(
-                        icon: Icon(
-                          CupertinoIcons.question_circle,
-                          color: Palette.secondaryColor,
+                      if (pass.description!.trim().isNotEmpty)
+                        IconButton(
+                          icon: Icon(
+                            CupertinoIcons.question_circle,
+                            color: Palette.secondaryColor,
+                          ),
+                          onPressed: () => Functions.showSimpleBottomSheet(
+                            ctxt: context,
+                            widget: PassDecriptionSheet(
+                              description: pass.description ?? '',
+                            ),
+                          ),
                         ),
-                        onPressed: () => Functions.showBottomSheet(
-                          ctxt: context,
-                          widget: PassDecriptionSheet(),
-                          size: size,
-                        ),
-                      ),
                     ],
                   ),
                   customDiveder(),

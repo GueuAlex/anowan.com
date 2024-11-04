@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:intl/intl.dart';
 import 'package:ticketwave/config/functions.dart';
@@ -11,79 +11,128 @@ import 'package:ticketwave/screens/single_event_screen/widgets/icon_row.dart';
 import '../../config/app_text.dart';
 import '../../model/event_model.dart';
 import '../../model/pass_model.dart';
+import '../../providers/providers.dart';
 import '../../widgets/app_bar_leading.dart';
 import 'widgets/checkout_draggable_sheet.dart';
 import 'widgets/pass_selector.dart';
+import 'widgets/sheet_header.dart';
 
-class OrderScreen extends StatefulWidget {
+class OrderScreen extends ConsumerStatefulWidget {
   static String routeName = 'order_screen';
   const OrderScreen({super.key});
 
   @override
-  State<OrderScreen> createState() => _OrderScreenState();
+  ConsumerState<OrderScreen> createState() => _OrderScreenState();
 }
 
-class _OrderScreenState extends State<OrderScreen> {
-  // Liste pour suivre le nombre de passes sélectionnés
+class _OrderScreenState extends ConsumerState<OrderScreen> {
   int _selectedIndex = 0;
-  late LocalizationModel _selectedLocalization;
   Map<int, int> selectedPass = {};
+  LocalizationModel? _selectedLocalization;
+
+  // int _totalPrice = 0;
 
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _initializePasses();
+      _updateSelectedLocalization();
+    });
+  }
 
-    PassModel.passList.sort((a, b) => a.price.compareTo(b.price));
-    // Initialiser selectedPass avec des valeurs par défaut (0)
-    for (var pass in PassModel.passList) {
-      selectedPass[pass.id] = 0;
+  // Initialize selected passes
+  void _initializePasses() {
+    final _event = ModalRoute.of(context)!.settings.arguments as EventModel;
+    final selectedPassMap = ref.read(selectedPassProvider.notifier);
+
+    Map<int, int> initialPassSelection = {};
+    for (var pass in _event.passes ?? []) {
+      initialPassSelection[pass.id] = 0;
+    }
+    selectedPassMap.state = initialPassSelection;
+  }
+
+  // Add pass and update total price
+  void _addPass(int passId, List<PassModel> passes) {
+    final selectedPassMap = ref.read(selectedPassProvider.notifier);
+    final totalPriceNotifier = ref.read(totalPriceProvider.notifier);
+
+    selectedPassMap.state = {
+      ...selectedPassMap.state,
+      passId: selectedPassMap.state[passId]! + 1,
+    };
+
+    _calculateTotalPrice(
+        passes: passes, totalPriceNotifier: totalPriceNotifier);
+  }
+
+  // Remove pass and update total price
+  void _removePass(int passId, List<PassModel> passes) {
+    final selectedPassMap = ref.read(selectedPassProvider.notifier);
+    final totalPriceNotifier = ref.read(totalPriceProvider.notifier);
+
+    if (selectedPassMap.state[passId]! > 0) {
+      selectedPassMap.state = {
+        ...selectedPassMap.state,
+        passId: selectedPassMap.state[passId]! - 1,
+      };
+
+      _calculateTotalPrice(
+          passes: passes, totalPriceNotifier: totalPriceNotifier);
     }
   }
 
-  void _addPass(int passId) {
-    setState(() {
-      selectedPass[passId] = selectedPass[passId]! + 1;
-    });
-  }
-
-  void _removePass(int passId) {
-    setState(() {
-      if (selectedPass[passId]! > 0) {
-        selectedPass[passId] = selectedPass[passId]! - 1;
-      }
-    });
-  }
-
-  int _totalPrice = 0;
-
-  void calculateTotalPrice() {
+  // Calculate total price of selected passes
+  void _calculateTotalPrice({
+    required List<PassModel> passes,
+    required StateController<int> totalPriceNotifier,
+  }) {
     int totalPrice = 0;
-    PassModel.passList.forEach((pass) {
-      int count = selectedPass[pass.id] ?? 0;
+    final selectedPassMap = ref.read(selectedPassProvider);
+
+    for (var pass in passes) {
+      int count = selectedPassMap[pass.id] ?? 0;
       totalPrice += pass.price * count;
-    });
+    }
+    totalPriceNotifier.state = totalPrice;
+  }
+
+  // Update the selected localization based on the index
+  void _updateSelectedLocalization() {
+    final _event = ModalRoute.of(context)!.settings.arguments as EventModel;
     setState(() {
-      _totalPrice = totalPrice;
+      _selectedLocalization = _event.localizations[_selectedIndex];
     });
-    //return totalPrice;
   }
 
   @override
   Widget build(BuildContext context) {
-    final event = ModalRoute.of(context)!.settings.arguments as EventModel;
-    final List<LocalizationModel> localizations = event.localizations;
-    final size = MediaQuery.of(context).size;
-    //double hauteur = Scaffold.of(context).appBarMaxHeight!;
+    final _event = ModalRoute.of(context)!.settings.arguments as EventModel;
+    final List<LocalizationModel> localizations = [
+      ..._event.localizations,
+      ..._event.localizations
+    ];
 
-    setState(() {
-      _selectedLocalization = localizations[_selectedIndex];
-    });
+    final List<PassModel> passes = _event.passes ?? [];
+
+    final size = MediaQuery.of(context).size;
+
+    // Watch providers for selected pass and total price
+    final selectedPassMap = ref.watch(selectedPassProvider);
+    final totalPrice = ref.watch(totalPriceProvider);
 
     bool isMultipleLocalization = localizations.length > 1;
+
+    if (_selectedLocalization == null && localizations.isNotEmpty) {
+      return CircularProgressIndicator(); // Ou un autre widget d'attente
+    }
+
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         elevation: 0,
-        title: AppText.medium(event.name),
+        title: AppText.medium(_event.name),
         centerTitle: true,
         backgroundColor: Colors.white,
         leading: AppBarLeading(),
@@ -101,26 +150,21 @@ class _OrderScreenState extends State<OrderScreen> {
                 ),
                 child: SingleChildScrollView(
                   scrollDirection: Axis.vertical,
-                  //physics: const BouncingScrollPhysics(),
                   child: Container(
                     color: Colors.white,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.start,
                       children: List.generate(
-                        PassModel.passList.length,
+                        passes.length,
                         (index) {
                           return PassSelector(
-                            pass: PassModel.passList[index],
-                            selectedCount:
-                                selectedPass[PassModel.passList[index].id]!,
+                            pass: passes[index],
+                            selectedCount: selectedPassMap[passes[index].id]!,
                             onAdd: () {
-                              _addPass(PassModel.passList[index].id);
-                              calculateTotalPrice();
+                              _addPass(passes[index].id, passes);
                             },
                             onMinus: () {
-                              _removePass(PassModel.passList[index].id);
-                              calculateTotalPrice();
+                              _removePass(passes[index].id, passes);
                             },
                           );
                         },
@@ -132,14 +176,15 @@ class _OrderScreenState extends State<OrderScreen> {
             },
           ),
 
+          // Draggable checkout sheet for selected passes and total price
           CheckoutDraggableSheet(
-            totalPrice: _totalPrice,
-            selectedPass: selectedPass,
+            totalPrice: totalPrice,
+            selectedPass: selectedPassMap,
           ),
-          // top bar
+
+          // Top bar for localization selector
           Container(
             width: double.infinity,
-            //height: 40,
             padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
             decoration: BoxDecoration(
               color: Colors.white,
@@ -151,14 +196,15 @@ class _OrderScreenState extends State<OrderScreen> {
               ),
             ),
             child: SafeArea(
-                bottom: false,
-                right: false,
-                left: false,
-                child: _getTitleView(
-                  isMultipleLocalizationt: isMultipleLocalization,
-                  size: size,
-                  localizations: localizations,
-                )),
+              bottom: false,
+              right: false,
+              left: false,
+              child: _getTitleView(
+                isMultipleLocalizationt: isMultipleLocalization,
+                size: size,
+                localizations: localizations,
+              ),
+            ),
           ),
         ],
       ),
@@ -170,14 +216,18 @@ class _OrderScreenState extends State<OrderScreen> {
     required Size size,
     required List<LocalizationModel> localizations,
   }) {
+    String to =
+        Functions.stringToTimeOfDay(_selectedLocalization!.starttimeEvent);
+    String from =
+        Functions.stringToTimeOfDay(_selectedLocalization!.endtimeEvent);
     if (isMultipleLocalizationt) {
       return Row(
         children: [
           Expanded(
             child: AppText.medium(
-              '${DateFormat('EEE dd MMM. yyyy \u2022', 'fr_FR').format(
-                _selectedLocalization.dateEvent,
-              )}  ${_selectedLocalization.starttimeEvent} à ${_selectedLocalization.endtimeEvent} GMT',
+              '${DateFormat('EEE dd MMM yyyy \u2022', 'fr_FR').format(
+                _selectedLocalization!.dateEvent,
+              )}  ${to} à ${from} GMT',
               fontSize: 16,
               fontWeight: FontWeight.w300,
               textAlign: TextAlign.center,
@@ -185,26 +235,24 @@ class _OrderScreenState extends State<OrderScreen> {
           ),
           Gap(5),
           Container(
-            width: 40,
-            height: 40,
+            width: 35,
+            height: 35,
+            alignment: Alignment.center,
             padding: const EdgeInsets.symmetric(
               horizontal: 1,
               vertical: 1,
             ),
             decoration: BoxDecoration(
-              color: Palette.primaryColor.withOpacity(1),
-              borderRadius: BorderRadius.circular(5),
+              color: const Color.fromARGB(162, 225, 225, 225),
+              borderRadius: BorderRadius.circular(7.0),
             ),
-            child: IconButton(
-              icon: SvgPicture.asset(
-                'assets/icons/calendrier-horloge.svg',
-                //color: Palette.primaryColor,
-                colorFilter: ColorFilter.mode(
-                  Colors.white,
-                  BlendMode.srcIn,
+            child: InkWell(
+              child: Center(
+                child: Icon(
+                  CupertinoIcons.calendar,
                 ),
               ),
-              onPressed: () => Functions.showSimpleBottomSheet(
+              onTap: () => Functions.showSimpleBottomSheet(
                 ctxt: context,
                 widget: Container(
                   height: size.height * 0.34,
@@ -226,8 +274,8 @@ class _OrderScreenState extends State<OrderScreen> {
 
     return AppText.medium(
       '${DateFormat('EEE. dd MMM. yyyy \u2022', 'fr_FR').format(
-        _selectedLocalization.dateEvent,
-      )}  ${_selectedLocalization.starttimeEvent} - ${_selectedLocalization.endtimeEvent} GMT',
+        _selectedLocalization!.dateEvent,
+      )}  ${_selectedLocalization!.starttimeEvent} - ${_selectedLocalization!.endtimeEvent} GMT',
       fontSize: 16,
       fontWeight: FontWeight.w300,
       textAlign: TextAlign.center,
@@ -238,7 +286,7 @@ class _OrderScreenState extends State<OrderScreen> {
           {required List<LocalizationModel> localizations}) =>
       Column(
         children: [
-          _header(context),
+          sheetheader(context: context),
           Expanded(
             child: SingleChildScrollView(
               child: Padding(
@@ -254,7 +302,7 @@ class _OrderScreenState extends State<OrderScreen> {
                           '${DateFormat('EEE dd MMM. yyyy \u2022 ', 'fr_FR').format(
                         localizations[index].dateEvent,
                       )}  ${localizations[index].starttimeEvent} à ${localizations[index].endtimeEvent} GMT';
-                      String subtitle = localizations[index].place;
+                      String subtitle = localizations[index].place ?? '';
                       return IconRow(
                         icon: CupertinoIcons.calendar,
                         title: title,
@@ -278,52 +326,4 @@ class _OrderScreenState extends State<OrderScreen> {
           ),
         ],
       );
-
-  Container _header(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
-      decoration: BoxDecoration(
-        color: Colors.grey.withOpacity(0.15),
-        border: Border(
-          bottom: BorderSide(
-            width: 0.8,
-            color: Palette.separatorColor,
-          ),
-        ),
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(5),
-          topRight: Radius.circular(5),
-        ),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Container(),
-          AppText.medium(
-            'Date et lieu',
-            fontSize: 18,
-            fontWeight: FontWeight.w500,
-          ),
-          InkWell(
-            onTap: () => Navigator.pop(context),
-            child: Container(
-              width: 30,
-              height: 30,
-              decoration: BoxDecoration(
-                color: Colors.grey.withOpacity(0.3),
-                shape: BoxShape.circle,
-              ),
-              child: Center(
-                child: Icon(
-                  CupertinoIcons.xmark,
-                  color: Color.fromARGB(255, 20, 20, 20),
-                  size: 16,
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
 }

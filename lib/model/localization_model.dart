@@ -17,9 +17,10 @@ class LocalizationModel {
   final int id;
   final int eventId;
   final DateTime dateEvent;
+  final DateTime? dateEventEnd;
   final String starttimeEvent;
   final String endtimeEvent;
-  final String place;
+  final String? place;
   final String? longitude;
   final String? latitude;
 
@@ -32,6 +33,7 @@ class LocalizationModel {
     required this.place,
     required this.longitude,
     required this.latitude,
+    required this.dateEventEnd,
   });
 
   factory LocalizationModel.fromJson(Map<String, dynamic> json) =>
@@ -44,6 +46,9 @@ class LocalizationModel {
         place: json["place"] ?? '',
         longitude: json["longitude"],
         latitude: json["latitude"],
+        dateEventEnd: json["date_event_end"] != null
+            ? DateTime.parse(json["date_event_end"])
+            : null,
       );
 
   Map<String, dynamic> toJson() => {
@@ -68,24 +73,29 @@ class LocalizationModel {
       longitude: "1.23",
       latitude: "2.34",
       eventId: 0,
+      dateEventEnd: null,
     ),
     LocalizationModel(
-        id: 2,
-        eventId: 0,
-        dateEvent: DateTime.now(),
-        starttimeEvent: "10:00",
-        endtimeEvent: "12:00",
-        place: "Place de la maison",
-        longitude: "1.23",
-        latitude: "2.34"),
+      id: 2,
+      eventId: 0,
+      dateEvent: DateTime.now(),
+      starttimeEvent: "10:00",
+      endtimeEvent: "12:00",
+      place: "Place de la maison",
+      longitude: "1.23",
+      latitude: "2.34",
+      dateEventEnd: null,
+    ),
     LocalizationModel(
-        id: 3,
-        eventId: 0,
-        dateEvent: DateTime.now(),
-        starttimeEvent: "10:00",
-        endtimeEvent: "12:00",
-        place: "Place de la maison",
-        longitude: "1.23",
-        latitude: "2.34"),
+      id: 3,
+      eventId: 0,
+      dateEvent: DateTime.now(),
+      starttimeEvent: "10:00",
+      endtimeEvent: "12:00",
+      place: "Place de la maison",
+      longitude: "1.23",
+      latitude: "2.34",
+      dateEventEnd: null,
+    ),
   ];
 }

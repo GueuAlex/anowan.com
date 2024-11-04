@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:gap/gap.dart';
 import 'package:ticketwave/config/palette.dart';
-
-import '../auth/auth_screen.dart';
+import 'package:ticketwave/config/preferences.dart';
+import 'package:ticketwave/screens/auth/auth_screen.dart';
+import 'package:ticketwave/widgets/bottom_bar.dart';
+import 'package:ticketwave/widgets/vertical_separator.dart';
 
 class IntroScrenn extends StatelessWidget {
   static String routeName = "introScreen";
@@ -69,46 +72,82 @@ class IntroScrenn extends StatelessWidget {
               ),
             ),
             const Spacer(flex: 3),
-            FittedBox(
-              child: TextButton(
-                  onPressed: () => Navigator.pushReplacementNamed(
-                        context,
-                        /* BottomBar.routeName, */
-                        /*  LoginRegistrationScreen.routeName, */
-                        /* RegistrationScreen.routeName, */
-                        AuthScreen.routeName,
-                        /*  IntroScrenn.routeName, */
-                        /* IntroScrenn.routeName, */
-                        /* (route) => false, */
+            SafeArea(
+              top: false,
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Expanded(
+                    child: Container(
+                      //color: Colors.amber,
+                      padding: const EdgeInsets.symmetric(vertical: 8),
+                      alignment: Alignment.centerRight,
+                      child: InkWell(
+                        splashColor: Colors.transparent,
+                        highlightColor: Colors.transparent,
+                        hoverColor: Colors.transparent,
+                        focusColor: Colors.transparent,
+                        overlayColor:
+                            WidgetStatePropertyAll(Colors.transparent),
+                        onTap: () => _redirect(
+                          ctxt: context,
+                          route: BottomBar.routeName,
+                        ),
+                        child: Text(
+                          'Obtenir un aperçu',
+                          style: TextStyle(
+                            color: const Color.fromARGB(221, 35, 35, 35),
+                            fontWeight: FontWeight.w400,
+                            fontSize: 13,
+                          ),
+                        ),
                       ),
-                  child: Row(
-                    children: [
-                      Text(
-                        "Skip",
-                        style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                              color: Theme.of(context)
-                                  .textTheme
-                                  .bodyLarge!
-                                  .color!
-                                  .withOpacity(0.8),
-                            ),
+                    ),
+                  ),
+                  verticalSeparator(height: 18, width: 2, color: Colors.red),
+                  Expanded(
+                    child: Container(
+                      // color: Colors.amber,
+                      padding: const EdgeInsets.symmetric(vertical: 8),
+                      child: InkWell(
+                        splashColor: Colors.transparent,
+                        highlightColor: Colors.transparent,
+                        hoverColor: Colors.transparent,
+                        focusColor: Colors.transparent,
+                        overlayColor:
+                            WidgetStatePropertyAll(Colors.transparent),
+                        onTap: () => _redirect(
+                          ctxt: context,
+                          route: AuthScreen.routeName,
+                        ),
+                        child: Text(
+                          'S\'authentifier',
+                          style: TextStyle(
+                            color: const Color.fromARGB(221, 35, 35, 35),
+                            fontWeight: FontWeight.w400,
+                            fontSize: 13,
+                          ),
+                        ),
                       ),
-                      const SizedBox(width: 4),
-                      Icon(
-                        Icons.arrow_forward_ios,
-                        size: 16,
-                        color: Theme.of(context)
-                            .textTheme
-                            .bodyLarge!
-                            .color!
-                            .withOpacity(0.8),
-                      )
-                    ],
-                  )),
-            )
+                    ),
+                  )
+                ],
+              ),
+            ),
+            Gap(45),
           ],
         ),
       ),
     );
+  }
+
+  void _redirect({required String route, required BuildContext ctxt}) {
+    EasyLoading.show();
+    Preferences prefs = Preferences();
+    prefs.setBool('showIntro', false).whenComplete(() {
+      EasyLoading.dismiss();
+
+      Navigator.pushReplacementNamed(ctxt, route);
+    });
   }
 }

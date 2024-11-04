@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:ticketwave/config/palette.dart';
 
+import '../../constants/constants.dart';
 import '../../model/event_model.dart';
 import '../../model/localization_model.dart';
 import '../../widgets/add_forite.dart';
@@ -15,7 +16,6 @@ import 'widgets/event_about.dart';
 import 'widgets/google_map_container.dart';
 import 'widgets/more_event_container.dart';
 import 'widgets/organisateur_page_route.dart';
-import 'widgets/sellStatus.dart';
 import 'widgets/tag_container.dart';
 import 'widgets/title_widgets.dart';
 
@@ -133,7 +133,7 @@ class _SingleEventScreenState extends State<SingleEventScreen> {
                   ),
                   background: FadeInImage.assetNetwork(
                     placeholder: 'assets/images/anowan-placeholder.png',
-                    image: event.image,
+                    image: event.image ?? networtImgPlaceholder,
                     fit: BoxFit.cover,
                     imageErrorBuilder: (context, error, stackTrace) {
                       return Image.asset(
@@ -156,18 +156,18 @@ class _SingleEventScreenState extends State<SingleEventScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        SellStatus(),
+                        //SellStatus(),
                         OrganisateurPageRoute(
                           organizer: event.organizer,
                         ),
                         DateSelector(
                           localizations: localizations,
                           title: event.name,
-                          description: event.shortDescription,
+                          description: event.shortDescription ?? '',
                         ),
                         EventAbout(
-                          html: event.description,
-                          shortHtml: event.shortDescription,
+                          html: event.description ?? '',
+                          shortHtml: event.shortDescription ?? '',
                         ),
                         customDiveder(),
                         GoogleMapContainer(
@@ -175,7 +175,10 @@ class _SingleEventScreenState extends State<SingleEventScreen> {
                         ),
                         /* customDiveder(), */
                         TageContainer(),
-                        MoreEventContainer(categoryId: event.categoryId)
+                        MoreEventContainer(
+                          categoryId: event.categoryId,
+                          currentEventId: event.id,
+                        )
                       ],
                     ),
                   )

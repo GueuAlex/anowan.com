@@ -1,18 +1,17 @@
 import 'package:flutter/material.dart';
-
-import 'palette.dart';
+import 'package:ticketwave/config/palette.dart';
 
 class QRScannerOverlay extends StatelessWidget {
-  const QRScannerOverlay({Key? key, required this.overlayColour})
-      : super(key: key);
+  const QRScannerOverlay({super.key, required this.overlayColour});
 
   final Color overlayColour;
 
   @override
   Widget build(BuildContext context) {
+    // // Changing the size of scanner cutout dependent on the device size.
     double scanArea = (MediaQuery.of(context).size.width < 400 ||
             MediaQuery.of(context).size.height < 400)
-        ? 250.0
+        ? 200.0
         : 250.0;
     return Stack(children: [
       ColorFiltered(
@@ -58,9 +57,9 @@ class QRScannerOverlay extends StatelessWidget {
 class BorderPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
-    const width = 4.0;
+    const width = 8.0;
     const radius = 20.0;
-    const tRadius = 3 * radius;
+    const tRadius = 1.5 * radius;
     final rect = Rect.fromLTWH(
       width,
       width,

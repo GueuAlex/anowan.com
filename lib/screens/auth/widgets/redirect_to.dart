@@ -19,7 +19,11 @@ class RedirectTo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
+      focusColor: Colors.transparent,
       splashColor: Colors.transparent,
+      highlightColor: Colors.transparent,
+      hoverColor: Colors.transparent,
+      overlayColor: WidgetStatePropertyAll(Colors.transparent),
       onTap: onPressed,
       child: RichText(
         textAlign: TextAlign.center,

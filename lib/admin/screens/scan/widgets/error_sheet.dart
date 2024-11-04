@@ -4,13 +4,13 @@ import 'package:vibration/vibration.dart';
 import '../../../../config/functions.dart';
 import '../../../../config/palette.dart';
 
-void error({required Size size, required BuildContext context}) {
+Future<void> error({required BuildContext context}) async {
   ///////////////////////
   ///sinon on fait vibrer le device
   ///et on afficher un message d'erreur
-  ///
+  final _size = MediaQuery.of(context).size;
   Vibration.vibrate(duration: 200);
-  Functions.showSimpleBottomSheet(
+  return await Functions.showSimpleBottomSheet(
     ctxt: context,
     widget: Container(
       height: MediaQuery.of(context).size.height / 2,
@@ -22,7 +22,7 @@ void error({required Size size, required BuildContext context}) {
         ),
       ),
       child: Functions.widget404(
-        size: size,
+        size: _size,
         ctxt: context,
       ),
     ),

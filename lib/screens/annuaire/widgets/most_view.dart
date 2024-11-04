@@ -5,6 +5,7 @@ import 'package:gap/gap.dart';
 
 import '../../../config/app_text.dart';
 import '../../../config/palette.dart';
+import '../../../constants/constants.dart';
 import '../../../model/prestator_model.dart';
 import '../../prestator_screen/prestator_screen.dart';
 
@@ -122,7 +123,9 @@ class MostView extends StatelessWidget {
                     color: Palette.separatorColor,
                     borderRadius: BorderRadius.circular(10),
                     image: DecorationImage(
-                      image: NetworkImage(prestator.images[0].url),
+                      image: NetworkImage(
+                        prestator.images[0].url ?? networtImgPlaceholder,
+                      ),
                       fit: BoxFit.cover,
                     ),
                   ),

@@ -1,54 +1,74 @@
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
-import 'package:ticketwave/model/event_model.dart';
+import 'package:ticketwave/config/functions.dart';
 
 import '../../../config/app_text.dart';
+import '../../../providers/providers.dart';
 import '../../../widgets/event_card_row.dart';
 
-class MoreEventContainer extends StatelessWidget {
+class MoreEventContainer extends ConsumerWidget {
   const MoreEventContainer({
     super.key,
     required this.categoryId,
+    required this.currentEventId,
   });
   final int categoryId;
+  final int currentEventId;
 
   @override
-  Widget build(BuildContext context) {
-    // Filtrer les événements par categoryId
-    //final List<EventModel> eventModels = EventModel.eventList.where((event) => event.categoryId == categoryId).toList();
-    final List<EventModel> eventModels = EventModel.eventList;
+  Widget build(BuildContext context, WidgetRef ref) {
+    final events = ref.watch(eventsProvider);
 
-    // Vérifier s'il y a des événements dans la catégorie donnée
-    if (eventModels.isEmpty) {
-      return Container(
-        padding: const EdgeInsets.symmetric(vertical: 15),
-        child: AppText.medium(
-          "Aucun événement similaire trouvé",
-          fontSize: 18,
-          fontWeight: FontWeight.w500,
-        ),
-      );
-    }
+    return events.when(
+      data: (e) {
+        final allEvents = Functions.filterAndSortUpcomingEvents(events: e);
 
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 15),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          AppText.medium(
-            "Événements similaires",
-            fontSize: 18,
-            fontWeight: FontWeight.w500,
+        // Filter events based on categoryId and currentEventId
+        final filteredEvents = allEvents
+            .where((event) =>
+                /* event.categoryId == categoryId && */ event.id !=
+                currentEventId)
+            .toList();
+
+        final String title = filteredEvents.isEmpty
+            ? "Événements populaire"
+            : "Événements similaires";
+
+        return Container(
+          padding: const EdgeInsets.symmetric(vertical: 15),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              AppText.medium(
+                title,
+                fontSize: 18,
+                fontWeight: FontWeight.w500,
+              ),
+              Gap(15),
+              Column(
+                children: filteredEvents.isEmpty
+                    ? List.generate(
+                        math.min(3, allEvents.length),
+                        (index) => EventCardRow(event: allEvents[index]),
+                      )
+                    : List.generate(
+                        math.min(3, filteredEvents.length),
+                        (index) => EventCardRow(event: filteredEvents[index]),
+                      ),
+              )
+            ],
           ),
-          Gap(15),
-          Column(
-            children: List.generate(
-              eventModels.sublist(0, 3).length,
-              (index) => EventCardRow(event: eventModels[index]),
-            ),
-          )
-        ],
-      ),
+        );
+      },
+      error: (error, stackTrace) {
+        return Container();
+      },
+      loading: () {
+        return CircularProgressIndicator.adaptive();
+      },
     );
   }
 }

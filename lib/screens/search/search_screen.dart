@@ -78,7 +78,9 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                   data: (events) {
                     ;
                     return SearchScreenBody(
-                      events: Functions.filterAndSortUpcomingEvents(events),
+                      events: Functions.filterAndSortUpcomingEvents(
+                        events: events,
+                      ),
                     );
                   },
                   error: (e, _) => Center(

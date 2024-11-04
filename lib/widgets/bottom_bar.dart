@@ -1,5 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
+//import 'package:ticketwave/config/functions.dart';
 
 import '../config/palette.dart';
 import '../screens/annuaire/annuaire_screen.dart';
@@ -8,6 +10,7 @@ import '../screens/profil/profil_screen.dart';
 import '../screens/profil/widgets/profil_logo.dart';
 import '../screens/search/search_screen.dart';
 import '../screens/tickets/ticket_screen.dart';
+import '../screens/welcome/welcome_screen.dart';
 import '../side_bar/open_side_dar.dart';
 
 class BottomBar extends StatefulWidget {
@@ -36,6 +39,31 @@ class _BottomBarState extends State<BottomBar> {
   void _changeBottomIndex({required int selectedIndex}) {
     setState(() {
       bottomMenuInitIndex = selectedIndex;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _initialActionss();
+  }
+
+  _initialActionss() {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      // Le code ici sera exécuté après le premier rendu de l'UI
+      /*  LocalService l = LocalService();
+      l.getUser(); */
+      await Future.delayed(const Duration(seconds: 5));
+      //Functions.showSimpleBottomSheet(ctxt: context, widget: WelcomeScreen());
+
+      Navigator.push(
+        context,
+        CupertinoPageRoute(
+          fullscreenDialog: true,
+          title: 'Fermé',
+          builder: (context) => const WelcomeScreen(),
+        ),
+      );
     });
   }
 

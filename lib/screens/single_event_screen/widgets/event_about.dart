@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 import 'package:gap/gap.dart';
 import 'package:ticketwave/config/palette.dart';
-import 'package:ticketwave/widgets/custom_button.dart';
 
 import '../../../config/app_text.dart';
 import '../../../config/functions.dart';
@@ -97,7 +96,7 @@ class FullDescriptionBottomSheet extends StatelessWidget {
             ),
           ),
           //écrir une phrase attrayante et accrocheur
-          Container(
+          /*   Container(
             width: double.infinity,
             color: Colors.grey.withOpacity(0.15),
             padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
@@ -111,7 +110,7 @@ class FullDescriptionBottomSheet extends StatelessWidget {
                 onPress: () => Navigator.pop(context),
               ),
             ),
-          ),
+          ), */
         ],
       ),
     );

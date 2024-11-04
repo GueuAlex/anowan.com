@@ -67,10 +67,11 @@ class _GoogleMapContainerState extends State<GoogleMapContainer> {
         print(
             'Recherche des coordonnées pour ----> ${widget.localization.place}');
 
-        final geocodingResponse = await geocoding
-            .searchByAddress(widget.localization.place, components: [
-          Component('country', 'CI')
-        ]); // CI pour Côte d'Ivoire);
+        final geocodingResponse = await geocoding.searchByAddress(
+            widget.localization.place ?? 'Abidjan',
+            components: [
+              Component('country', 'CI')
+            ]); // CI pour Côte d'Ivoire);
 
         if (geocodingResponse.isOkay && geocodingResponse.results.isNotEmpty) {
           final location = geocodingResponse.results.first.geometry.location;
@@ -97,6 +98,10 @@ class _GoogleMapContainerState extends State<GoogleMapContainer> {
       'assets/icons/person-walking.svg',
     ];
     return InkWell(
+      focusColor: Colors.transparent,
+      hoverColor: Colors.transparent,
+      overlayColor: WidgetStatePropertyAll(Colors.transparent),
+      highlightColor: Colors.transparent,
       onTap: () => Navigator.of(context).push(
         CupertinoPageRoute(
           builder: (context) => FullScreenMaps(
@@ -120,7 +125,7 @@ class _GoogleMapContainerState extends State<GoogleMapContainer> {
               children: [
                 CustomMap(
                   initialPosition: _initialPosition!,
-                  place: widget.localization.place,
+                  place: widget.localization.place ?? 'Abidjan',
                 ),
                 PositionFullInfo(
                   icons: icons,

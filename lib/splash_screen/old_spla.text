@@ -1,0 +1,105 @@
+import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:lottie/lottie.dart';
+import 'package:ticketwave/config/palette.dart';
+
+import '../config/preferences.dart';
+import '../screens/intro/intro_screen.dart';
+
+//import '../screens/home/home_screen.dart';
+//import '../screens/intro/intro_screen.dart';
+
+class SplashSceen extends StatefulWidget {
+  static String routeName = 'splash_screen';
+  const SplashSceen({super.key});
+
+  @override
+  State<SplashSceen> createState() => _SplashSceenState();
+}
+
+class _SplashSceenState extends State<SplashSceen>
+    with TickerProviderStateMixin {
+  late final AnimationController _controller;
+
+  @override
+  void initState() {
+    setinitPositiob();
+    /* Future.delayed(const Duration(seconds: 3)).then(
+      (value) => Navigator.pushReplacementNamed(
+        context,
+        /* BottomBar.routeName, */
+        /* RegistrationScreen.routeName, */
+        IntroScrenn.routeName,
+        /* SetupScreen.routeName, */
+        /*  WelcomeScreen.routeName, */
+        /* SetupScreen.routeName, */
+        /*  ScanScreen.routeName, */
+        /* ScanScreen.routeName, */
+        /* (route) => false, */
+      ),
+    ); */
+    super.initState();
+    _controller = AnimationController(vsync: this);
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: SafeArea(
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const SizedBox(),
+              SizedBox(
+                //width: 100,
+                child: Lottie.asset(
+                  'assets/images/simple-dot.json',
+                  controller: _controller,
+                  animate: true,
+                  onLoaded: (composition) {
+                    // Configure the AnimationController with the duration of the
+                    // Lottie file and start the animation.
+
+                    _controller
+                      ..duration = composition.duration
+                      ..forward();
+
+                  },
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 25),
+                child: /* CircularProgressIndicator.adaptive(
+                  valueColor: AlwaysStoppedAnimation<Color>(
+                    Palette.appRed,
+                  ),
+                ) */
+                    Container(),
+              )
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+Future<void> setinitPositiob() async {
+  final prefs = Preferences();
+  await prefs.init();
+
+  // Si aucune position par défaut n'est enregistrée, enregistre Abidjan comme position par défaut
+  LatLng? defaultPosition = prefs.getDefaultPosition();
+  if (defaultPosition == null) {
+    await prefs.setDefaultPosition(5.345317, -4.024429);
+  }
+}

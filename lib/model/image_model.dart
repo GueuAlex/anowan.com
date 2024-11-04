@@ -13,7 +13,7 @@ String imageModelToJson(ImageModel data) => json.encode(data.toJson());
 
 class ImageModel {
   final int id;
-  final String url;
+  final String? url;
   final int imageCover;
 
   ImageModel({

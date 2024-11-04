@@ -1,7 +1,9 @@
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
+import 'package:ticketwave/config/functions.dart';
 import 'package:ticketwave/widgets/customAnimateSlide.dart';
 import 'package:ticketwave/widgets/custom_button.dart';
 import '../../../config/app_text.dart';
@@ -10,7 +12,7 @@ import '../../../model/pass_model.dart';
 import 'checkout_form.dart';
 import 'text_midle.dart';
 
-class CheckoutDraggableSheet extends StatefulWidget {
+class CheckoutDraggableSheet extends ConsumerStatefulWidget {
   const CheckoutDraggableSheet({
     super.key,
     required this.totalPrice,
@@ -20,15 +22,18 @@ class CheckoutDraggableSheet extends StatefulWidget {
   final Map<int, int> selectedPass;
 
   @override
-  State<CheckoutDraggableSheet> createState() => _CheckoutDraggableSheetState();
+  _CheckoutDraggableSheetState createState() => _CheckoutDraggableSheetState();
 }
 
-class _CheckoutDraggableSheetState extends State<CheckoutDraggableSheet> {
+class _CheckoutDraggableSheetState
+    extends ConsumerState<CheckoutDraggableSheet> {
   final DraggableScrollableController _scrollController =
       DraggableScrollableController();
   late double screenHeight;
   bool isMaxHeight = false;
   String _selectedMethod = '';
+
+  //final user = ref.watch(userProvider);
 
   @override
   void initState() {
@@ -51,6 +56,8 @@ class _CheckoutDraggableSheetState extends State<CheckoutDraggableSheet> {
 
   @override
   Widget build(BuildContext context) {
+    //Providers
+
     screenHeight = MediaQuery.of(context).size.height;
     final size = MediaQuery.of(context).size;
 
@@ -88,7 +95,7 @@ class _CheckoutDraggableSheetState extends State<CheckoutDraggableSheet> {
           ),
           child: ListView.builder(
             padding: EdgeInsets.zero,
-            physics: BouncingScrollPhysics(),
+            physics: NeverScrollableScrollPhysics(),
             controller: scrollSheetController,
             itemCount: 1,
             itemBuilder: (BuildContext context, int index) {
@@ -120,7 +127,10 @@ class _CheckoutDraggableSheetState extends State<CheckoutDraggableSheet> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               Padding(
-                padding: const EdgeInsets.symmetric(vertical: 15),
+                padding: const EdgeInsets.symmetric(
+                  vertical: 15,
+                  horizontal: 65,
+                ),
                 child: textMidleLine(),
               ),
               Row(
@@ -147,7 +157,8 @@ class _CheckoutDraggableSheetState extends State<CheckoutDraggableSheet> {
                 width: double.infinity,
                 height: 40,
                 radius: 5,
-                text: 'Payer ${widget.totalPrice} ₣',
+                text:
+                    'Payer ${Functions.numberFormat(widget.totalPrice.toString())} ₣',
                 onPress: _handlePayment,
               ),
             ],
@@ -268,6 +279,7 @@ class _CheckoutDraggableSheetState extends State<CheckoutDraggableSheet> {
     }
 
     // Afficher le message d'erreur
+    // Functions.getSnackbar(messageText: errorMessage);
     ScaffoldMessenger.of(context)
         .showSnackBar(SnackBar(content: Text(errorMessage)));
   }

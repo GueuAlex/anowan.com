@@ -27,17 +27,17 @@ String organizerModelToJson(OrganizerModel data) => json.encode(data.toJson());
 class OrganizerModel {
   final int id;
   final int userId;
-  final String avatar;
-  final String name;
-  final String uniqueCode;
-  final String phone;
-  final String description;
+  final String? avatar;
+  final String? name;
+  final String? uniqueCode;
+  final String? phone;
+  final String? description;
   final bool active;
-  final String shortDescription;
-  final String website;
-  final String facebook;
-  final String twitter;
-  final String instagram;
+  final String? shortDescription;
+  final String? website;
+  final String? facebook;
+  final String? twitter;
+  final String? instagram;
   final UserModel user;
 
   OrganizerModel({

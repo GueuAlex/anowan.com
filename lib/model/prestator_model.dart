@@ -23,38 +23,38 @@ class PrestatorMdel {
   int id;
   int serviceCategoryId;
   String name;
-  String logo;
-  dynamic email;
-  dynamic phone1;
-  dynamic phone2;
-  dynamic phone3;
-  dynamic longitude;
-  dynamic latitude;
-  String description;
-  String shortDescription;
-  dynamic servicePrice;
-  dynamic address;
-  String city;
-  String town;
-  String country;
-  dynamic postalCode;
-  String isActive;
-  dynamic isVerified;
-  dynamic isFeatured;
-  dynamic isApproved;
-  dynamic serviceRating;
+  String? logo;
+  String? email;
+  String? phone1;
+  String? phone2;
+  String? phone3;
+  String? longitude;
+  String? latitude;
+  String? description;
+  String? shortDescription;
+  String? servicePrice;
+  String? address;
+  String? city;
+  String? town;
+  String? country;
+  String? postalCode;
+/*   bool isActive;
+  bool isVerified;
+  bool isFeatured;
+  bool isApproved; */
+  String? serviceRating;
   DateTime createdAt;
   DateTime updatedAt;
-  dynamic website;
-  dynamic facebook;
-  dynamic twitter;
-  dynamic instagram;
-  dynamic tiktok;
-  dynamic linkedin;
+  String? website;
+  String? facebook;
+  String? twitter;
+  String? instagram;
+  String? tiktok;
+  String? linkedin;
   String serviceCategory;
   List<String> tags;
   List<PrestatorCovers> images;
-  dynamic video;
+  String? video;
 
   PrestatorMdel({
     required this.id,
@@ -75,10 +75,10 @@ class PrestatorMdel {
     required this.town,
     required this.country,
     required this.postalCode,
-    required this.isActive,
+    /*   required this.isActive,
     required this.isVerified,
     required this.isFeatured,
-    required this.isApproved,
+    required this.isApproved, */
     required this.serviceRating,
     required this.createdAt,
     required this.updatedAt,
@@ -113,10 +113,10 @@ class PrestatorMdel {
         town: json["town"],
         country: json["country"],
         postalCode: json["postal_code"],
-        isActive: json["is_active"],
+        /*   isActive: json["is_active"],
         isVerified: json["is_verified"],
         isFeatured: json["is_featured"],
-        isApproved: json["is_approved"],
+        isApproved: json["is_approved"], */
         serviceRating: json["service_rating"],
         createdAt: DateTime.parse(json["created_at"]),
         updatedAt: DateTime.parse(json["updated_at"]),
@@ -152,10 +152,10 @@ class PrestatorMdel {
         "town": town,
         "country": country,
         "postal_code": postalCode,
-        "is_active": isActive,
+        /*   "is_active": isActive,
         "is_verified": isVerified,
         "is_featured": isFeatured,
-        "is_approved": isApproved,
+        "is_approved": isApproved, */
         "service_rating": serviceRating,
         "created_at": createdAt.toIso8601String(),
         "updated_at": updatedAt.toIso8601String(),
@@ -188,7 +188,7 @@ class PrestatorMdel {
 
 class PrestatorCovers {
   int id;
-  String url;
+  String? url;
   int imageCover;
 
   PrestatorCovers({

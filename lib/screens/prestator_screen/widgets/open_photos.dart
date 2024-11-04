@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
 
+import '../../../constants/constants.dart';
 import '../../../model/prestator_model.dart';
 
 class PhotoGalleryScreen extends StatefulWidget {
@@ -50,7 +51,9 @@ class _PhotoGalleryScreenState extends State<PhotoGalleryScreen> {
             itemCount: widget.images.length,
             builder: (context, index) {
               return PhotoViewGalleryPageOptions(
-                imageProvider: NetworkImage(widget.images[index].url),
+                imageProvider: NetworkImage(
+                  widget.images[index].url ?? networtImgPlaceholder,
+                ),
                 minScale: PhotoViewComputedScale.contained,
                 maxScale: PhotoViewComputedScale.covered * 2,
               );
@@ -132,7 +135,7 @@ class _PhotoGalleryScreenState extends State<PhotoGalleryScreen> {
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(5),
                         child: Image.network(
-                          widget.images[index].url,
+                          widget.images[index].url ?? networtImgPlaceholder,
                           fit: BoxFit.cover,
                           loadingBuilder: (context, child, loadingProgress) {
                             if (loadingProgress == null) return child;

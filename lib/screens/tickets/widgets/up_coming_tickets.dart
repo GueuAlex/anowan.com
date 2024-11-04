@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 
 import '../../../config/app_text.dart';
 import '../../../config/palette.dart';
+import '../../../constants/constants.dart';
 import '../../../model/ticket_model.dart';
 import '../../tickets_swap_screen/tickets_swap_screen.dart';
 import 'ticket_preview.dart';
@@ -125,8 +126,8 @@ class _UpCommingTicketsState extends State<UpCommingTickets> {
             ),
             time: ticket.event.localizations[0].starttimeEvent,
             eventName: ticket.event.name,
-            location: ticket.event.localizations[0].place,
-            imageUrl: ticket.event.image,
+            location: ticket.event.localizations[0].place ?? '',
+            imageUrl: ticket.event.image ?? networtImgPlaceholder,
             onTap: () => Navigator.pushNamed(
               context,
               TicketsSwapScreen.routeName,

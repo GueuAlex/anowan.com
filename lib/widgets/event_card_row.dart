@@ -8,6 +8,7 @@ import 'package:ticketwave/screens/single_event_screen/single_event_screen.dart'
 
 import '../config/app_text.dart';
 import '../config/palette.dart';
+import '../constants/constants.dart';
 
 class EventCardRow extends StatelessWidget {
   const EventCardRow({
@@ -22,6 +23,10 @@ class EventCardRow extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return InkWell(
+      splashColor: Colors.transparent,
+      focusColor: Colors.transparent,
+      hoverColor: Colors.transparent,
+      overlayColor: WidgetStatePropertyAll(Colors.transparent),
       onTap: () => Navigator.pushNamed(
         context,
         SingleEventScreen.routeName,
@@ -52,7 +57,7 @@ class EventCardRow extends StatelessWidget {
                         ),
                         child: FadeInImage.assetNetwork(
                           placeholder: 'assets/images/anowan-placeholder.png',
-                          image: event.image,
+                          image: event.image ?? networtImgPlaceholder,
                           fit: BoxFit.cover,
                           imageErrorBuilder: (context, error, stackTrace) {
                             return Image.asset(
@@ -102,7 +107,7 @@ class EventCardRow extends StatelessWidget {
                             Gap(8),
                             Expanded(
                               child: AppText.small(
-                                event.localizations[0].place,
+                                event.localizations[0].place ?? '',
                                 textOverflow: TextOverflow.ellipsis,
                                 color: Color.fromARGB(255, 107, 120, 122),
                               ),

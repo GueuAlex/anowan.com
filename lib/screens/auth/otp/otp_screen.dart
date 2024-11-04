@@ -31,8 +31,9 @@ class _OtpScreenState extends State<OtpScreen> {
     print('args otp: ${args.otp}');
     print('widget opt: ${_otpCode}');
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        title: AppText.medium('OPT vérification', fontSize: 18),
+        title: AppText.medium('OPT vérification', fontSize: 16),
       ),
 
       /// ignore: sized_box_for_whitespace
@@ -43,7 +44,7 @@ class _OtpScreenState extends State<OtpScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Padding(
+              /*  Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 10),
                 child: Text(
                   args.title,
@@ -53,7 +54,7 @@ class _OtpScreenState extends State<OtpScreen> {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-              ),
+              ), */
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 child: Text(
