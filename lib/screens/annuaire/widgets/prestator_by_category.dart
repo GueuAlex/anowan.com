@@ -66,8 +66,7 @@ class PrestatorByCategory extends ConsumerWidget {
                     padding: const EdgeInsets.all(0),
                     style: ButtonStyle(
                       iconColor: WidgetStatePropertyAll(Colors.white),
-                      backgroundColor:
-                          WidgetStatePropertyAll(Palette.primaryColor),
+                      backgroundColor: WidgetStatePropertyAll(Palette.appRed),
                     ),
                     onPressed: () => Functions.showSimpleBottomSheet(
                       ctxt: context,
@@ -121,9 +120,7 @@ class PrestatorByCategory extends ConsumerWidget {
       padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 6.0),
       margin: const EdgeInsets.only(right: 5, left: 5),
       decoration: BoxDecoration(
-        color: !isSelected
-            ? Palette.primaryColor.withOpacity(0.1)
-            : Palette.primaryColor,
+        color: !isSelected ? Palette.appRed.withOpacity(0.1) : Palette.appRed,
         borderRadius: BorderRadius.circular(3),
       ),
       child: InkWell(
@@ -131,7 +128,7 @@ class PrestatorByCategory extends ConsumerWidget {
         child: AppText.medium(
           label,
           fontSize: 12,
-          color: !isSelected ? Palette.primaryColor : Palette.whiteColor,
+          color: !isSelected ? Palette.appRed : Palette.whiteColor,
           fontWeight: FontWeight.w700,
         ),
       ),

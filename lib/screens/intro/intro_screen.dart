@@ -77,60 +77,54 @@ class IntroScrenn extends StatelessWidget {
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Expanded(
-                    child: Container(
-                      //color: Colors.amber,
-                      padding: const EdgeInsets.symmetric(vertical: 8),
-                      alignment: Alignment.centerRight,
-                      child: InkWell(
-                        splashColor: Colors.transparent,
-                        highlightColor: Colors.transparent,
-                        hoverColor: Colors.transparent,
-                        focusColor: Colors.transparent,
-                        overlayColor:
-                            WidgetStatePropertyAll(Colors.transparent),
-                        onTap: () => _redirect(
-                          ctxt: context,
-                          route: BottomBar.routeName,
-                        ),
-                        child: Text(
-                          'Obtenir un aperçu',
-                          style: TextStyle(
-                            color: const Color.fromARGB(221, 35, 35, 35),
-                            fontWeight: FontWeight.w400,
-                            fontSize: 13,
-                          ),
+                  Container(
+                    //color: Colors.amber,
+                    padding: const EdgeInsets.symmetric(vertical: 8),
+                    alignment: Alignment.centerRight,
+                    child: InkWell(
+                      splashColor: Colors.transparent,
+                      highlightColor: Colors.transparent,
+                      hoverColor: Colors.transparent,
+                      focusColor: Colors.transparent,
+                      overlayColor: WidgetStatePropertyAll(Colors.transparent),
+                      onTap: () => _redirect(
+                        ctxt: context,
+                        route: BottomBar.routeName,
+                      ),
+                      child: Text(
+                        'Obtenir un aperçu',
+                        style: TextStyle(
+                          color: const Color.fromARGB(221, 35, 35, 35),
+                          fontWeight: FontWeight.w400,
+                          fontSize: 13,
                         ),
                       ),
                     ),
                   ),
                   verticalSeparator(height: 18, width: 2, color: Colors.red),
-                  Expanded(
-                    child: Container(
-                      // color: Colors.amber,
-                      padding: const EdgeInsets.symmetric(vertical: 8),
-                      child: InkWell(
-                        splashColor: Colors.transparent,
-                        highlightColor: Colors.transparent,
-                        hoverColor: Colors.transparent,
-                        focusColor: Colors.transparent,
-                        overlayColor:
-                            WidgetStatePropertyAll(Colors.transparent),
-                        onTap: () => _redirect(
-                          ctxt: context,
-                          route: AuthScreen.routeName,
-                        ),
-                        child: Text(
-                          'S\'authentifier',
-                          style: TextStyle(
-                            color: const Color.fromARGB(221, 35, 35, 35),
-                            fontWeight: FontWeight.w400,
-                            fontSize: 13,
-                          ),
+                  Container(
+                    // color: Colors.amber,
+                    padding: const EdgeInsets.symmetric(vertical: 8),
+                    child: InkWell(
+                      splashColor: Colors.transparent,
+                      highlightColor: Colors.transparent,
+                      hoverColor: Colors.transparent,
+                      focusColor: Colors.transparent,
+                      overlayColor: WidgetStatePropertyAll(Colors.transparent),
+                      onTap: () => _redirect(
+                        ctxt: context,
+                        route: AuthScreen.routeName,
+                      ),
+                      child: Text(
+                        'S\'authentifier',
+                        style: TextStyle(
+                          color: const Color.fromARGB(221, 35, 35, 35),
+                          fontWeight: FontWeight.w400,
+                          fontSize: 13,
                         ),
                       ),
                     ),
-                  )
+                  ),
                 ],
               ),
             ),

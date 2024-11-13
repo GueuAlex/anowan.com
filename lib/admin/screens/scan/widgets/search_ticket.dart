@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:gap/gap.dart';
 import 'package:rounded_loading_button_plus/rounded_loading_button.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ticketwave/admin/screens/scan/widgets/error_sheet.dart';
 import 'package:vibration/vibration.dart';
 
@@ -16,6 +17,7 @@ import '../../../../widgets/error_sheet_container.dart';
 import '../../../../widgets/infos_column.dart';
 import 'phical_ticket_sheet.dart';
 import 'scan_sheet.dart';
+import 'token_checker.dart';
 
 class SearchTicket extends StatefulWidget {
   const SearchTicket({super.key});
@@ -35,7 +37,7 @@ class _SearchTicketState extends State<SearchTicket> {
     final size = MediaQuery.of(context).size;
     return Container(
       width: double.infinity,
-      height: 230,
+      height: 235,
       margin: EdgeInsets.only(bottom: keyboardHeight),
       decoration: BoxDecoration(
         color: Colors.white,
@@ -54,16 +56,20 @@ class _SearchTicketState extends State<SearchTicket> {
             child: Column(
               children: [
                 InfosColumn(
+                  height: 60,
                   opacity: 0.2,
                   label: 'Entrez le code du ticket',
                   widget: Expanded(
-                    child: Functions.getTextField(
-                      controller: _ticketCodeController,
-                      textFieldLabel: 'code',
+                    child: Padding(
+                      padding: const EdgeInsets.only(bottom: 4),
+                      child: Functions.getTextField(
+                        controller: _ticketCodeController,
+                        textFieldLabel: 'code',
+                      ),
                     ),
                   ),
                 ),
-                Gap(50),
+                Gap(20),
                 /* CustomButton(
                   color: Palette.primaryColor,
                   width: double.infinity,
@@ -154,20 +160,32 @@ class _SearchTicketState extends State<SearchTicket> {
     );
   }
 
-  void _fetchPysicalTicket({required int code}) {
-    RemoteService().getEvent(uniqueCode: code.toString()).then((res) async {
-      if (res.statusCode == 200 || res.statusCode == 201) {
-        // EventModel _ticket = eventModelFromJson(res.body);
-        EasyLoading.dismiss();
-        await AudioPlayer().play(AssetSource('images/soung.mp3'));
-        Functions.showSimpleBottomSheet(
-          ctxt: context,
-          widget: PhicalTicketSheet(code: code),
-        );
-      } else {
-        EasyLoading.dismiss();
-        error(context: context);
-      }
-    });
+  void _fetchPysicalTicket({required int code}) async {
+    // check if inspecto token is set
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final String? token = prefs.getString("scantoken");
+    // print(token);
+    if (token == null) {
+      EasyLoading.dismiss();
+      Functions.showSimpleBottomSheet(
+        ctxt: context,
+        widget: TokenChecker(),
+      );
+    } else {
+      RemoteService().getEvent(uniqueCode: code.toString()).then((res) async {
+        if (res.statusCode == 200 || res.statusCode == 201) {
+          // EventModel _ticket = eventModelFromJson(res.body);
+          EasyLoading.dismiss();
+          await AudioPlayer().play(AssetSource('images/soung.mp3'));
+          Functions.showSimpleBottomSheet(
+            ctxt: context,
+            widget: PhicalTicketSheet(token: token),
+          );
+        } else {
+          EasyLoading.dismiss();
+          error(context: context);
+        }
+      });
+    }
   }
 }

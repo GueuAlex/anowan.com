@@ -17,10 +17,10 @@ class HeaderWidgets extends StatelessWidget {
             svgPath: 'assets/icons/angle-petit-gauche.svg',
             onTap: () => Navigator.of(context).pop(),
           ),
-          buildIcon(
+          /*  buildIcon(
             svgPath: 'assets/icons/exclamation.svg',
             onTap: () {},
-          ),
+          ), */
         ],
       ),
     );

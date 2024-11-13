@@ -38,6 +38,8 @@ class _OrderScreenState extends ConsumerState<OrderScreen> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _initializePasses();
       _updateSelectedLocalization();
+      ref.read(selectedEventProvider.notifier).state =
+          ModalRoute.of(context)!.settings.arguments as EventModel;
     });
   }
 
@@ -121,6 +123,8 @@ class _OrderScreenState extends ConsumerState<OrderScreen> {
     // Watch providers for selected pass and total price
     final selectedPassMap = ref.watch(selectedPassProvider);
     final totalPrice = ref.watch(totalPriceProvider);
+
+    // set the selected event to the state of the provider
 
     bool isMultipleLocalization = localizations.length > 1;
 

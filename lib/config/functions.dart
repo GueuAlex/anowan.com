@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
+import 'package:http/http.dart' as htt;
 import 'package:intl/intl.dart';
 import 'package:ticketwave/config/preferences.dart';
 import 'package:ticketwave/remote_service/remote_service.dart';
@@ -178,6 +179,10 @@ class Functions {
     );
   }
 
+  static isValidEmail(String email) {
+    return RegExp(r"^[\w\.-]+@[a-zA-Z\d\.-]+\.[a-zA-Z]{2,}$").hasMatch(email);
+  }
+
 /*   static Future<TicketModel?> getTicketFromApi(
       {required String uniqueCode}) async {
     return await RemoteService().getTicket(uniqueCode: uniqueCode);
@@ -196,12 +201,12 @@ class Functions {
   }
 
   // method to add scan history
-  static Future<dynamic> scanValidation2({
+  static Future<htt.Response> scanValidation2({
     required Map<String, dynamic> data,
     /*  required String uniqueCode, */
   }) async {
     var response = await RemoteService().postSomethings(
-      api: 'tickets/scan',
+      api: 'histories-scan/scan',
       data: data,
     );
     return response;
@@ -494,6 +499,24 @@ class Functions {
       snackPosition: SnackPosition.TOP,
     );
   }
+
+  static // Fonction pour calculer le nombre total de tickets sélectionnés
+      int calculateTotalTickets(Map<int, int> selectedPass) {
+    int totalTickets = 0;
+    for (var count in selectedPass.values) {
+      totalTickets += count;
+    }
+    return totalTickets;
+  }
+
+  /* static // Fonction pour calculer le nombre total de tickets sélectionnés
+      List<int> getSelectePassIds(Map<int, int> selectedPass) {
+   /*    List<int> ids = [];
+    for (var id in selectedPass.keys) {
+      ids.add(id);
+    } */
+    return selectedPass.keys.toList();
+  } */
 }
 
 

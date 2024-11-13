@@ -27,7 +27,7 @@ class _TokenCheckerState extends State<TokenChecker> {
     final keyboardHeight = MediaQuery.of(context).viewInsets.bottom;
     return Container(
       width: double.infinity,
-      height: 230,
+      height: 235,
       margin: EdgeInsets.only(bottom: keyboardHeight),
       decoration: BoxDecoration(
         color: Colors.white,
@@ -46,14 +46,18 @@ class _TokenCheckerState extends State<TokenChecker> {
             child: Column(
               children: [
                 InfosColumn(
+                  height: 60,
                   opacity: 0.2,
                   label: 'Entrez la clé de scan',
                   widget: Expanded(
-                    child: Functions.getTextField(
-                        controller: _tokenController, textFieldLabel: 'clé'),
+                    child: Padding(
+                      padding: const EdgeInsets.only(bottom: 4),
+                      child: Functions.getTextField(
+                          controller: _tokenController, textFieldLabel: 'clé'),
+                    ),
                   ),
                 ),
-                Gap(50),
+                Gap(20),
                 /* CustomButton(
                   color: Palette.primaryColor,
                   width: double.infinity,

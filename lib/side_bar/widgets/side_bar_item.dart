@@ -38,7 +38,10 @@ class SideBarItem extends StatelessWidget {
             child: SvgPicture.asset(
               width: 20,
               icon,
-              color: isSeleted ? Palette.secondaryColor : Colors.black,
+              colorFilter: ColorFilter.mode(
+                isSeleted ? Palette.secondaryColor : Colors.black,
+                BlendMode.srcIn,
+              ),
             ),
           ),
           /* leading: Icon(

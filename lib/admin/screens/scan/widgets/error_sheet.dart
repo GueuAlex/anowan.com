@@ -13,7 +13,7 @@ Future<void> error({required BuildContext context}) async {
   return await Functions.showSimpleBottomSheet(
     ctxt: context,
     widget: Container(
-      height: MediaQuery.of(context).size.height / 2,
+      height: MediaQuery.of(context).size.height * 0.35,
       decoration: BoxDecoration(
         color: Palette.whiteColor,
         borderRadius: BorderRadius.only(

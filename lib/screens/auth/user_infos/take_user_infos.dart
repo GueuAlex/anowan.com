@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:date_field/date_field.dart';
 import 'package:flutter/cupertino.dart';
@@ -209,8 +210,13 @@ class _TakeUserInfosState extends State<TakeUserInfos> {
                         child: horizontalSeparator(
                             width: double.infinity, height: 0.8)),
                     InkWell(
-                      onTap: () => Functions.showSimpleBottomSheet(
-                          ctxt: context, widget: _genderSelector()),
+                      onTap: () {
+                        if (Platform.isIOS) {
+                          _cupertinoSelector();
+                        } else {
+                          _genderSelector();
+                        }
+                      },
                       child: InfosColumn(
                         height: 50,
                         label: 'Genre',
@@ -250,65 +256,100 @@ class _TakeUserInfosState extends State<TakeUserInfos> {
     );
   }
 
-  Container _genderSelector() => Container(
-      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-      width: double.infinity,
-      height: MediaQuery.of(context).size.height * 0.35,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(5),
-          topRight: Radius.circular(5),
-        ),
-        color: Colors.white,
-      ),
-      child: Column(
-        children: [
-          sheetCloserCross(
-              ctxt: context,
-              text: 'Sélectionner un genre',
-              fontWeight: FontWeight.w400),
-          Gap(20),
-          Expanded(
-            child: SingleChildScrollView(
-              child: Column(
-                children: _genderList.map((gender) {
-                  return InkWell(
-                    onTap: () {
-                      setState(() {
-                        _selectedGender = gender;
-                      });
-                      Navigator.of(context).pop();
-                    },
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(vertical: 15),
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        border: Border(
-                          bottom: BorderSide(
-                            color: Colors.grey.withOpacity(0.2),
-                          ),
-                        ),
-                      ),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: AppText.medium(
-                              gender,
-                              fontSize: 16.5,
-                            ),
-                          ),
-                          Gap(5),
-                          Container(),
-                        ],
-                      ),
-                    ),
-                  );
-                }).toList(),
-              ),
+  void _cupertinoSelector() {
+    // Utiliser le CupertinoPicker pour iOS
+    showCupertinoModalPopup(
+      context: context,
+      builder: (_) => CupertinoActionSheet(
+        cancelButton: CupertinoActionSheetAction(
+            onPressed: () => Navigator.pop(context), child: Text('Annuler')),
+        actions: [
+          SizedBox(
+            height: 200,
+            child: CupertinoPicker(
+              backgroundColor: Colors.white.withOpacity(0.5),
+              itemExtent: 45.0,
+              onSelectedItemChanged: (int index) {
+                setState(() {
+                  _selectedGender = _genderList[index];
+                });
+              },
+              children: _genderList.map((gender) {
+                return Center(
+                  child: AppText.medium(
+                    gender,
+                    fontSize: 16.5,
+                  ),
+                );
+              }).toList(),
             ),
           )
         ],
-      ));
+      ),
+    );
+  }
+
+  Container _genderSelector() {
+    return Container(
+        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+        width: double.infinity,
+        height: MediaQuery.of(context).size.height * 0.35,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(5),
+            topRight: Radius.circular(5),
+          ),
+          color: Colors.white,
+        ),
+        child: Column(
+          children: [
+            sheetCloserCross(
+                ctxt: context,
+                text: 'Sélectionner un genre',
+                fontWeight: FontWeight.w400),
+            Gap(20),
+            Expanded(
+              child: SingleChildScrollView(
+                child: Column(
+                  children: _genderList.map((gender) {
+                    return InkWell(
+                      onTap: () {
+                        setState(() {
+                          _selectedGender = gender;
+                        });
+                        Navigator.of(context).pop();
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(vertical: 15),
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          border: Border(
+                            bottom: BorderSide(
+                              color: Colors.grey.withOpacity(0.2),
+                            ),
+                          ),
+                        ),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: AppText.medium(
+                                gender,
+                                fontSize: 16.5,
+                              ),
+                            ),
+                            Gap(5),
+                            Container(),
+                          ],
+                        ),
+                      ),
+                    );
+                  }).toList(),
+                ),
+              ),
+            )
+          ],
+        ));
+  }
 
   void _submit(OTPScrenArgs args) async {
     if (_firstnameController.text.trim().isEmpty) {

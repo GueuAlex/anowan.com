@@ -3,34 +3,83 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:ticketwave/config/palette.dart';
 
-import 'sheet_header.dart';
+import '../../../model/operator_model.dart';
+import '../../../providers/providers.dart';
 
-class OperatorSwitch extends ConsumerWidget {
-  const OperatorSwitch({
+class OperatorSwitch extends StatelessWidget {
+  const OperatorSwitch({super.key});
+
+  @override
+  Widget build(BuildContext contex) {
+    return Container(
+      width: double.infinity,
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Row(
+          children: OperatorModel.operators.map((op) {
+            return Padding(
+              padding: const EdgeInsets.symmetric(
+                  horizontal:
+                      8.0), // Ajoute un espacement horizontal entre les cartes
+              child: OpratorCard(operator: op),
+            );
+          }).toList(),
+        ),
+      ),
+    );
+  }
+}
+
+class OpratorCard extends ConsumerWidget {
+  const OpratorCard({
     super.key,
+    required this.operator,
   });
+
+  final OperatorModel operator;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Container(
-      width: double.infinity,
-      height: MediaQuery.of(context).size.height * 0.4,
-      decoration: BoxDecoration(
-        color: Palette.separatorColor,
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(5),
-          topRight: Radius.circular(5),
-        ),
-      ),
-      child: Column(
-        children: [
-          sheetheader(
-            context: context,
-            text: 'Selectionner un operateur',
-            hopacity: 0,
+    final selectedOprator = ref.watch(selectedOperatorProvider);
+    final bool isSelected = selectedOprator == operator;
+
+    return InkWell(
+      onTap: () {
+        ref.read(selectedOperatorProvider.notifier).state = operator;
+      },
+      child: Container(
+        // width: 100, // Définir une largeur fixe pour chaque carte
+        padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 4),
+        decoration: BoxDecoration(
+          color: isSelected
+              ? const Color.fromARGB(51, 180, 20, 52)
+              : const Color.fromARGB(164, 225, 225, 225),
+          borderRadius: BorderRadius.circular(5),
+          border: Border.all(
+            color: isSelected ? Palette.appRed : Palette.separatorColor,
+            width: 0.8,
           ),
-          Gap(15),
-        ],
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            ClipRRect(
+              child: Image.asset(operator.assetPath, width: 35),
+              borderRadius: BorderRadius.circular(5),
+            ),
+            const Gap(8),
+            Text(
+              operator.name,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: isSelected
+                    ? Palette.appRed
+                    : const Color.fromARGB(255, 54, 54, 54),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

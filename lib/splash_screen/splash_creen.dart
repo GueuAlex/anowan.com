@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:lottie/lottie.dart';
 
-import '../admin/screens/scan/scan_screen.dart';
-
+import '../config/functions.dart';
 import '../config/palette.dart';
 import '../config/preferences.dart';
+import '../screens/intro/intro_screen.dart';
+import '../widgets/bottom_bar.dart';
 
 class SplashSceen extends StatefulWidget {
   static String routeName = 'splash_screen';
@@ -36,18 +37,18 @@ class _SplashSceenState extends State<SplashSceen>
         /* Navigator.pushReplacementNamed(context, IntroScrenn.routeName); */
         _toggleLoading();
         // get logged state
-        // bool isLogged = await Functions.getLoggedState();
+        bool isLogged = await Functions.getLoggedState();
         Future.delayed(const Duration(seconds: 3)).then(
           (value) => Navigator.pushReplacementNamed(
             context,
             /* BottomBar.routeName, */
             /* RegistrationScreen.routeName, */
-            /*  !isLogged ? IntroScrenn.routeName : BottomBar.routeName, */
+            !isLogged ? IntroScrenn.routeName : BottomBar.routeName,
             /* SetupScreen.routeName, */
             /*  WelcomeScreen.routeName, */
             /* SetupScreen.routeName, */
             /*  ScanScreen.routeName, */
-            ScanScreen.routeName,
+            /*  ScanScreen.routeName, */
             /* (route) => false, */
           ),
         );

@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -45,57 +48,75 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      localizationsDelegates: const [
-        GlobalCupertinoLocalizations.delegate,
-        GlobalMaterialLocalizations.delegate,
-      ],
-      supportedLocales: const [
-        Locale('fr'),
-        Locale('en'),
-      ],
-      locale: const Locale('eu', 'FR'),
-      title: 'Anowan.com',
-      theme: ThemeData(
-        useMaterial3: true, //scaffoldBackgroundColor: Colors.white,
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: Palette.primaryColor,
-        ),
-        appBarTheme: const AppBarTheme(
-          backgroundColor: Colors.white,
-          surfaceTintColor: Colors.white,
-        ),
-      ),
-      builder: EasyLoading.init(),
-      // home: SearchbarAnimationExample(),
-      initialRoute: SplashSceen.routeName,
-      routes: {
-        '/': (ctxt) => const BottomBar(),
-        SplashSceen.routeName: (ctxt) => const SplashSceen(),
-        ScanScreen.routeName: (ctxt) => const ScanScreen(),
-        SingleEventScreen.routeName: (ctxt) => const SingleEventScreen(),
-        OrderScreen.routeName: (ctxt) => const OrderScreen(),
-        CheckoutScreen.routeName: (ctxt) => const CheckoutScreen(),
-        AuthScreen.routeName: (context) => const AuthScreen(),
-        TakeUserInfos.routeName: (ctxt) => const TakeUserInfos(),
-        SetupScreen.routeName: (ctxt) => const SetupScreen(),
-        IntroScrenn.routeName: (ctxt) => const IntroScrenn(),
-        OtpScreen.routeName: (ctxt) => const OtpScreen(),
-        PassCodeScreen.routeName: (ctxt) => const PassCodeScreen(),
-        NewPassCodeScreen.routeName: (ctxt) => const NewPassCodeScreen(),
-        ConfirmPassCodeScreen.routeName: (ctxt) =>
-            const ConfirmPassCodeScreen(),
-        NotificationScreen.routeName: (ctxt) => const NotificationScreen(),
-        MapsScreen.routeName: (ctxt) => const MapsScreen(),
-        OrganizerScreen.routeName: (ctxt) => const OrganizerScreen(),
-        PrestatorScreen.routeName: (ctxt) => const PrestatorScreen(),
-        UserDetailsScreen.routeName: (ctxt) => const UserDetailsScreen(),
-        TicketsSwapScreen.routeName: (ctxt) => const TicketsSwapScreen(),
-        ProfilSettings.routeName: (ctxt) => const ProfilSettings(),
-        SuggestionScreen.routeName: (ctxt) => const SuggestionScreen(),
-        WelcomeScreen.routeName: (ctxt) => const WelcomeScreen(),
+    return PopScope(
+      onPopInvokedWithResult: (didPop, result) async {
+        // Vérifie si le pop a eu lieu
+        if (didPop) {
+          if (Navigator.of(context).canPop()) {
+            return; // Permet de revenir en arrière si possible
+          } else {
+            if (Platform.isAndroid) {
+              exit(0); // Quitte l'application sous Android
+            } else {
+              SystemNavigator.pop(); // Ferme l'application sous iOS
+            }
+            return;
+          }
+        }
+        return;
       },
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        localizationsDelegates: const [
+          GlobalCupertinoLocalizations.delegate,
+          GlobalMaterialLocalizations.delegate,
+        ],
+        supportedLocales: const [
+          Locale('fr'),
+          Locale('en'),
+        ],
+        locale: const Locale('eu', 'FR'),
+        title: 'Anowan.com',
+        theme: ThemeData(
+          useMaterial3: true, //scaffoldBackgroundColor: Colors.white,
+          colorScheme: ColorScheme.fromSeed(
+            seedColor: Palette.primaryColor,
+          ),
+          appBarTheme: const AppBarTheme(
+            backgroundColor: Colors.white,
+            surfaceTintColor: Colors.white,
+          ),
+        ),
+        builder: EasyLoading.init(),
+        // home: SearchbarAnimationExample(),
+        initialRoute: SplashSceen.routeName,
+        routes: {
+          '/': (ctxt) => const BottomBar(),
+          SplashSceen.routeName: (ctxt) => const SplashSceen(),
+          ScanScreen.routeName: (ctxt) => const ScanScreen(),
+          SingleEventScreen.routeName: (ctxt) => const SingleEventScreen(),
+          OrderScreen.routeName: (ctxt) => const OrderScreen(),
+          CheckoutScreen.routeName: (ctxt) => const CheckoutScreen(),
+          AuthScreen.routeName: (context) => const AuthScreen(),
+          TakeUserInfos.routeName: (ctxt) => const TakeUserInfos(),
+          SetupScreen.routeName: (ctxt) => const SetupScreen(),
+          IntroScrenn.routeName: (ctxt) => const IntroScrenn(),
+          OtpScreen.routeName: (ctxt) => const OtpScreen(),
+          PassCodeScreen.routeName: (ctxt) => const PassCodeScreen(),
+          NewPassCodeScreen.routeName: (ctxt) => const NewPassCodeScreen(),
+          ConfirmPassCodeScreen.routeName: (ctxt) =>
+              const ConfirmPassCodeScreen(),
+          NotificationScreen.routeName: (ctxt) => const NotificationScreen(),
+          MapsScreen.routeName: (ctxt) => const MapsScreen(),
+          OrganizerScreen.routeName: (ctxt) => const OrganizerScreen(),
+          PrestatorScreen.routeName: (ctxt) => const PrestatorScreen(),
+          UserDetailsScreen.routeName: (ctxt) => const UserDetailsScreen(),
+          TicketsSwapScreen.routeName: (ctxt) => const TicketsSwapScreen(),
+          ProfilSettings.routeName: (ctxt) => const ProfilSettings(),
+          SuggestionScreen.routeName: (ctxt) => const SuggestionScreen(),
+          WelcomeScreen.routeName: (ctxt) => const WelcomeScreen(),
+        },
+      ),
     );
   }
 }

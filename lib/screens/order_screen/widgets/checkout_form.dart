@@ -1,5 +1,6 @@
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:ticketwave/config/functions.dart';
@@ -7,11 +8,17 @@ import 'package:ticketwave/screens/order_screen/widgets/text_midle.dart';
 
 import '../../../config/app_text.dart';
 import '../../../config/palette.dart';
+import '../../../local_service/local_service.dart';
+import '../../../model/third_party_model.dart';
+import '../../../model/user_model.dart';
 import '../../../providers/providers.dart';
 import '../../../widgets/country_selector.sheet.dart';
 import '../../../widgets/custom_button.dart';
+import 'check_button.dart';
 import 'checkout_details_sheet.dart';
 import 'operator_switch.dart';
+import 'third_part_form.dart';
+import 'third_party_container.dart';
 
 class CheckoutForm extends ConsumerStatefulWidget {
   const CheckoutForm({super.key, required this.onCancel});
@@ -27,10 +34,43 @@ class _CheckoutFormState extends ConsumerState<CheckoutForm> {
   final _emailControler = TextEditingController();
   final _prenomController = TextEditingController();
   final _phoneController = TextEditingController();
+
+  void _initializeForm() async {
+    final LocalService localService = await LocalService();
+    final UserModel? user = await localService.getUser();
+    if (user != null) {
+      _namController.text = user.name;
+      _emailControler.text = user.email ?? '';
+      _prenomController.text = user.firstname ?? '';
+      _phoneController.text = user.phone ?? '';
+    }
+  }
+
+  @override
+  void initState() {
+    _initializeForm();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    // Perform any necessary cleanup here
+    _emailControler.dispose();
+    _namController.dispose();
+    _prenomController.dispose();
+    _phoneController.dispose();
+    super.dispose();
+  }
+
+  bool _rememberMe = true;
+  bool _isThirdParty = false;
+
   @override
   Widget build(BuildContext context) {
 //providers
     final selectedCountry = ref.watch(selectedCountryProvider);
+    final selectedOprator = ref.watch(selectedOperatorProvider);
+    final thirdPart = ref.watch(thirdPartyProvider);
     final size = MediaQuery.of(context).size;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -42,28 +82,27 @@ class _CheckoutFormState extends ConsumerState<CheckoutForm> {
             children: [
               Expanded(
                 child: AppText.medium(
-                  'Operateur',
+                  'Operateurs',
                   fontWeight: FontWeight.w400,
                   color: const Color.fromARGB(255, 46, 46, 46),
                 ),
               ),
-              InkWell(
+              /*   InkWell(
                 onTap: () => Functions.showSimpleBottomSheet(
                   ctxt: context,
                   widget: OperatorSwitch(),
                 ),
                 child: AppText.medium(
-                  'Modifier',
-                  fontSize: 14.5,
-                  fontWeight: FontWeight.w600,
-                  color: Palette.appRed,
+                  '',
                 ),
-              ),
+              ), */
               Gap(8),
             ],
           ),
         ),
+        Gap(10),
         // show selected operator
+        OperatorSwitch(),
         Gap(10),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 15),
@@ -221,36 +260,35 @@ class _CheckoutFormState extends ConsumerState<CheckoutForm> {
           ),
         ),
         Gap(15),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 5),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Checkbox.adaptive(
-                value: true,
-                onChanged: (value) {},
-                checkColor: Colors.white,
-                fillColor: WidgetStatePropertyAll(Palette.appRed),
-                activeColor: Palette.appRed,
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Gap(7),
-                  AppText.medium(
-                    'Se souvenir de moi',
-                    fontWeight: FontWeight.w400,
-                  ),
-                  AppText.small(
-                    'Pour un prochain achat encore plus rapide et sans tracas !',
-                    fontWeight: FontWeight.w300,
-                  )
-                ],
-              )
-            ],
-          ),
+        CheckButton(
+          value: _rememberMe,
+          onChanged: (p0) {
+            setState(() {
+              _rememberMe = !_rememberMe;
+            });
+          },
         ),
+        Gap(15),
+        CheckButton(
+          title: 'J\'achète pour un tiers',
+          subtitle:
+              'selectionnez cette case à cocher si vous achetez pour quelqu\'un',
+          value: _isThirdParty,
+          onChanged: (p0) {
+            setState(() {
+              _isThirdParty = !_isThirdParty;
+            });
+            if (_isThirdParty && thirdPart == null) {
+              _showThirdPartyForm();
+            }
+          },
+        ),
+        Gap(15),
+        if (thirdPart != null && _isThirdParty)
+          InkWell(
+            onTap: () => _showThirdPartyForm(thirdPart: thirdPart),
+            child: ThirdPartyContainer(thirdPart: thirdPart),
+          ),
         Gap(25),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 65),
@@ -326,16 +364,63 @@ class _CheckoutFormState extends ConsumerState<CheckoutForm> {
                   height: 40,
                   radius: 5,
                   text: 'Continuer',
-                  onPress: () => Functions.showSimpleBottomSheet(
-                    ctxt: context,
-                    widget: CheckoutDetailsSheet(),
-                  ),
+                  onPress: () {
+                    if (_namController.text.trim().isEmpty) {
+                      Functions.showToast(msg: 'Veuillez renseigner votre nom');
+                      return;
+                    }
+                    if (_prenomController.text.trim().isEmpty) {
+                      Functions.showToast(
+                          msg: 'Veuillez renseigner votre prénom');
+                      return;
+                    }
+                    if (_emailControler.text.trim().isNotEmpty &&
+                        !Functions.isValidEmail(_emailControler.text.trim())) {
+                      Functions.showToast(
+                          msg: 'Veuillez renseigner un email valide');
+                      return;
+                    }
+                    if (_phoneController.text.trim().isEmpty) {
+                      Functions.showToast(
+                          msg: 'Veuillez renseigner votre numéro de téléphone');
+                      return;
+                    }
+
+                    if (selectedOprator == null) {
+                      Functions.showToast(
+                          msg: 'Veuillez sélectionner un opérateur');
+                      return;
+                    }
+
+                    Functions.showSimpleBottomSheet(
+                      ctxt: context,
+                      widget: CheckoutDetailsSheet(
+                        isThirdParty: _isThirdParty,
+                        userName: _namController.text.trim(),
+                        userFirstname: _prenomController.text.trim(),
+                        userEmail: _emailControler.text.trim(),
+                        userPhone: _phoneController.text.trim(),
+                      ),
+                    );
+                  },
                 ),
               ),
             ],
           ),
         ),
       ],
+    );
+  }
+
+  void _showThirdPartyForm({ThirdPartyModel? thirdPart}) async {
+    EasyLoading.show();
+    await Future.delayed(const Duration(seconds: 5));
+    EasyLoading.dismiss();
+    Functions.showSimpleBottomSheet(
+      ctxt: context,
+      widget: ThirdPartForm(
+        thirdPart: thirdPart,
+      ),
     );
   }
 

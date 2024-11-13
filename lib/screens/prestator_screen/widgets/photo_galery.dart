@@ -62,7 +62,7 @@ class PhotoGalery extends StatelessWidget {
               padding: EdgeInsets.only(top: 1),
               scrollDirection: Axis.vertical,
               shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
+              physics: BouncingScrollPhysics(),
               itemCount: images.length,
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 3, // 3 images par ligne

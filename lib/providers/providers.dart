@@ -1,9 +1,11 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:ticketwave/model/event_model.dart';
 
 import '../model/country_model.dart';
+import '../model/event_model.dart';
+import '../model/operator_model.dart';
 import '../model/organizer_model.dart';
 import '../model/prestator_model.dart';
+import '../model/third_party_model.dart';
 import 'api_service.provider.dart';
 import 'tags_notifier.provider.dart';
 
@@ -46,9 +48,14 @@ final eventsProvider = FutureProvider<List<EventModel>>((ref) async {
 // keyboard state provider
 final keyboardVisibilityProvider = StateProvider<bool>((ref) => false);
 
-//slected countru provider
+//slected country provider
 // StateProvider pour le pays sélectionné
 final selectedCountryProvider =
+    StateProvider<CountryModel?>((ref) => CountryModel.list[0]);
+
+//slected country provider
+// StateProvider pour le pays sélectionné (pays du bénéficiaire)
+final bselectedCountryProvider =
     StateProvider<CountryModel?>((ref) => CountryModel.list[0]);
 
 // Provider pour le lieu sélectionné
@@ -60,3 +67,19 @@ final selectedPassProvider = StateProvider<Map<int, int>>((ref) => {});
 
 // Provider for managing total price
 final totalPriceProvider = StateProvider<int>((ref) => 0);
+
+final selectedOperatorProvider = StateProvider<OperatorModel?>((ref) {
+  return null; // Catégorie par défaut
+});
+
+final selectedEventProvider = StateProvider<EventModel?>((ref) {
+  return null; // Catégorie par défaut
+});
+
+final selectedRecepientProvider = StateProvider<String>((ref) {
+  return 'E-mail'; // Catégorie par défaut
+});
+
+final thirdPartyProvider = StateProvider<ThirdPartyModel?>((ref) {
+  return null; // Catégorie par défaut
+});

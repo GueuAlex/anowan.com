@@ -21,13 +21,13 @@ class PhotoGalleryScreen extends StatefulWidget {
 
 class _PhotoGalleryScreenState extends State<PhotoGalleryScreen> {
   late PageController _pageController;
-  late int _currentIndex;
+  //late int _currentIndex;
 
   @override
   void initState() {
     super.initState();
     _pageController = PageController(initialPage: widget.initialIndex);
-    _currentIndex = widget.initialIndex;
+    //_currentIndex = widget.initialIndex;
   }
 
   void _onThumbnailTap(int index) {
@@ -37,7 +37,7 @@ class _PhotoGalleryScreenState extends State<PhotoGalleryScreen> {
       curve: Curves.easeInOut,
     );
     setState(() {
-      _currentIndex = index;
+      //_currentIndex = index;
     });
   }
 
@@ -63,7 +63,7 @@ class _PhotoGalleryScreenState extends State<PhotoGalleryScreen> {
             pageController: _pageController,
             onPageChanged: (index) {
               setState(() {
-                _currentIndex = index;
+                // _currentIndex = index;
               });
             },
           ),
@@ -121,19 +121,13 @@ class _PhotoGalleryScreenState extends State<PhotoGalleryScreen> {
                   return GestureDetector(
                     onTap: () => _onThumbnailTap(index),
                     child: Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 5),
+                      margin: const EdgeInsets.symmetric(horizontal: 0),
                       width: 70,
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(5),
-                        border: Border.all(
-                          color: index == _currentIndex
-                              ? Colors.white
-                              : Colors.transparent,
-                          width: 2,
-                        ),
+                        borderRadius: BorderRadius.circular(0),
                       ),
                       child: ClipRRect(
-                        borderRadius: BorderRadius.circular(5),
+                        borderRadius: BorderRadius.circular(0),
                         child: Image.network(
                           widget.images[index].url ?? networtImgPlaceholder,
                           fit: BoxFit.cover,

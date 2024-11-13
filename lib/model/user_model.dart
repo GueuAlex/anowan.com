@@ -83,4 +83,44 @@ class UserModel {
         "active": active,
         "phone_code": phoneCode,
       };
+
+  UserModel copyWith({
+    int? id,
+    String? name,
+    String? firstname,
+    String? phone,
+    String? email,
+    String? avatar,
+    bool? active,
+    String? phoneCode,
+    String? gender,
+    DateTime? birthDate,
+    List<String>? interests,
+    List<String>? bookmarkedOrganizersId,
+    String? bio,
+    String? favoriteLocation,
+    List<String>? about,
+    List<String>? bookmarkedEventsId,
+  }) {
+    return UserModel(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      firstname: firstname ?? this.firstname,
+      phone: phone ?? this.phone,
+      email: email ?? this.email,
+      avatar: avatar ?? this.avatar,
+      active: active ?? this.active,
+      phoneCode: phoneCode ?? this.phoneCode,
+      gender: gender ?? this.gender,
+      birthDate: birthDate ?? this.birthDate,
+      interests: interests ?? List.from(this.interests),
+      bookmarkedOrganizersId:
+          bookmarkedOrganizersId ?? List.from(this.bookmarkedOrganizersId),
+      bio: bio ?? this.bio,
+      favoriteLocation: favoriteLocation ?? this.favoriteLocation,
+      about: about ?? List.from(this.about),
+      bookmarkedEventsId:
+          bookmarkedEventsId ?? List.from(this.bookmarkedEventsId),
+    );
+  }
 }

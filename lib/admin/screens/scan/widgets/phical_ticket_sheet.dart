@@ -11,17 +11,17 @@ import '../../../../widgets/custom_button.dart';
 class PhicalTicketSheet extends StatelessWidget {
   const PhicalTicketSheet({
     super.key,
-    required this.code,
+    required this.token,
     /*  required this.inspectoroken, */
   });
-  final int code;
+  final String token;
   /*  final String inspectoroken; */
 
   @override
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      height: 350,
+      height: 325,
       /* margin: EdgeInsets.only(bottom: keyboardHeight), */
       decoration: const BoxDecoration(
         color: Colors.white,
@@ -46,7 +46,7 @@ class PhicalTicketSheet extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: AppText.small(
-                    'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor .',
+                    'Veuillez valider la vérification pour enregistrer ce contrôle',
                     textAlign: TextAlign.center,
                     fontWeight: FontWeight.w300,
                   ),
@@ -55,6 +55,8 @@ class PhicalTicketSheet extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 15),
                   child: CustomButton(
+                    isSetting: true,
+                    fontsize: 15,
                     color: Palette.appRed,
                     width: double.infinity,
                     height: 35,
@@ -64,16 +66,16 @@ class PhicalTicketSheet extends StatelessWidget {
                       // EasyLoading.show();
                       Map<String, dynamic> data = {
                         /* "scanned": 1, */
-                        "scan_id": code,
+                        "token": token,
                       };
                       EasyLoading.show();
 
                       Functions.scanValidation2(
                         data: data,
                         /* uniqueCode: code.toString(), */
-                      ).then((response) {
+                      ).then((r) {
                         EasyLoading.dismiss();
-                        if (response != null) {
+                        if (r.statusCode == 200 || r.statusCode == 201) {
                           // _btnController.success();
                           EasyLoading.showToast(
                             'Scan confirmé !',
@@ -82,7 +84,7 @@ class PhicalTicketSheet extends StatelessWidget {
                         } else {
                           //_btnController.reset();
                           EasyLoading.showToast(
-                            'Try again !',
+                            'Votre clé scan est invalide !',
                             toastPosition: EasyLoadingToastPosition.top,
                           );
                         }
@@ -108,7 +110,7 @@ Container buildIcon() {
     width: 100,
     height: 100,
     decoration: BoxDecoration(
-      color: Palette.primaryColor.withOpacity(0.15),
+      color: const Color.fromARGB(255, 88, 153, 94).withOpacity(0.15),
       shape: BoxShape.circle,
     ),
     child: Container(
@@ -116,7 +118,7 @@ Container buildIcon() {
       width: 100,
       height: 100,
       decoration: BoxDecoration(
-        color: Palette.primaryColor.withOpacity(0.3),
+        color: Color.fromARGB(255, 88, 153, 94).withOpacity(0.3),
         shape: BoxShape.circle,
       ),
       child: Container(
@@ -124,7 +126,7 @@ Container buildIcon() {
         width: 100,
         height: 100,
         decoration: BoxDecoration(
-          color: Palette.primaryColor.withOpacity(0.5),
+          color: Color.fromARGB(255, 88, 153, 94).withOpacity(0.5),
           shape: BoxShape.circle,
         ),
         child: const Center(

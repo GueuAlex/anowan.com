@@ -184,8 +184,15 @@ class _ScanSheetState extends State<ScanSheet> {
       List<DateTime> _dates = [];
       // recuperation des dates
       for (LocalizationModel localization in ticket.event.localizations) {
+        // Ajouter dateEvent
         _dates.add(localization.dateEvent);
+
+        // Ajouter dateEventEnd si elle n'est pas nulle
+        if (localization.dateEventEnd != null) {
+          _dates.add(localization.dateEventEnd!);
+        }
       }
+
       ///// vérifier si l'un des dates dans _dates vaut la date d'aujourd'hui
       ///
       if (!Functions.containsCurrentDate(_dates)) {
