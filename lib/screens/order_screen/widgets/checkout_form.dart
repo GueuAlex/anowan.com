@@ -18,7 +18,7 @@ import 'check_button.dart';
 import 'checkout_details_sheet.dart';
 import 'operator_switch.dart';
 import 'third_part_form.dart';
-import 'third_party_container.dart';
+import 'ticket_container.dart';
 
 class CheckoutForm extends ConsumerStatefulWidget {
   const CheckoutForm({super.key, required this.onCancel});
@@ -36,6 +36,17 @@ class _CheckoutFormState extends ConsumerState<CheckoutForm> {
   final _phoneController = TextEditingController();
 
   void _initializeForm() async {
+    final selectedPass = ref.watch(selectedPassProvider);
+    List<SelectedTickeModel> tickets = [];
+    selectedPass.forEach((key, value) {
+      print('pass id : $key');
+      print('nombre de tickets : $value');
+
+      for (int i = 0; i < value; i++) {
+        tickets.add(SelectedTickeModel(passId: key));
+      }
+    });
+    ref.read(selectedTickedProvider.notifier).state = tickets;
     final LocalService localService = await LocalService();
     final UserModel? user = await localService.getUser();
     if (user != null) {
@@ -46,9 +57,13 @@ class _CheckoutFormState extends ConsumerState<CheckoutForm> {
     }
   }
 
+  // List<Map<String, dynamic>> _selectedTickets = [];
+
   @override
   void initState() {
-    _initializeForm();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _initializeForm();
+    });
     super.initState();
   }
 
@@ -63,15 +78,22 @@ class _CheckoutFormState extends ConsumerState<CheckoutForm> {
   }
 
   bool _rememberMe = true;
-  bool _isThirdParty = false;
+  //bool _isThirdParty = false;
 
   @override
   Widget build(BuildContext context) {
 //providers
     final selectedCountry = ref.watch(selectedCountryProvider);
     final selectedOprator = ref.watch(selectedOperatorProvider);
-    final thirdPart = ref.watch(thirdPartyProvider);
+    //final thirdPart = ref.watch(thirdPartyProvider);
     final size = MediaQuery.of(context).size;
+    final selectedTicked = ref.watch(selectedTickedProvider);
+
+    if (selectedTicked == null) {
+      return Center(
+        child: CircularProgressIndicator.adaptive(),
+      );
+    }
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -215,7 +237,7 @@ class _CheckoutFormState extends ConsumerState<CheckoutForm> {
           padding: const EdgeInsets.symmetric(horizontal: 15),
           child: Container(
             width: double.infinity,
-            height: (size.height * 0.05),
+            height: (size.height * 0.055),
             decoration: BoxDecoration(
               color: Color.fromARGB(5, 61, 68, 74),
               border: Border.all(
@@ -233,7 +255,7 @@ class _CheckoutFormState extends ConsumerState<CheckoutForm> {
                   ),
                   child: Container(
                     width: 70,
-                    height: (size.height * 0.05),
+                    height: (size.height * 0.055),
                     padding: const EdgeInsets.all(5),
                     alignment: Alignment.center,
                     margin: const EdgeInsets.only(right: 8),
@@ -259,6 +281,45 @@ class _CheckoutFormState extends ConsumerState<CheckoutForm> {
             ),
           ),
         ),
+        Gap(10),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              AppText.medium(
+                selectedTicked.length == 1 ? 'Votre billet' : 'Vos billets',
+                fontWeight: FontWeight.w400,
+                color: const Color.fromARGB(255, 46, 46, 46),
+              ),
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: List.generate(selectedTicked.length, (i) {
+                    /*   ThirdPartyModel? thirdPart;
+                    if (_selectedTickets[i]['purchase_for'] != null) {
+                      thirdPart = ThirdPartyModel.fromJson(
+                        _selectedTickets[i]['purchase_for'],
+                      );
+                    } */
+                    return TicketContainer(
+                      ticket: selectedTicked[i],
+                      thirdPart: selectedTicked[i].thirdParty,
+                      onTap: () {
+                        //print(thirdPart);
+                        _showThirdPartyForm(
+                          thirdPart: selectedTicked[i].thirdParty,
+                          index: i,
+                        );
+                      },
+                    );
+                  }),
+                ),
+              )
+            ],
+          ),
+        ),
+
         Gap(15),
         CheckButton(
           value: _rememberMe,
@@ -268,11 +329,10 @@ class _CheckoutFormState extends ConsumerState<CheckoutForm> {
             });
           },
         ),
-        Gap(15),
+        /*    Gap(15),
         CheckButton(
           title: 'J\'achète pour un tiers',
-          subtitle:
-              'selectionnez cette case à cocher si vous achetez pour quelqu\'un',
+          subtitle: 'Cochez cette case si vous achetez pour quelqu\'un',
           value: _isThirdParty,
           onChanged: (p0) {
             setState(() {
@@ -282,13 +342,13 @@ class _CheckoutFormState extends ConsumerState<CheckoutForm> {
               _showThirdPartyForm();
             }
           },
-        ),
-        Gap(15),
+        ), */
+        /*   Gap(15),
         if (thirdPart != null && _isThirdParty)
           InkWell(
             onTap: () => _showThirdPartyForm(thirdPart: thirdPart),
             child: ThirdPartyContainer(thirdPart: thirdPart),
-          ),
+          ), */
         Gap(25),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 65),
@@ -395,7 +455,7 @@ class _CheckoutFormState extends ConsumerState<CheckoutForm> {
                     Functions.showSimpleBottomSheet(
                       ctxt: context,
                       widget: CheckoutDetailsSheet(
-                        isThirdParty: _isThirdParty,
+                        //isThirdParty: false,
                         userName: _namController.text.trim(),
                         userFirstname: _prenomController.text.trim(),
                         userEmail: _emailControler.text.trim(),
@@ -408,18 +468,20 @@ class _CheckoutFormState extends ConsumerState<CheckoutForm> {
             ],
           ),
         ),
+        const Gap(50),
       ],
     );
   }
 
-  void _showThirdPartyForm({ThirdPartyModel? thirdPart}) async {
+  void _showThirdPartyForm({ThirdPartyModel? thirdPart, int index = 0}) async {
     EasyLoading.show();
-    await Future.delayed(const Duration(seconds: 5));
+    await Future.delayed(const Duration(seconds: 3));
     EasyLoading.dismiss();
     Functions.showSimpleBottomSheet(
       ctxt: context,
       widget: ThirdPartForm(
         thirdPart: thirdPart,
+        index: index,
       ),
     );
   }

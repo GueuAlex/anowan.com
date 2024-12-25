@@ -137,7 +137,7 @@ class _OrderScreenState extends ConsumerState<OrderScreen> {
       appBar: AppBar(
         elevation: 0,
         title: AppText.medium(_event.name),
-        centerTitle: true,
+        centerTitle: false,
         backgroundColor: Colors.white,
         leading: AppBarLeading(),
       ),

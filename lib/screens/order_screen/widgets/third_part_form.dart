@@ -18,9 +18,11 @@ class ThirdPartForm extends ConsumerStatefulWidget {
   const ThirdPartForm({
     super.key,
     this.thirdPart,
+    required this.index,
   });
 
   final ThirdPartyModel? thirdPart;
+  final int index;
 
   @override
   _ThirdPartFormState createState() => _ThirdPartFormState();
@@ -80,7 +82,7 @@ class _ThirdPartFormState extends ConsumerState<ThirdPartForm> {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 15),
                     child: AppText.medium(
-                      'Par quel moyen le bénéficiaire recevra le(s) billet(s) ?',
+                      'Par quel moyen le bénéficiaire recevra le billet ?',
                       fontWeight: FontWeight.w400,
                       color: const Color.fromARGB(255, 46, 46, 46),
                     ),
@@ -200,7 +202,7 @@ class _ThirdPartFormState extends ConsumerState<ThirdPartForm> {
                     padding: const EdgeInsets.symmetric(horizontal: 15),
                     child: Container(
                       width: double.infinity,
-                      height: (size.height * 0.05),
+                      height: (size.height * 0.055),
                       decoration: BoxDecoration(
                         color: Color.fromARGB(5, 61, 68, 74),
                         border: Border.all(
@@ -218,7 +220,7 @@ class _ThirdPartFormState extends ConsumerState<ThirdPartForm> {
                             ),
                             child: Container(
                               width: 70,
-                              height: (size.height * 0.05),
+                              height: (size.height * 0.055),
                               padding: const EdgeInsets.all(5),
                               alignment: Alignment.center,
                               margin: const EdgeInsets.only(right: 8),
@@ -284,8 +286,10 @@ class _ThirdPartFormState extends ConsumerState<ThirdPartForm> {
                     padding: const EdgeInsets.symmetric(horizontal: 15),
                     child: CustomButton(
                       color: Palette.appRed,
+                      isSetting: true,
+                      fontsize: 14,
                       width: double.infinity,
-                      height: 35,
+                      height: 40,
                       radius: 5,
                       text: 'Enregistrer le bénéficiaire',
                       onPress: () => _handleThirdParty(),
@@ -346,8 +350,29 @@ class _ThirdPartFormState extends ConsumerState<ThirdPartForm> {
       phone: _bphoneController.text,
       zipcode: country!.zipCode,
     );
-    ref.read(thirdPartyProvider.notifier).state = thirdParty;
+    updateThirdParty(widget.index, thirdParty, ref);
+
     EasyLoading.dismiss();
     Navigator.pop(context);
+  }
+
+  void updateThirdParty(int index, ThirdPartyModel thirdParty, WidgetRef ref) {
+    // Lire la liste actuelle des tickets
+    final currentList = ref.read(selectedTickedProvider);
+
+    if (currentList == null || index < 0 || index >= currentList.length) {
+      // Gestion des cas où la liste est vide ou l'index est invalide
+      return;
+    }
+
+    // Créer une nouvelle liste en modifiant l'élément à l'index spécifié
+    final updatedList = [...currentList];
+    updatedList[index] = SelectedTickeModel(
+      passId: updatedList[index].passId,
+      thirdParty: thirdParty, // Mise à jour de la propriété thirdParty
+    );
+
+    // Mettre à jour le provider avec la nouvelle liste
+    ref.read(selectedTickedProvider.notifier).state = updatedList;
   }
 }

@@ -31,6 +31,8 @@
 		<key>LSApplicationQueriesSchemes</key>
 		<array>
 			<string>url</string>
+			<string>tel</string>
+			<string>mailto</string>
 		</array>
 		<key>UISupportedInterfaceOrientations</key>
 		<array>

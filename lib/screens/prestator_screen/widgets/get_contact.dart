@@ -23,6 +23,11 @@ class GetContact extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 5),
       child: InkWell(
+        focusColor: Colors.transparent,
+        hoverColor: Colors.transparent,
+        splashColor: Colors.transparent,
+        overlayColor: WidgetStatePropertyAll(Colors.transparent),
+        highlightColor: Colors.transparent,
         onTap: onTap,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,

@@ -50,6 +50,23 @@ class RemoteService {
     }
   }
 
+  Future<http.Response> putSomethings2({
+    required String api,
+    required Map<String, dynamic> data,
+  }) async {
+    ////////// parse our url /////////////////////
+    var url = Uri.parse(baseUri + api);
+    //var postEmail = {"email": email};
+    ///////////// encode email to json objet/////////
+    var payload = jsonEncode(data);
+    // http request headers
+
+    var response = await client.put(url, body: payload, headers: headers);
+    print('------------------------${response.statusCode}');
+    // print('------------------------///////////////////${response.body}');
+    return response;
+  }
+
   //////////////////////////////// get single user by id //////////////////////
   ///
   Future<http.Response> getTicket({required String uniqueCode}) async {
@@ -64,6 +81,15 @@ class RemoteService {
   ///
   Future<http.Response> getEvent({required String uniqueCode}) async {
     var uri = Uri.parse('${baseUri}events/$uniqueCode');
+    var response = await client.get(uri, headers: headers);
+    //print('my user Dans remote /////////////////////////// : ${response.body}');
+    print('Dans remote////////////////////////////// : ${response.statusCode}');
+
+    return response;
+  }
+
+  Future<http.Response> getCarton({required String uniqueCode}) async {
+    var uri = Uri.parse('${baseUri}invitation-card/scan/$uniqueCode');
     var response = await client.get(uri, headers: headers);
     //print('my user Dans remote /////////////////////////// : ${response.body}');
     print('Dans remote////////////////////////////// : ${response.statusCode}');

@@ -15,7 +15,7 @@ import '../../../providers/user.provider.dart';
 class CheckoutDetailsSheet extends ConsumerWidget {
   const CheckoutDetailsSheet({
     super.key,
-    required this.isThirdParty,
+    //required this.isThirdParty,
     required this.userName,
     required this.userFirstname,
     this.userEmail,
@@ -25,30 +25,32 @@ class CheckoutDetailsSheet extends ConsumerWidget {
   final String userFirstname;
   final String? userEmail;
   final String userPhone;
-  final bool isThirdParty;
+  //final bool isThirdParty;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // providers
     final event = ref.watch(selectedEventProvider);
-    final thirdPart = ref.watch(thirdPartyProvider);
+    //final thirdPart = ref.watch(thirdPartyProvider);
     final operator = ref.watch(selectedOperatorProvider);
     final selectedCountry = ref.watch(selectedCountryProvider);
     final selectedPass = ref.watch(selectedPassProvider);
     final totalPrice = ref.watch(totalPriceProvider);
     final user = ref.watch(userProvider);
-
-    final int tva = int.parse((0.01 * totalPrice).toStringAsFixed(0));
-    int total = 0;
-    if (thirdPart != null) {
-      if (thirdPart.recepient == 'SMS' || thirdPart.recepient == 'Les deux') {
-        total = totalPrice + tva + 100;
-      } else {
-        total = totalPrice + tva;
+    final selectedTickets = ref.watch(selectedTickedProvider) ?? [];
+    int smsFees = 0;
+    for (var ticket in selectedTickets) {
+      if (ticket.thirdParty != null &&
+          (ticket.thirdParty!.recepient == 'SMS' ||
+              ticket.thirdParty!.recepient == 'Les deux')) {
+        smsFees += 100;
       }
-    } else {
-      total = totalPrice + tva;
     }
+    print(smsFees);
+
+    final int tva =
+        int.parse((0.01 * (totalPrice + smsFees)).round().toString());
+    int total = totalPrice + tva + smsFees;
 
     final size = MediaQuery.of(context).size;
     return Container(
@@ -134,13 +136,15 @@ class CheckoutDetailsSheet extends ConsumerWidget {
                   ),
                   checkoutRowInfos(
                     title: 'ACHAT',
-                    columnTitle: 'VOS PASSES',
+                    columnTitle: selectedTickets.length == 1
+                        ? 'VOTRE BILLET'
+                        : 'VOS BILLETS',
                     columnValue: formatSelectedPasses(
                       passes: event!.passes ?? [],
                       selectedPass: selectedPass,
                     ),
                   ),
-                  if (thirdPart != null)
+                  /*   if (thirdPart != null)
                     if (thirdPart.recepient == 'Les deux')
                       checkoutRowInfos(
                         title: 'ENVOYÉ À',
@@ -163,7 +167,12 @@ class CheckoutDetailsSheet extends ConsumerWidget {
                         title: 'SMS',
                         columnTitle: '100 ₣',
                         columnValue: 'Frais d\'envoi de sms',
-                      ),
+                      ), */
+                  checkoutRowInfos(
+                    title: 'SMS',
+                    columnTitle: '$smsFees ₣',
+                    columnValue: 'Frais d\'envoi de sms',
+                  ),
                   checkoutRowInfos(
                     title: 'TVA/HT',
                     columnTitle: '$tva ₣',
@@ -171,7 +180,8 @@ class CheckoutDetailsSheet extends ConsumerWidget {
                   ),
                   checkoutRowInfos(
                     title: 'TOTAL',
-                    columnTitle: '$total ₣',
+                    columnTitle:
+                        '${Functions.numberFormat(total.toString())} ₣',
                     columnValue: '',
                     isLast: true,
                   ),
@@ -187,6 +197,8 @@ class CheckoutDetailsSheet extends ConsumerWidget {
                 color: Palette.appRed,
                 width: double.infinity,
                 height: 40,
+                isSetting: true,
+                fontsize: 14,
                 radius: 5,
                 text: 'Finaliser la commande',
                 onPress: () {
@@ -207,13 +219,17 @@ class CheckoutDetailsSheet extends ConsumerWidget {
                   selectedPass.forEach((key, value) {
                     print('pass id : $key');
                     print('nombre de tickets : $value');
-                    tickets.add({
-                      'event_id': event.id,
-                      'order_id': order['id'], //////// c'est  a revoir
-                      'pass_id': key,
-                      'participant_id': user != null ? user.id : null,
-                    });
+
+                    for (int i = 0; i < value; i++) {
+                      tickets.add({
+                        'event_id': event.id,
+                        'order_id': order['id'], // À revoir selon votre logique
+                        'pass_id': key,
+                        'participant_id': user != null ? user.id : null,
+                      });
+                    }
                   });
+                  print(tickets);
                 },
               ),
             ),
@@ -321,3 +337,57 @@ class CheckoutDetailsSheet extends ConsumerWidget {
     return passDescriptions.join(' - ');
   }
 }
+
+var orderData = {
+  "user_auth":
+      true, // toujours true ? (je sais pas à quoi ça sert, tu va m'expliquer)
+  "participant_id":
+      null, // null si le user n'est pas connecté et non null s'il est connecté (peu import s'il achete pour lui même ou pour quelqu'un d'autre)
+  "event_id": 1, // l'id de l'event concerné
+  "amount_ht":
+      000, // je crois que c'est le montant hors taxes mais j'aurai besoin de comprendre certaines choses (genrs à quel moment y'a des taxes).
+  "sms_quantity": 00, // quantité des sms ? besoin de clarification
+  "fees": 00, // frais de quoi ?
+  "sms_fees": 00, // frais des sms comment c'est calculé ?
+  "amount": 000, // montant total de la commande (fees + amount_ht + sms_fees)
+  "comments": null, // commentaires du client,
+  "tickets": [
+    // il peut  avoir plusieurs selection du même pass ou de pass différents alors tickets[] représente ula liste de ces selections
+    {
+      "pass_id": 1, // l'id du pass selectionné
+      "send_to": {
+        // send to: null si le user connecté achète pour lui même ou null s'il a décider de ne pas envoyer à qqn (dans ce cas c'est pour lui meme).
+        "first_name": "Koffi",
+        "last_name": "Jean Paul",
+        "phone": "07890000000", // nullable en fonction du choix d'envoi
+        "email": "example@gmail.com", // nullable en fonction du choix d'envoi
+        "will_receive_by_phone":
+            true, // si le user a choisi de transmettre le ticket par sms,
+        "will_receive_by_email":
+            true, // s'il à choisi de transmettre par email.
+        "both": true, // s'il à choisi de transmettre par sms et phone.
+      },
+    },
+    {
+      "pass_id": 1, // l'id du pass selectionné
+      "send_to":
+          null // send to: null si le user connecté achète pour lui même ou null s'il a décider de ne pas envoyer à qqn (dans ce cas c'est pour lui meme).,
+    },
+    {
+      "pass_id": 2, // l'id du pass selectionné
+      "send_to": {
+        //// send to: null si le user connecté achète pour lui même ou null s'il a décider de ne pas envoyer à qqn (dans ce cas c'est pour lui meme).
+        "first_name": "N'DRI",
+        "last_name": "Mireille",
+        "phone": "07890000000", // nullable en fonction du choix d'envoi
+        "email": "example@gmail.com", // nullable en fonction du choix d'envoi
+        "will_receive_by_phone":
+            true, // si le user a choisi de transmettre le ticket par sms,
+        "will_receive_by_email":
+            true, // s'il à choisi de transmettre par email.
+        "both": true, // s'il à choisi de transmettre par sms et phone.
+      },
+    }
+    // etc ...
+  ]
+};

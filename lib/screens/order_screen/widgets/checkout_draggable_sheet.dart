@@ -95,7 +95,7 @@ class _CheckoutDraggableSheetState
           ),
           child: ListView.builder(
             padding: EdgeInsets.zero,
-            physics: NeverScrollableScrollPhysics(),
+            physics: BouncingScrollPhysics(),
             controller: scrollSheetController,
             itemCount: 1,
             itemBuilder: (BuildContext context, int index) {
@@ -235,7 +235,7 @@ class _CheckoutDraggableSheetState
     return CustomeAnimatedSlide(
       child: Container(
         margin: EdgeInsets.only(top: kToolbarHeight),
-        height: size.height,
+        //height: size.height,
         width: double.infinity,
         child: CheckoutForm(
           onCancel: _backToSelection,

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:audioplayers/audioplayers.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +16,7 @@ import 'package:vibration/vibration.dart';
 import '../../../config/overlay.dart';
 import '../../../providers/providers.dart';
 import '../../../widgets/error_sheet_container.dart';
+import 'widgets/carton_sheet.dart';
 import 'widgets/error_sheet.dart';
 import 'widgets/phical_ticket_sheet.dart';
 import 'widgets/scan_sheet.dart';
@@ -290,6 +293,7 @@ class _ScanScreenState extends ConsumerState<ScanScreen>
     with WidgetsBindingObserver {
   bool isScanCompleted = false;
   bool isFlashOn = false;
+  String _selectedSwitch = 'Billets';
   MobileScannerController mobileScannerController = MobileScannerController();
 
   @override
@@ -335,14 +339,19 @@ class _ScanScreenState extends ConsumerState<ScanScreen>
 
     if (ticketCode != null) {
       EasyLoading.show();
-      if (ticketCode.toString().length <= 10) {
+      if (data.length <= 10) {
         // fetch physical ticket data
-        return _fetchPysicalTicket(code: ticketCode);
+        _fetchPysicalTicket(code: data);
+        return;
+      }
+      //
+      if (_selectedSwitch == 'Carton') {
+        _fetchCarton(code: data);
+        return;
       }
 
       try {
-        final res =
-            await RemoteService().getTicket(uniqueCode: ticketCode.toString());
+        final res = await RemoteService().getTicket(uniqueCode: data);
 
         if (res.statusCode == 200 || res.statusCode == 201) {
           TicketModel ticket = ticketModelFromJson(res.body);
@@ -354,7 +363,8 @@ class _ScanScreenState extends ConsumerState<ScanScreen>
             setState(() => isScanCompleted = false);
           });
         } else {
-          await _showError().whenComplete(() {
+          EasyLoading.dismiss();
+          await error(context: context).whenComplete(() {
             setState(() => isScanCompleted = false);
           });
           ;
@@ -363,6 +373,7 @@ class _ScanScreenState extends ConsumerState<ScanScreen>
         EasyLoading.dismiss();
       }
     } else {
+      EasyLoading.dismiss();
       Vibration.vibrate(duration: 200);
       await _showError().whenComplete(() {
         setState(() => isScanCompleted = false);
@@ -370,7 +381,53 @@ class _ScanScreenState extends ConsumerState<ScanScreen>
     }
   }
 
-  void _fetchPysicalTicket({required int code}) async {
+  void _fetchCarton({required String code}) async {
+    // check if inspecto token is set
+
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final String? _token = prefs.getString("scantoken");
+    if (_token == null) {
+      EasyLoading.dismiss();
+      await Functions.showSimpleBottomSheet(
+        ctxt: context,
+        widget: TokenChecker(),
+      );
+      setState(() {
+        isScanCompleted = false;
+      });
+    } else {
+      RemoteService().getCarton(uniqueCode: code).then((res) async {
+        if (res.statusCode == 200 || res.statusCode == 201) {
+          // EventModel _ticket = eventModelFromJson(res.body);
+          var data = jsonDecode(res.body);
+          String code = data['data']['unique_code'] ?? '';
+          bool isCanned = data['data']['scanned'] == 1 ? true : false;
+          EasyLoading.dismiss();
+          await AudioPlayer().play(AssetSource('images/soung.mp3'));
+          Functions.showSimpleBottomSheet(
+            ctxt: context,
+            widget: CartonSheet(
+              uniqueCode: code,
+              isCanned: isCanned,
+              token: _token,
+            ),
+          ).whenComplete(() {
+            setState(() {
+              isScanCompleted = false;
+            });
+          });
+        } else {
+          EasyLoading.dismiss();
+          await error(context: context);
+          setState(() {
+            isScanCompleted = false;
+          });
+        }
+      });
+    }
+  }
+
+  void _fetchPysicalTicket({required String code}) async {
     // check if inspecto token is set
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final String? token = prefs.getString("scantoken");
@@ -384,7 +441,7 @@ class _ScanScreenState extends ConsumerState<ScanScreen>
         isScanCompleted = false;
       });
     } else {
-      RemoteService().getEvent(uniqueCode: code.toString()).then((res) async {
+      RemoteService().getEvent(uniqueCode: code).then((res) async {
         if (res.statusCode == 200 || res.statusCode == 201) {
           // EventModel _ticket = eventModelFromJson(res.body);
           EasyLoading.dismiss();
@@ -480,7 +537,50 @@ class _ScanScreenState extends ConsumerState<ScanScreen>
               ],
             ),
           ),
+          Positioned(
+            bottom: 100,
+            left: 0,
+            right: 0,
+            child: Container(
+              margin: const EdgeInsets.symmetric(horizontal: 100),
+              padding: const EdgeInsets.all(6),
+              decoration: BoxDecoration(
+                color: Colors.grey.withOpacity(0.45),
+                borderRadius: BorderRadius.circular(100),
+              ),
+              child: Row(
+                children: [
+                  Expanded(child: _switch()),
+                  Expanded(child: _switch(text: 'Carton')),
+                ],
+              ),
+            ),
+          ),
         ],
+      ),
+    );
+  }
+
+  Container _switch({String text = 'Billets'}) {
+    bool isSelected = text == _selectedSwitch;
+    return Container(
+      padding: const EdgeInsets.all(7.0),
+      decoration: BoxDecoration(
+        color: isSelected ? Colors.white : Colors.transparent,
+        borderRadius: BorderRadius.circular(100),
+      ),
+      child: InkWell(
+        onTap: () => setState(() => _selectedSwitch = text),
+        child: Center(
+          child: Text(
+            text,
+            style: TextStyle(
+              color: isSelected ? Colors.black : Colors.white,
+              fontSize: 14,
+              fontWeight: FontWeight.w700,
+            ),
+          ),
+        ),
       ),
     );
   }

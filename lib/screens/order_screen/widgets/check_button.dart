@@ -31,24 +31,26 @@ class CheckButton extends StatelessWidget {
             value: value,
             onChanged: onChanged,
             checkColor: Colors.white,
-            fillColor: WidgetStatePropertyAll(Palette.appRed),
+            //fillColor: WidgetStatePropertyAll(Palette.appRed),
             activeColor: Palette.appRed,
           ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Gap(7),
-              AppText.medium(
-                title,
-                fontWeight: FontWeight.w400,
-              ),
-              AppText.small(
-                subtitle,
-                fontWeight: FontWeight.w300,
-                maxLine: 1,
-                textOverflow: TextOverflow.ellipsis,
-              )
-            ],
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Gap(7),
+                AppText.medium(
+                  title,
+                  fontWeight: FontWeight.w400,
+                ),
+                AppText.small(
+                  subtitle,
+                  fontWeight: FontWeight.w300,
+                  maxLine: 2,
+                  textOverflow: TextOverflow.ellipsis,
+                )
+              ],
+            ),
           )
         ],
       ),

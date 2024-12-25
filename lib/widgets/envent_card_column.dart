@@ -31,16 +31,7 @@ Widget eventCardColumn(
           border: Border.all(
             width: 0.8,
             color: const Color.fromARGB(255, 216, 216, 216),
-          )
-          /*  boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.3),
-            spreadRadius: 2,
-            blurRadius: 3,
-            offset: Offset(0, 1), // changes position of shadow
-          ),
-        ], */
-          ),
+          )),
       margin: EdgeInsets.only(top: 20, bottom: 45, right: 20),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(8.0),
@@ -52,13 +43,6 @@ Widget eventCardColumn(
               Container(
                 width: double.infinity,
                 height: MediaQuery.of(context).size.height / 6.8,
-                /*  decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: NetworkImage(event.image),
-                    /* image: AssetImage("assets/images/two.png"), */
-                    fit: BoxFit.cover,
-                  ),
-                ), */
                 child: FadeInImage.assetNetwork(
                   placeholder: 'assets/images/anowan-placeholder.png',
                   image: event.image ?? networtImgPlaceholder,

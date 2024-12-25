@@ -32,6 +32,11 @@ class AboutPrestator extends StatelessWidget {
                 color: Colors.black87,
               ),
               InkWell(
+                focusColor: Colors.transparent,
+                hoverColor: Colors.transparent,
+                splashColor: Colors.transparent,
+                overlayColor: WidgetStatePropertyAll(Colors.transparent),
+                highlightColor: Colors.transparent,
                 onTap: () => Functions.showSimpleBottomSheet(
                   ctxt: context,
                   widget: prestatorDescriptionSheet(

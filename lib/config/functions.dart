@@ -40,6 +40,7 @@ class Functions {
     bool isMargin = false,
   }) async {
     return await showModalBottomSheet(
+      // sheetAnimationStyle: SheetAnimationStyle.slideInBottom,
       enableDrag: false,
       backgroundColor: Colors.transparent,
       isScrollControlled: true,
@@ -429,6 +430,14 @@ class Functions {
 
     if (!await launchUrl(_url)) {
       Functions.showToast(msg: 'Could not launch $_url');
+    }
+  }
+
+  static Future<void> launchUri2({required Uri url}) async {
+    //final Uri _url = Uri.parse(url);
+
+    if (!await launchUrl(url)) {
+      Functions.showToast(msg: 'Could not launch ${url.toString()}');
     }
   }
 

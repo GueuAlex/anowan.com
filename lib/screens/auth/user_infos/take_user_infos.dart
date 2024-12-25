@@ -289,8 +289,10 @@ class _TakeUserInfosState extends State<TakeUserInfos> {
     );
   }
 
-  Container _genderSelector() {
-    return Container(
+  _genderSelector() {
+    return Functions.showSimpleBottomSheet(
+      ctxt: context,
+      widget: Container(
         padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
         width: double.infinity,
         height: MediaQuery.of(context).size.height * 0.35,
@@ -348,7 +350,9 @@ class _TakeUserInfosState extends State<TakeUserInfos> {
               ),
             )
           ],
-        ));
+        ),
+      ),
+    );
   }
 
   void _submit(OTPScrenArgs args) async {

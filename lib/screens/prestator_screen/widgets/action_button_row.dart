@@ -1,14 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
-import 'package:ticketwave/config/app_text.dart';
-import 'package:ticketwave/config/palette.dart';
-import 'package:ticketwave/widgets/vertical_separator.dart';
+
+import '../../../config/app_text.dart';
+import '../../../config/functions.dart';
+import '../../../model/prestator_model.dart';
+import '../../../widgets/vertical_separator.dart';
+import 'comments_view.dart';
 
 class ActionButtonsRow extends StatelessWidget {
   const ActionButtonsRow({
     super.key,
+    required this.prestator,
   });
+  final PrestatorMdel prestator;
 
   @override
   Widget build(BuildContext context) {
@@ -20,11 +25,25 @@ class ActionButtonsRow extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              _rateButton(onTap: () {}),
+              _rateButton(
+                onTap: () => Functions.showSimpleBottomSheet(
+                  ctxt: context,
+                  widget: CommentsView(),
+                ),
+              ),
               Gap(8),
               _button(onTap: () {}),
               Gap(8),
-              _button(onTap: () {}, isShare: false),
+              if (prestator.address != null)
+                _button(
+                    onTap: () {
+                      final Uri emailLaunchUri = Uri(
+                        scheme: 'mailto',
+                        path: '${prestator.address}',
+                      );
+                      Functions.launchUri2(url: emailLaunchUri);
+                    },
+                    isShare: false),
             ],
           ),
         ),
@@ -34,11 +53,16 @@ class ActionButtonsRow extends StatelessWidget {
 
   Widget _rateButton({required VoidCallback onTap}) {
     return InkWell(
+      focusColor: Colors.transparent,
+      hoverColor: Colors.transparent,
+      splashColor: Colors.transparent,
+      overlayColor: WidgetStatePropertyAll(Colors.transparent),
+      highlightColor: Colors.transparent,
       onTap: onTap,
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
         decoration: BoxDecoration(
-          color: Palette.primaryColor.withOpacity(0.14),
+          color: const Color.fromARGB(255, 140, 140, 140).withOpacity(0.14),
           borderRadius: BorderRadius.circular(3.5),
         ),
         child: Row(
@@ -47,7 +71,7 @@ class ActionButtonsRow extends StatelessWidget {
             AppText.medium(
               '4.5 ',
               fontSize: 15,
-              fontWeight: FontWeight.w800,
+              fontWeight: FontWeight.w600,
             ),
             Gap(3),
             SvgPicture.asset(
@@ -70,9 +94,9 @@ class ActionButtonsRow extends StatelessWidget {
   Widget _button({required VoidCallback onTap, bool isShare = true}) {
     return InkWell(
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
         decoration: BoxDecoration(
-          color: Palette.primaryColor.withOpacity(0.14),
+          color: const Color.fromARGB(255, 140, 140, 140).withOpacity(0.14),
           borderRadius: BorderRadius.circular(3.5),
         ),
         child: !isShare
@@ -84,7 +108,7 @@ class ActionButtonsRow extends StatelessWidget {
               )
             : AppText.medium(
                 'Partager ce profile',
-                fontWeight: FontWeight.w700,
+                fontWeight: FontWeight.w600,
               ),
       ),
     );

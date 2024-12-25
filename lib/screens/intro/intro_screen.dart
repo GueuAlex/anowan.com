@@ -75,7 +75,9 @@ class IntroScrenn extends StatelessWidget {
             SafeArea(
               top: false,
               child: Row(
-                mainAxisSize: MainAxisSize.min,
+                //mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Container(
                     //color: Colors.amber,
@@ -125,6 +127,7 @@ class IntroScrenn extends StatelessWidget {
                       ),
                     ),
                   ),
+                  // const Gap(20),
                 ],
               ),
             ),

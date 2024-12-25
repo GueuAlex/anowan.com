@@ -1,6 +1,7 @@
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:ticketwave/config/functions.dart';
 
 import '../../../config/app_text.dart';
 import '../../../config/palette.dart';
@@ -130,43 +131,32 @@ class PrestatorHeader extends StatelessWidget {
                   GetContact(
                     svgPah: 'assets/icons/appel-de-notation-par-etoiles.svg',
                     text: 'Appeler',
-                    onTap: () {},
+                    onTap: () {
+                      final Uri emailLaunchUri = Uri(
+                        scheme: 'tel',
+                        path: '+225${prestator.phone1}',
+                      );
+                      Functions.launchUri2(url: emailLaunchUri);
+                    },
                   ),
                   verticalSeparator(),
                   GetContact(
                     svgPah: 'assets/icons/whatsapp-line.svg',
                     text: 'WhatsApp',
-                    onTap: () {},
+                    onTap: () => Functions.launchUri(
+                      url: 'https://wa.me/${prestator.phone1}',
+                    ),
                   ),
-                  verticalSeparator(),
-                  MoreContact(prestator: prestator)
-                  /*  verticalSeparator(),
-                  GetContact(
-                    svgPah: 'assets/icons/facebook-line.svg',
-                    text: 'Facebook',
-                    gap: 0,
-                    onTap: () {},
-                  ),
-                  verticalSeparator(),
-                  GetContact(
-                    svgPah: 'assets/icons/instagram-line.svg',
-                    text: 'Instagram',
-                    //gap: 0,
-                    onTap: () {},
-                  ),
-                  verticalSeparator(),
-                  GetContact(
-                    svgPah: 'assets/icons/global-line.svg',
-                    text: 'Site Web',
-                    //gap: 0,
-                    onTap: () {},
-                  ), */
+                  if (_asValableLink()) verticalSeparator(),
+                  if (_asValableLink()) MoreContact(prestator: prestator),
                 ],
               ),
             ),
           ),
           Gap(5),
-          ActionButtonsRow(),
+          ActionButtonsRow(
+            prestator: prestator,
+          ),
           Gap(15),
           AboutPrestator(prestator: prestator),
           Gap(30),
@@ -176,5 +166,14 @@ class PrestatorHeader extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  bool _asValableLink() {
+    return prestator.website != null ||
+        prestator.facebook != null ||
+        prestator.twitter != null ||
+        prestator.instagram != null ||
+        prestator.tiktok != null ||
+        prestator.linkedin != null;
   }
 }

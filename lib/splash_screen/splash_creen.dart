@@ -48,7 +48,7 @@ class _SplashSceenState extends State<SplashSceen>
             /*  WelcomeScreen.routeName, */
             /* SetupScreen.routeName, */
             /*  ScanScreen.routeName, */
-            /*  ScanScreen.routeName, */
+            /* ScanScreen.routeName, */
             /* (route) => false, */
           ),
         );

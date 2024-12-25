@@ -83,3 +83,17 @@ final selectedRecepientProvider = StateProvider<String>((ref) {
 final thirdPartyProvider = StateProvider<ThirdPartyModel?>((ref) {
   return null; // Catégorie par défaut
 });
+
+final selectedTickedProvider = StateProvider<List<SelectedTickeModel>?>((ref) {
+  return null; // Catégorie par défaut
+});
+
+class SelectedTickeModel {
+  final int passId;
+  final ThirdPartyModel? thirdParty;
+
+  SelectedTickeModel({
+    required this.passId,
+    this.thirdParty,
+  });
+}
