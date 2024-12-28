@@ -1,8 +1,13 @@
-import 'package:flutter/cupertino.dart';
+import 'dart:async';
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
+import 'package:ticketwave/remote_service/remote_service.dart';
 import 'package:ticketwave/widgets/custom_button.dart';
 
 import '../../../config/app_text.dart';
@@ -11,6 +16,8 @@ import '../../../config/palette.dart';
 import '../../../model/pass_model.dart';
 import '../../../providers/providers.dart';
 import '../../../providers/user.provider.dart';
+import '../om/om_otp_screen.dart';
+import 'checkout_row_infow.dart';
 
 class CheckoutDetailsSheet extends ConsumerWidget {
   const CheckoutDetailsSheet({
@@ -39,14 +46,16 @@ class CheckoutDetailsSheet extends ConsumerWidget {
     final user = ref.watch(userProvider);
     final selectedTickets = ref.watch(selectedTickedProvider) ?? [];
     int smsFees = 0;
+    int smsQuantity = 0;
     for (var ticket in selectedTickets) {
       if (ticket.thirdParty != null &&
           (ticket.thirdParty!.recepient == 'SMS' ||
               ticket.thirdParty!.recepient == 'Les deux')) {
         smsFees += 100;
+        smsQuantity += 1;
       }
     }
-    print(smsFees);
+    //             print(smsFees);
 
     final int tva =
         int.parse((0.01 * (totalPrice + smsFees)).round().toString());
@@ -201,35 +210,68 @@ class CheckoutDetailsSheet extends ConsumerWidget {
                 fontsize: 14,
                 radius: 5,
                 text: 'Finaliser la commande',
-                onPress: () {
-                  // create order
-                  Map<String, dynamic> order = {
-                    'event_id': event.id,
-                    'comments': 'ras',
-                    'amount_ht': totalPrice,
-                    'ticket_quantity':
-                        Functions.calculateTotalTickets(selectedPass),
-                    'orderable_id': user != null ? user.id : null,
+                onPress: () async {
+                  if (operator == null) {
+                    Functions.showToast(
+                      msg: 'Veuillez sélectionner un opérateur !',
+                    );
+                    return;
+                  }
+
+                  EasyLoading.show();
+
+                  final orderData = {
+                    "user_auth": user != null,
+                    "participant_id": user != null ? user.id : null,
+                    "event_id": event.id,
+                    "amount_ht": totalPrice,
+                    "sms_quantity": smsQuantity,
+                    "fees": tva,
+                    "sms_fees": smsFees,
+                    "amount": total,
+                    "comments": '',
+                    "tickets": formatTickets(selectedTickets),
                   };
-                  print(order);
 
-                  /// post order
-                  /// then create tickets
-                  List<Map<String, dynamic>> tickets = [];
-                  selectedPass.forEach((key, value) {
-                    print('pass id : $key');
-                    print('nombre de tickets : $value');
+                  try {
+                    final r = await RemoteService()
+                        .postSomethings(api: 'orders', data: orderData)
+                        .timeout(const Duration(seconds: 10));
 
-                    for (int i = 0; i < value; i++) {
-                      tickets.add({
-                        'event_id': event.id,
-                        'order_id': order['id'], // À revoir selon votre logique
-                        'pass_id': key,
-                        'participant_id': user != null ? user.id : null,
-                      });
+                    EasyLoading.dismiss();
+
+                    if (r.statusCode == 200 || r.statusCode == 201) {
+                      final json = jsonDecode(r.body);
+                      String orderCode = json['unique_code'].toString();
+
+                      if (operator.name == 'Orange Money') {
+                        Navigator.pushNamed(
+                          context,
+                          OmOtpScreen.routeName,
+                          arguments: orderCode,
+                        );
+                      }
+                    } else {
+                      Functions.showToast(
+                          msg:
+                              'Erreur : ${r.statusCode}. Veuillez réessayer plus tard.');
                     }
-                  });
-                  print(tickets);
+                  } on TimeoutException {
+                    EasyLoading.dismiss();
+                    Functions.showToast(
+                        msg:
+                            'Temps de connexion dépassé. Vérifiez votre connexion internet.');
+                  } on SocketException {
+                    EasyLoading.dismiss();
+                    Functions.showToast(
+                        msg:
+                            'Pas de connexion Internet. Vérifiez votre réseau.');
+                  } catch (e) {
+                    EasyLoading.dismiss();
+                    Functions.showToast(
+                        msg: 'Une erreur s\'est produite. Veuillez réessayer.');
+                    debugPrint('Erreur: $e');
+                  }
                 },
               ),
             ),
@@ -238,85 +280,6 @@ class CheckoutDetailsSheet extends ConsumerWidget {
       ),
     );
   }
-
-  Container checkoutRowInfos({
-    required title,
-    required String columnTitle,
-    required String columnValue,
-    bool isAsset = false,
-    bool isLast = false,
-  }) =>
-      Container(
-        padding: const EdgeInsets.symmetric(
-          horizontal: 15,
-          vertical: 10,
-        ),
-        decoration: BoxDecoration(
-          border: Border(
-            bottom: isLast
-                ? BorderSide.none
-                : BorderSide(color: Palette.separatorColor, width: 0.8),
-          ),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Container(
-              width: 100,
-              child: Container(
-                padding: const EdgeInsets.all(6),
-                constraints: BoxConstraints(maxWidth: 30, maxHeight: 30),
-                child: isAsset
-                    ? Image.asset(title)
-                    : AppText.medium(
-                        title,
-                        color: Color.fromARGB(255, 137, 141, 150),
-                        fontWeight: FontWeight.w700,
-                      ),
-              ),
-            ),
-            Expanded(
-              child: columnValue.trim().isNotEmpty
-                  ? Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        AppText.medium(
-                          columnTitle.toUpperCase(),
-                          fontWeight: FontWeight.w700,
-                          maxLine: 1,
-                          textOverflow: TextOverflow.ellipsis,
-                          color: Color.fromARGB(255, 137, 141, 150),
-                          fontSize: 14,
-                          textAlign: TextAlign.right,
-                        ),
-                        AppText.small(
-                          columnValue,
-                          color: Color.fromARGB(255, 62, 65, 71),
-                          fontSize: 14,
-                        )
-                      ],
-                    )
-                  : AppText.medium(
-                      columnTitle,
-                      maxLine: 1,
-                      textOverflow: TextOverflow.ellipsis,
-                      fontWeight: FontWeight.w800,
-                      fontSize: 14,
-                      textAlign: TextAlign.left,
-                      color: Color.fromARGB(255, 137, 141, 150),
-                    ),
-            ),
-            SizedBox(
-              width: 30,
-              child: Icon(
-                CupertinoIcons.chevron_right,
-                color: Color.fromARGB(255, 125, 124, 124),
-                size: 16,
-              ),
-            ),
-          ],
-        ),
-      );
 
   // Fonction pour formater la sélection de passes
   String formatSelectedPasses({
@@ -336,58 +299,28 @@ class CheckoutDetailsSheet extends ConsumerWidget {
 
     return passDescriptions.join(' - ');
   }
-}
 
-var orderData = {
-  "user_auth":
-      true, // toujours true ? (je sais pas à quoi ça sert, tu va m'expliquer)
-  "participant_id":
-      null, // null si le user n'est pas connecté et non null s'il est connecté (peu import s'il achete pour lui même ou pour quelqu'un d'autre)
-  "event_id": 1, // l'id de l'event concerné
-  "amount_ht":
-      000, // je crois que c'est le montant hors taxes mais j'aurai besoin de comprendre certaines choses (genrs à quel moment y'a des taxes).
-  "sms_quantity": 00, // quantité des sms ? besoin de clarification
-  "fees": 00, // frais de quoi ?
-  "sms_fees": 00, // frais des sms comment c'est calculé ?
-  "amount": 000, // montant total de la commande (fees + amount_ht + sms_fees)
-  "comments": null, // commentaires du client,
-  "tickets": [
-    // il peut  avoir plusieurs selection du même pass ou de pass différents alors tickets[] représente ula liste de ces selections
-    {
-      "pass_id": 1, // l'id du pass selectionné
-      "send_to": {
-        // send to: null si le user connecté achète pour lui même ou null s'il a décider de ne pas envoyer à qqn (dans ce cas c'est pour lui meme).
-        "first_name": "Koffi",
-        "last_name": "Jean Paul",
-        "phone": "07890000000", // nullable en fonction du choix d'envoi
-        "email": "example@gmail.com", // nullable en fonction du choix d'envoi
-        "will_receive_by_phone":
-            true, // si le user a choisi de transmettre le ticket par sms,
-        "will_receive_by_email":
-            true, // s'il à choisi de transmettre par email.
-        "both": true, // s'il à choisi de transmettre par sms et phone.
-      },
-    },
-    {
-      "pass_id": 1, // l'id du pass selectionné
-      "send_to":
-          null // send to: null si le user connecté achète pour lui même ou null s'il a décider de ne pas envoyer à qqn (dans ce cas c'est pour lui meme).,
-    },
-    {
-      "pass_id": 2, // l'id du pass selectionné
-      "send_to": {
-        //// send to: null si le user connecté achète pour lui même ou null s'il a décider de ne pas envoyer à qqn (dans ce cas c'est pour lui meme).
-        "first_name": "N'DRI",
-        "last_name": "Mireille",
-        "phone": "07890000000", // nullable en fonction du choix d'envoi
-        "email": "example@gmail.com", // nullable en fonction du choix d'envoi
-        "will_receive_by_phone":
-            true, // si le user a choisi de transmettre le ticket par sms,
-        "will_receive_by_email":
-            true, // s'il à choisi de transmettre par email.
-        "both": true, // s'il à choisi de transmettre par sms et phone.
-      },
-    }
-    // etc ...
-  ]
-};
+//////// Fonction pour formater les données des tickets
+  List<Map<String, dynamic>> formatTickets(
+      List<SelectedTickeModel> selectedTickets) {
+    return selectedTickets.map((ticket) {
+      return {
+        "pass_id": ticket.passId,
+        "send_to": ticket.thirdParty != null
+            ? {
+                "first_name": ticket.thirdParty!.name,
+                "last_name": ticket.thirdParty!.firstname,
+                "phone": ticket.thirdParty!.phone,
+                "email": ticket.thirdParty!.email,
+                "zip_code": '+${ticket.thirdParty!.zipcode}',
+                "will_receive_by_phone":
+                    ticket.thirdParty!.recepient.contains("SMS"),
+                "will_receive_by_email":
+                    ticket.thirdParty!.recepient.contains("E-mail"),
+                "both": ticket.thirdParty!.recepient == "Les deux",
+              }
+            : null, // Si le ticket est pour l'utilisateur lui-même
+      };
+    }).toList();
+  }
+}

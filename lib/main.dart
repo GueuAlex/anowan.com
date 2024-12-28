@@ -20,6 +20,7 @@ import 'screens/auth/pass_code/pass_code_screen.dart';
 import 'screens/checkout_screen/checkout_screen.dart';
 import 'screens/intro/intro_screen.dart';
 import 'screens/maps_screen/maps_screen.dart';
+import 'screens/order_screen/om/om_otp_screen.dart';
 import 'screens/order_screen/order_screen.dart';
 import 'screens/organizer_screen/organizer_screen.dart';
 import 'screens/prestator_screen/prestator_screen.dart';
@@ -115,6 +116,7 @@ class MyApp extends StatelessWidget {
           ProfilSettings.routeName: (ctxt) => const ProfilSettings(),
           SuggestionScreen.routeName: (ctxt) => const SuggestionScreen(),
           WelcomeScreen.routeName: (ctxt) => const WelcomeScreen(),
+          OmOtpScreen.routeName: (ctxt) => const OmOtpScreen()
         },
       ),
     );
