@@ -2,9 +2,9 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper_view/flutter_swiper_view.dart';
+import 'package:ticketwave/model/event_model.dart';
 
 import '../../constants/constants.dart';
-import '../../model/ticket_model.dart';
 import '../../widgets/app_bar.dart';
 import 'widgets/ticket_view_custom.dart';
 
@@ -20,7 +20,7 @@ class _TicketsSwapScreenState extends State<TicketsSwapScreen> {
   @override
   Widget build(BuildContext context) {
     final tickets =
-        ModalRoute.of(context)!.settings.arguments as List<TicketModel>;
+        ModalRoute.of(context)!.settings.arguments as TicketSwipArgs;
 
     return Scaffold(
       body: Stack(
@@ -29,7 +29,7 @@ class _TicketsSwapScreenState extends State<TicketsSwapScreen> {
           Positioned.fill(
             child: FadeInImage.assetNetwork(
               placeholder: 'assets/images/anowan-placeholder.png',
-              image: tickets[0].event.image ?? networtImgPlaceholder,
+              image: tickets.event.image ?? networtImgPlaceholder,
               fit: BoxFit.cover,
               imageErrorBuilder: (context, error, stackTrace) {
                 return Image.asset(
@@ -63,12 +63,14 @@ class _TicketsSwapScreenState extends State<TicketsSwapScreen> {
                       padding: const EdgeInsets.symmetric(horizontal: 10),
                       child: TicketViewCustom(
                         index: index + 1,
-                        ticket: tickets[index],
+                        ticket: tickets.tickets[index],
+                        event: tickets.event,
+                        passes: tickets.event.passes ?? [],
                       ),
                     ),
                   );
                 },
-                itemCount: tickets.length,
+                itemCount: tickets.tickets.length,
                 pagination: const SwiperPagination(),
                 // control: const SwiperControl(),
               ), // Votre widget
@@ -81,7 +83,7 @@ class _TicketsSwapScreenState extends State<TicketsSwapScreen> {
             child: SafeArea(
               child: AppBarCusttom(
                 leadingText: '',
-                title: '${tickets[0].event.name}',
+                title: '${tickets.event.name}',
               ),
             ),
           ),
@@ -89,4 +91,13 @@ class _TicketsSwapScreenState extends State<TicketsSwapScreen> {
       ),
     );
   }
+}
+
+class TicketSwipArgs {
+  TicketSwipArgs({
+    required this.tickets,
+    required this.event,
+  });
+  final List<dynamic> tickets;
+  final EventModel event;
 }

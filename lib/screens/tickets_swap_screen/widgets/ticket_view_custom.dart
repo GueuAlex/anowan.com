@@ -7,7 +7,8 @@ import 'package:intl/intl.dart';
 import 'package:ticketwave/config/app_text.dart';
 import 'package:ticketwave/config/functions.dart';
 import 'package:ticketwave/config/palette.dart';
-import 'package:ticketwave/model/ticket_model.dart';
+import 'package:ticketwave/model/event_model.dart';
+import 'package:ticketwave/model/pass_model.dart';
 import 'package:ticketwave/widgets/custom_button.dart';
 
 import '../../../constants/constants.dart';
@@ -18,13 +19,21 @@ class TicketViewCustom extends StatelessWidget {
     super.key,
     required this.index,
     required this.ticket,
+    required this.event,
+    required this.passes,
   });
   final int index;
-  final TicketModel ticket;
+  final dynamic ticket;
+  final EventModel event;
+  final List<PassModel> passes;
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+
+    final pass =
+        passes.firstWhere((element) => element.id == ticket['pass_id']);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisSize: MainAxisSize.min,
@@ -53,7 +62,7 @@ class TicketViewCustom extends StatelessWidget {
             ), */
             child: FadeInImage.assetNetwork(
               placeholder: 'assets/images/anowan-placeholder.png',
-              image: ticket.event.image ?? networtImgPlaceholder,
+              image: event.image ?? networtImgPlaceholder,
               fit: BoxFit.cover,
               imageErrorBuilder: (context, error, stackTrace) {
                 return Image.asset(
@@ -125,7 +134,7 @@ class TicketViewCustom extends StatelessWidget {
                       padding: EdgeInsets.symmetric(vertical: 4.0),
                       child: Center(
                         child: Text(
-                          '${ticket.pass.name.toUpperCase()}',
+                          '${pass.name.toUpperCase()}',
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 12.0,
@@ -138,19 +147,19 @@ class TicketViewCustom extends StatelessWidget {
                         Expanded(
                           child: InfosCard(
                             text2:
-                                '${DateFormat('dd/MM').format(ticket.event.localizations[0].dateEvent)}',
+                                '${DateFormat('dd/MM').format(event.localizations[0].dateEvent)}',
                           ),
                         ),
                         Expanded(
                           child: InfosCard(
                               text1: 'Heure',
                               text2:
-                                  '${ticket.event.localizations[0].starttimeEvent}'),
+                                  '${event.localizations[0].starttimeEvent}'),
                         ),
                         Expanded(
                           child: InfosCard(
                             text1: 'Prix',
-                            text2: '${ticket.pass.price} ₣',
+                            text2: '${pass.price} ₣',
                           ),
                         ),
                       ],
@@ -177,7 +186,7 @@ class TicketViewCustom extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 AppText.medium(
-                                  '${ticket.event.localizations[0].place}',
+                                  '${event.localizations[0].place}',
                                   maxLine: 1,
                                   textOverflow: TextOverflow.ellipsis,
                                 ),
@@ -216,7 +225,7 @@ class TicketViewCustom extends StatelessWidget {
                           Functions.showCustomDialog(
                             context: context,
                             child: QrcodeDialog(
-                              data: ticket.uniqueCode,
+                              data: ticket['unique_code'],
                             ),
                           );
                         },
@@ -231,7 +240,7 @@ class TicketViewCustom extends StatelessWidget {
                   ),
                   child: Center(
                     child: Text(
-                      '#${ticket.uniqueCode}',
+                      '#${ticket['unique_code']}',
                       style: TextStyle(
                         fontSize: 9,
                         fontWeight: FontWeight.w600,

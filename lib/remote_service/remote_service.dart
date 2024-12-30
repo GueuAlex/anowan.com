@@ -177,7 +177,7 @@ class RemoteService {
     }
   }
 
-  Future<List<Map<String, dynamic>>> getTickets({required int userId}) async {
+  Future<List<dynamic>> getTickets({required int userId}) async {
     try {
       var uri = Uri.parse('${baseUri}users/$userId/tickets');
       var response = await client.get(uri, headers: headers);
@@ -189,14 +189,15 @@ class RemoteService {
 
         print('tickets response body ----------> : $json');
 
+        // Retournez directement la liste de tickets
         return json['data'];
       } else {
         throw Exception(
-            'Failed to load events. Status code: ${response.statusCode}');
+            'Failed to load tickets. Status code: ${response.statusCode}');
       }
     } catch (e) {
-      print('Error fetching events: $e');
-      throw Exception('Error fetching events: $e');
+      print('Error fetching tickets: $e');
+      throw Exception('Error fetching tickets: $e');
     }
   }
 

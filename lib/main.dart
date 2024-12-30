@@ -122,36 +122,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
-/* var orderData = {
-  "user_auth": true, // toujours true ? (je sais pas à quoi ça sert, tu va m'expliquer)
-  "participant_id": null, // null si le user n'est pas connecté et non null s'il est connecté (peu import s'il achete pour lui même ou pour quelqu'un d'autre)
-  "envent_id": 1, // l'id de l'event concerné
-  "amount": 000, // montant total de la commande
-  "amount_ht": 000, // je crois que c'est le montant hors mais j'aurai besoin de comprendre certaines choses (genrs à quel moment y'a des taxes).
-  "fees": 00, // frais de quoi ?
-  "sms_fees": 00, // frais des sms comment c'est calculé ?
-  "sms_quantity": 00 ,// quantité des sms ? besoin de clarification
-  "comments": null, // commentaires du client,
-  "purchase_for": { // purchase_for: null si le user connecté achète pour lui même.
-    "first_name": "Koffi",
-    "last_name": "Jean Paul",
-    "phone": "07890000000", // nullable en fonction du choix d'envoi
-    "email": "example@gmail.com", // nullable en fonction du choix d'envoi
-    "will_receive_by_phone": true,// si le user a choisi de transmettre les ticket par sms,
-    "will_receive_by_email": true,// s'il à choisi transmettre par email.
-    "both": true, // s'il à choisi de transmettre par sms et phone.
-  },
-  "tickes": [
-    {
-      "pass_id": 1, // l'id du pass
-      "pass_quantity": 3, // la quantité selectionnée
-      
-    },
-    {
-      "pass_id": 1, // l'id du pass
-      "pass_quantity": 3, // la quantité selectionnée
-      
-    }
-  ]
-}; */

@@ -1,26 +1,32 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:banner_carousel/banner_carousel.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:intl/intl.dart';
+import 'package:ticketwave/providers/providers.dart';
 
 import '../../../config/app_text.dart';
 import '../../../config/palette.dart';
 import '../../../constants/constants.dart';
-import '../../../model/ticket_model.dart';
+import '../../../model/event_model.dart';
+import '../../../providers/user.provider.dart';
+import '../../../widgets/login_sheet.dart';
 import '../../tickets_swap_screen/tickets_swap_screen.dart';
 import 'ticket_preview.dart';
 import 'tickets_missing.dart';
 
-class UpCommingTickets extends StatefulWidget {
+class UpCommingTickets extends ConsumerStatefulWidget {
   const UpCommingTickets({
     super.key,
+    required this.tickets,
   });
+  final List<dynamic> tickets;
 
   @override
-  State<UpCommingTickets> createState() => _UpCommingTicketsState();
+  ConsumerState<UpCommingTickets> createState() => _UpCommingTicketsState();
 }
 
-class _UpCommingTicketsState extends State<UpCommingTickets> {
+class _UpCommingTicketsState extends ConsumerState<UpCommingTickets> {
   int _selectedIndex = 0;
 
   void _onTabSelected(int index) {
@@ -32,7 +38,27 @@ class _UpCommingTicketsState extends State<UpCommingTickets> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    bool ticketListEmpty = TicketModel.tickList.isEmpty;
+    bool ticketListEmpty = widget.tickets.isEmpty;
+
+    final user = ref.watch(userProvider);
+
+    if (user == null) {
+      return Container(
+        padding: const EdgeInsets.symmetric(horizontal: 15),
+        color: Colors.white,
+        child: LoginSheet(
+          fontSize: 16,
+          title: 'Beaucoup mieux avec un compte !',
+          text:
+              'Créez un compte pour accéder à toutes les fonctionnalités - C\'est gratuit , simple et rapide!',
+          withMiddleText: false,
+          withBack: false,
+          withClose: false,
+          width: MediaQuery.of(context).size.width * 0.6,
+        ),
+      );
+    }
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -80,7 +106,7 @@ class _UpCommingTicketsState extends State<UpCommingTickets> {
                 ? ticketsMissing(
                     size: size,
                   )
-                : _ticketsRow(size: size),
+                : _ticketsRow(size: size, Apitickets: widget.tickets),
             //_ticketsMissing(size: size),
             ticketsMissing(
               size: size,
@@ -109,7 +135,9 @@ class _UpCommingTicketsState extends State<UpCommingTickets> {
             .toList(),
       ); */
 
-  Widget _ticketsRow({required Size size}) {
+  Widget _ticketsRow({required Size size, required List<dynamic> Apitickets}) {
+    final events = ref.watch(eventsProvider);
+
     return BannerCarousel(
       height: 150,
       margin: const EdgeInsets.all(0),
@@ -117,22 +145,33 @@ class _UpCommingTicketsState extends State<UpCommingTickets> {
       customizedIndicators:
           IndicatorModel(width: 5, height: 5, spaceBetween: 3),
       customizedBanners: List.generate(
-        TicketModel.tickList.length,
+        Apitickets.length,
         (index) {
-          final ticket = TicketModel.tickList[index];
-          return TicketPreview(
-            date: DateFormat('dd MMM yyyy').format(
-              ticket.event.localizations[0].dateEvent,
-            ),
-            time: ticket.event.localizations[0].starttimeEvent,
-            eventName: ticket.event.name,
-            location: ticket.event.localizations[0].place ?? '',
-            imageUrl: ticket.event.image ?? networtImgPlaceholder,
-            onTap: () => Navigator.pushNamed(
-              context,
-              TicketsSwapScreen.routeName,
-              arguments: TicketModel.tickList,
-            ),
+          final eventWithTickets = Apitickets[index];
+          return events.when(
+            data: (eventList) {
+              EventModel event = eventList.firstWhere(
+                  (element) => element.id == eventWithTickets['id']);
+              return TicketPreview(
+                date: DateFormat('dd MMM yyyy').format(
+                  event.localizations[0].dateEvent,
+                ),
+                time: event.localizations[0].starttimeEvent,
+                eventName: event.name,
+                location: event.localizations[0].place ?? '',
+                imageUrl: event.image ?? networtImgPlaceholder,
+                onTap: () => Navigator.pushNamed(
+                  context,
+                  TicketsSwapScreen.routeName,
+                  arguments: TicketSwipArgs(
+                    event: event,
+                    tickets: eventWithTickets['tickets'],
+                  ),
+                ),
+              );
+            },
+            loading: () => Container(),
+            error: (err, stack) => Container(),
           );
         },
       ),
