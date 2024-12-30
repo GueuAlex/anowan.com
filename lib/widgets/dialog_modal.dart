@@ -4,10 +4,15 @@ import 'package:gap/gap.dart';
 import '../../../../config/app_text.dart';
 import '../../../../config/palette.dart';
 
-class OTPInfo extends StatelessWidget {
-  const OTPInfo({
+class DialogModal extends StatelessWidget {
+  const DialogModal({
     super.key,
+    this.title = 'Où trouver votre code OPT ?',
+    this.message =
+        'Composez le #144*82# puis suivez les étapes du parcours pour obtenir votre code',
   });
+  final String title;
+  final String message;
 
   @override
   Widget build(BuildContext context) {
@@ -21,13 +26,13 @@ class OTPInfo extends StatelessWidget {
               child: Column(
                 children: [
                   AppText.medium(
-                    'Où trouver votre code OPT ?',
+                    title,
                     fontSize: 18,
                   ),
                   const Gap(5),
                   AppText.small(
                     textAlign: TextAlign.center,
-                    'Composez le #144*82# puis suivez les étapes du parcours pour obtenir votre code',
+                    message,
                   ),
                 ],
               ),

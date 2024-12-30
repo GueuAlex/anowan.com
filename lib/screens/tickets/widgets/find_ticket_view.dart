@@ -23,7 +23,7 @@ Container findTicketView({required Size size}) => Container(
             child: Image.asset('assets/images/tickets-not-found.png'),
           ),
           AppText.medium(
-            'Vous ne voyez pas vos billets ? En savoir plus comment les retrouver',
+            'Vous n\'avez pas reçu vos billets ? En savoir plus comment les retrouver',
             textAlign: TextAlign.center,
             fontSize: size.width * 0.033,
             fontWeight: FontWeight.w300,

@@ -90,7 +90,7 @@ final selectedTickedProvider = StateProvider<List<SelectedTickeModel>?>((ref) {
 
 class SelectedTickeModel {
   final int passId;
-  final ThirdPartyModel? thirdParty;
+  ThirdPartyModel? thirdParty;
 
   SelectedTickeModel({
     required this.passId,

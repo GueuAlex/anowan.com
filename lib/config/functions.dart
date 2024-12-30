@@ -180,6 +180,22 @@ class Functions {
     );
   }
 
+  static void showCustomDialog({
+    required BuildContext context,
+    /* required String title,
+    required String message,
+    required VoidCallback onConfirm,
+    VoidCallback? onCancel, */
+    required Widget child,
+  }) {
+    showAdaptiveDialog(
+      context: context,
+      builder: (context) {
+        return child;
+      },
+    );
+  }
+
   static isValidEmail(String email) {
     return RegExp(r"^[\w\.-]+@[a-zA-Z\d\.-]+\.[a-zA-Z]{2,}$").hasMatch(email);
   }
@@ -217,6 +233,8 @@ class Functions {
   static Future<void> showSimpleBottomSheet({
     required BuildContext ctxt,
     required Widget widget,
+    AnimationStyle? sheetAnimationStyle,
+    AnimationController? transitionAnimationController,
   }) async {
     return await showModalBottomSheet(
       isDismissible: true,
@@ -224,6 +242,8 @@ class Functions {
       backgroundColor: Colors.transparent,
       isScrollControlled: true,
       useSafeArea: true,
+      transitionAnimationController: transitionAnimationController,
+      sheetAnimationStyle: sheetAnimationStyle,
       context: ctxt,
       builder: (context) {
         return widget;

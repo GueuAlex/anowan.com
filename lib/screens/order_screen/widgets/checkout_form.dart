@@ -12,10 +12,13 @@ import '../../../local_service/local_service.dart';
 import '../../../model/third_party_model.dart';
 import '../../../model/user_model.dart';
 import '../../../providers/providers.dart';
+import '../../../providers/user.provider.dart';
 import '../../../widgets/country_selector.sheet.dart';
 import '../../../widgets/custom_button.dart';
+import '../../../widgets/dialog_modal.dart';
 import 'check_button.dart';
 import 'checkout_details_sheet.dart';
+import 'custome_toggle_switch.dart';
 import 'operator_switch.dart';
 import 'third_part_form.dart';
 import 'ticket_container.dart';
@@ -28,7 +31,10 @@ class CheckoutForm extends ConsumerStatefulWidget {
   _CheckoutFormState createState() => _CheckoutFormState();
 }
 
-class _CheckoutFormState extends ConsumerState<CheckoutForm> {
+class _CheckoutFormState extends ConsumerState<CheckoutForm>
+    with SingleTickerProviderStateMixin {
+  // animation
+  late AnimationController _animationController;
   // CountryModel _selectedCountry = CountryModel.list[3];
   final _namController = TextEditingController();
   final _emailControler = TextEditingController();
@@ -49,6 +55,8 @@ class _CheckoutFormState extends ConsumerState<CheckoutForm> {
     ref.read(selectedTickedProvider.notifier).state = tickets;
     final LocalService localService = await LocalService();
     final UserModel? user = await localService.getUser();
+    //final UserModel? user = ref.watch(userProvider);
+
     if (user != null) {
       _namController.text = user.name;
       _emailControler.text = user.email ?? '';
@@ -64,6 +72,10 @@ class _CheckoutFormState extends ConsumerState<CheckoutForm> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _initializeForm();
     });
+    _animationController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 500),
+    );
     super.initState();
   }
 
@@ -88,6 +100,7 @@ class _CheckoutFormState extends ConsumerState<CheckoutForm> {
     //final thirdPart = ref.watch(thirdPartyProvider);
     final size = MediaQuery.of(context).size;
     final selectedTicked = ref.watch(selectedTickedProvider);
+    final UserModel? user = ref.watch(userProvider);
 
     if (selectedTicked == null) {
       return Center(
@@ -307,6 +320,9 @@ class _CheckoutFormState extends ConsumerState<CheckoutForm> {
                       thirdPart: selectedTicked[i].thirdParty,
                       onTap: () {
                         //print(thirdPart);
+                        //print(user);
+                        /*  if (user == null) return _showLoginSheet(); */
+
                         _showThirdPartyForm(
                           thirdPart: selectedTicked[i].thirdParty,
                           index: i,
@@ -319,6 +335,45 @@ class _CheckoutFormState extends ConsumerState<CheckoutForm> {
             ],
           ),
         ),
+
+        // if user == null demander comment les biellet seront envoyer
+        if (user == null)
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 15),
+            child: Column(
+              children: [
+                Row(
+                  children: [
+                    AppText.medium(
+                      selectedTicked.length == 1
+                          ? 'Recevoir votre billet par'
+                          : 'Rcevoir vos billets par',
+                      fontWeight: FontWeight.w400,
+                      color: const Color.fromARGB(255, 46, 46, 46),
+                    ),
+                    const Gap(10),
+                    GestureDetector(
+                      onTap: () {
+                        Functions.showCustomDialog(
+                          context: context,
+                          child: DialogModal(
+                            title: 'Frais liés aux SMS',
+                            message:
+                                'Un montant de 100 ₣ sera appliqué  à chaque ticket pour supporter le service d\'envoie de SMS',
+                          ),
+                        );
+                      },
+                      child: Icon(
+                        FluentIcons.question_circle_24_filled,
+                      ),
+                    )
+                  ],
+                ),
+                const Gap(10),
+                CustomToggleSwitch(),
+              ],
+            ),
+          ),
 
         Gap(15),
         CheckButton(
@@ -440,6 +495,25 @@ class _CheckoutFormState extends ConsumerState<CheckoutForm> {
                           msg: 'Veuillez renseigner un email valide');
                       return;
                     }
+                    if (user == null) {
+                      final selectedRecepient =
+                          ref.watch(selectedRecepientProvider);
+                      if (selectedRecepient == 'E-mail' ||
+                          selectedRecepient == 'Les deux') {
+                        if (_emailControler.text.trim().isEmpty) {
+                          Functions.showToast(
+                              msg: 'Veuillez renseigner votre adresse mail');
+                          return;
+                        }
+                        if (_emailControler.text.trim().isNotEmpty &&
+                            !Functions.isValidEmail(
+                                _emailControler.text.trim())) {
+                          Functions.showToast(
+                              msg: 'Veuillez renseigner un email valide');
+                          return;
+                        }
+                      }
+                    }
                     if (_phoneController.text.trim().isEmpty) {
                       Functions.showToast(
                           msg: 'Veuillez renseigner votre numéro de téléphone');
@@ -479,12 +553,29 @@ class _CheckoutFormState extends ConsumerState<CheckoutForm> {
     EasyLoading.dismiss();
     Functions.showSimpleBottomSheet(
       ctxt: context,
+      sheetAnimationStyle: AnimationStyle(
+        curve: Curves.easeInOut,
+        duration: const Duration(milliseconds: 500),
+      ),
+      transitionAnimationController: _animationController,
       widget: ThirdPartForm(
         thirdPart: thirdPart,
         index: index,
       ),
     );
   }
+
+/*   void _showLoginSheet() {
+    Functions.showSimpleBottomSheet(
+      ctxt: context,
+      widget: LoginSheet(),
+      sheetAnimationStyle: AnimationStyle(
+        curve: Curves.easeInOut,
+        duration: const Duration(milliseconds: 500),
+      ),
+      transitionAnimationController: _animationController,
+    );
+  } */
 
   /*  void _selectCountry(CountryModel country) {
     _selectedCountry = country;

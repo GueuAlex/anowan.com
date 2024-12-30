@@ -99,17 +99,26 @@ class RemoteService {
 
   //////////////////////////////// get single user by id //////////////////////
   ///
-  Future<http.Response> postSomethings(
-      {required String api, required Map<String, dynamic> data}) async {
+  Future<http.Response> postSomethings({
+    required String api,
+    required Map<String, dynamic> data,
+    String? token,
+    String? url,
+  }) async {
     ////////// parse our url /////////////////////
 
-    var uri = Uri.parse('$baseUri$api');
+    var uri = url != null ? Uri.parse(url) : Uri.parse('$baseUri$api');
     print(uri);
     var _payload = jsonEncode(data);
     var response = await client.post(
       uri,
       body: _payload,
-      headers: headers,
+      headers: token != null
+          ? {
+              'Content-Type': 'application/json',
+              'Authorization': "Bearer $token",
+            }
+          : headers,
     );
     print('$data was posted  /////////////////////////// : ${response.body}');
     print('response statut code //////////////////// : ${response.statusCode}');
@@ -158,6 +167,29 @@ class RemoteService {
         print('events response body ----------> : $json');
         List<EventModel> events = listEventModelFromJson(json);
         return events;
+      } else {
+        throw Exception(
+            'Failed to load events. Status code: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Error fetching events: $e');
+      throw Exception('Error fetching events: $e');
+    }
+  }
+
+  Future<List<Map<String, dynamic>>> getTickets({required int userId}) async {
+    try {
+      var uri = Uri.parse('${baseUri}users/$userId/tickets');
+      var response = await client.get(uri, headers: headers);
+
+      print('tickets response code ----------> : ${response.statusCode}');
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        var json = jsonDecode(response.body);
+
+        print('tickets response body ----------> : $json');
+
+        return json['data'];
       } else {
         throw Exception(
             'Failed to load events. Status code: ${response.statusCode}');

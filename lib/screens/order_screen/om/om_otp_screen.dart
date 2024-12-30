@@ -6,8 +6,8 @@ import 'package:ticketwave/widgets/custom_button.dart';
 
 import '../../../config/app_text.dart';
 import '../../../config/palette.dart';
+import '../../../widgets/dialog_modal.dart';
 import 'widgets/app_bar.dart';
-import 'widgets/otp_info.dart';
 
 class OmOtpScreen extends StatefulWidget {
   static const routeName = '/omotpscreen';
@@ -123,19 +123,9 @@ class _OmOtpScreenState extends State<OmOtpScreen> {
                                     ),
                                     GestureDetector(
                                       onTap: () {
-                                        showCustomDialog(
+                                        Functions.showCustomDialog(
                                           context: context,
-                                          /* title: 'Confirmation',
-                                          message:
-                                              'Êtes-vous sûr de vouloir effectuer cette action ?',
-                                          onConfirm: () {
-                                            // Action à effectuer en cas de confirmation
-                                            print('Action confirmée');
-                                          },
-                                          onCancel: () {
-                                            // Action à effectuer en cas d'annulation (facultative)
-                                            print('Action annulée');
-                                          }, */
+                                          child: DialogModal(),
                                         );
                                       },
                                       child: Icon(
@@ -172,21 +162,6 @@ class _OmOtpScreenState extends State<OmOtpScreen> {
           ),
         ),
       ),
-    );
-  }
-
-  void showCustomDialog({
-    required BuildContext context,
-    /* required String title,
-    required String message,
-    required VoidCallback onConfirm,
-    VoidCallback? onCancel, */
-  }) {
-    showAdaptiveDialog(
-      context: context,
-      builder: (context) {
-        return OTPInfo();
-      },
     );
   }
 }

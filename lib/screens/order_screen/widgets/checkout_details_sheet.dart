@@ -3,17 +3,20 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 import 'package:ticketwave/remote_service/remote_service.dart';
 import 'package:ticketwave/widgets/custom_button.dart';
+import 'package:http/http.dart' as http;
 
 import '../../../config/app_text.dart';
 import '../../../config/functions.dart';
 import '../../../config/palette.dart';
 import '../../../model/pass_model.dart';
+import '../../../model/third_party_model.dart';
 import '../../../providers/providers.dart';
 import '../../../providers/user.provider.dart';
 import '../om/om_otp_screen.dart';
@@ -42,24 +45,50 @@ class CheckoutDetailsSheet extends ConsumerWidget {
     final operator = ref.watch(selectedOperatorProvider);
     final selectedCountry = ref.watch(selectedCountryProvider);
     final selectedPass = ref.watch(selectedPassProvider);
-    final totalPrice = ref.watch(totalPriceProvider);
+    final totalHt = ref.watch(totalPriceProvider);
     final user = ref.watch(userProvider);
     final selectedTickets = ref.watch(selectedTickedProvider) ?? [];
+    final selectedRecepient = ref.watch(selectedRecepientProvider);
     int smsFees = 0;
     int smsQuantity = 0;
+    String commandType = 'TICKET';
+
+    /// create participant
+    ThirdPartyModel participant = ThirdPartyModel(
+      name: userName,
+      firstname: userFirstname,
+      recepient: user == null ? selectedRecepient : '',
+      phone: userPhone,
+      email: userEmail,
+      zipcode: selectedCountry!.zipCode,
+    );
+
+    //
     for (var ticket in selectedTickets) {
+      if (ticket.thirdParty == null) {
+        ticket.thirdParty = participant;
+      }
+      if (ticket.thirdParty!.recepient == 'SMS' ||
+          ticket.thirdParty!.recepient == 'Les deux') {
+        smsFees += 100;
+        smsQuantity += 1;
+        commandType = 'SMS';
+      }
+    }
+
+    /*    for (var ticket in selectedTickets) {
       if (ticket.thirdParty != null &&
           (ticket.thirdParty!.recepient == 'SMS' ||
               ticket.thirdParty!.recepient == 'Les deux')) {
         smsFees += 100;
         smsQuantity += 1;
+        commandType = 'SMS';
       }
-    }
+    } */
     //             print(smsFees);
 
-    final int tva =
-        int.parse((0.01 * (totalPrice + smsFees)).round().toString());
-    int total = totalPrice + tva + smsFees;
+    final int tva = int.parse((0.01 * (totalHt + smsFees)).round().toString());
+    int total = totalHt + tva + smsFees;
 
     final size = MediaQuery.of(context).size;
     return Container(
@@ -136,7 +165,7 @@ class CheckoutDetailsSheet extends ConsumerWidget {
                         ? operator.assetPath
                         : 'assets/images/anowan-placeholder.png',
                     columnTitle: 'NUMÉRO DE PAIEMENT',
-                    columnValue: '+${selectedCountry!.zipCode} $userPhone',
+                    columnValue: '+${selectedCountry.zipCode} $userPhone',
                   ),
                   checkoutRowInfos(
                     title: 'CONTACT',
@@ -219,39 +248,109 @@ class CheckoutDetailsSheet extends ConsumerWidget {
                   }
 
                   EasyLoading.show();
+                  print(operator.methodName);
 
                   final orderData = {
                     "user_auth": user != null,
                     "participant_id": user != null ? user.id : null,
                     "event_id": event.id,
-                    "amount_ht": totalPrice,
+                    "amount_ht": totalHt,
                     "sms_quantity": smsQuantity,
                     "fees": tva,
                     "sms_fees": smsFees,
                     "amount": total,
                     "comments": '',
+                    // participant data
+                    "participant":
+                        user == null ? formatParticipant(participant) : null,
+                    // transaction data
+                    "transaction_phone": userPhone,
+                    "payment_method": operator.methodName,
+                    "command_type": commandType,
+                    // tickets data
                     "tickets": formatTickets(selectedTickets),
                   };
+
+                  print(orderData);
+                  EasyLoading.dismiss();
+
+                  return;
 
                   try {
                     final r = await RemoteService()
                         .postSomethings(api: 'orders', data: orderData)
-                        .timeout(const Duration(seconds: 10));
-
-                    EasyLoading.dismiss();
+                        .timeout(const Duration(minutes: 1));
 
                     if (r.statusCode == 200 || r.statusCode == 201) {
                       final json = jsonDecode(r.body);
-                      String orderCode = json['unique_code'].toString();
+                      String orderCode =
+                          json['data']['order_unique_code'].toString();
+                      String transaId =
+                          json['data']['order_unique_code'].toString();
 
-                      if (operator.name == 'Orange Money') {
+                      final callback = dotenv.env['CALLBACK_URL']!;
+
+                      Map<String, dynamic> checkoutData = {
+                        "idFromClient": transaId,
+                        "additionnalInfos": {
+                          "recipientEmail": userEmail,
+                          "recipientFirstName": userFirstname,
+                          "recipientLastName": userName,
+                          "destinataire": userPhone, //???
+                          "otp": null
+                        },
+                        "amount": total,
+                        "callback": callback,
+                        "recipientNumber": userPhone,
+                        "serviceCode": _getServiceCode(operator.methodName)
+                      };
+
+                      if (operator.methodName == 'OM') {
+                        EasyLoading.dismiss();
                         Navigator.pushNamed(
                           context,
                           OmOtpScreen.routeName,
-                          arguments: orderCode,
+                          arguments: checkoutData,
                         );
+                        return;
                       }
+                      //WAVE checkout process
+                      if (operator.methodName == 'WALLET') {
+                        final appBase = dotenv.env['APP_BASE']!;
+                        String returnUrl =
+                            "${appBase}orders/$orderCode/payment?initiation_id=$transaId";
+                        String errorUrl =
+                            "${appBase}orders/$orderCode/sms-cancelled";
+                        Map<String, dynamic> checkout_params = {
+                          "client_reference": transaId,
+                          "amount": total,
+                          "currency": "XOF",
+                          "error_url": event.free ? errorUrl : returnUrl,
+                          "success_url": returnUrl,
+                        };
+                        final wavetoken = dotenv.env['WAVE_AUTH']!;
+                        final wr = await RemoteService().postSomethings(
+                          api: '',
+                          url: 'https://api.wave.com/v1/checkout/sessions',
+                          data: checkout_params,
+                          token: wavetoken,
+                        );
+                        if (wr.statusCode == 200 || wr.statusCode == 201) {
+                          final json = jsonDecode(wr.body);
+                          String url = json["wave_launch_url"];
+                          EasyLoading.dismiss();
+                          Functions.launchUri(url: url);
+                          return;
+                        } else {
+                          EasyLoading.dismiss();
+                          Functions.showToast(
+                              msg: 'Veuillez réessayer plus tard.');
+                          return;
+                        }
+                      }
+                      EasyLoading.dismiss();
                     } else {
+                      EasyLoading.dismiss();
                       Functions.showToast(
                           msg:
                               'Erreur : ${r.statusCode}. Veuillez réessayer plus tard.');
@@ -300,6 +399,19 @@ class CheckoutDetailsSheet extends ConsumerWidget {
     return passDescriptions.join(' - ');
   }
 
+  Map<String, dynamic> formatParticipant(ThirdPartyModel participant) {
+    return {
+      "first_name": participant.name,
+      "last_name": participant.firstname,
+      "phone": participant.phone,
+      "email": participant.email,
+      "zip_code": participant.zipcode,
+      /*  "will_receive_by_phone": participant.recepient.contains("SMS"),
+      "will_receive_by_email": participant.recepient.contains("E-mail"),
+      "both": participant.recepient == "Les deux", */
+    };
+  }
+
 //////// Fonction pour formater les données des tickets
   List<Map<String, dynamic>> formatTickets(
       List<SelectedTickeModel> selectedTickets) {
@@ -323,4 +435,116 @@ class CheckoutDetailsSheet extends ConsumerWidget {
       };
     }).toList();
   }
+
+  _getServiceCode(methodName) {
+    switch (methodName) {
+      case 'OM':
+        return dotenv.env['OM_SERVICE_CODE']!;
+      case 'MOMO':
+        return dotenv.env['MTN_SERVICE_CODE']!;
+      case 'FLOOZ':
+        return dotenv.env['MOOV_SERVICE_CODE']!;
+      case 'WALLET':
+        return dotenv.env['WAVE_SERVICE_CODE']!;
+      default:
+        return dotenv.env['OM_SERVICE_CODE']!;
+    }
+  }
+
+  Future<void> createTouchPointCheckoutSession({
+    required Map<String, dynamic> data,
+  }) async {
+    debugPrint('transaction started');
+    final agencyCode = dotenv.env['TOUCHPOINT_AGENCY_CODE']!;
+    final loginAgent = dotenv.env['TOUCHPOINT_LOGIN_AGENT']!;
+    final passwordAgent = dotenv.env['TOUCHPOINT_PASSWORD_AGENT']!;
+    final username = dotenv.env['TOUCHPOINT_USERNAME']!;
+    final password = dotenv.env['TOUCHPOINT_PASSWORD']!;
+
+    final url =
+        "https://apidist.gutouch.net/apidist/sec/touchpayapi/$agencyCode/transaction?loginAgent=$loginAgent&passwordAgent=$passwordAgent";
+    var headers = {
+      'Origin':
+          'https://custom-origin.com', // Définir une origine personnalisée
+      'Content-Type': 'application/json',
+      'Authorization':
+          'Basic ${base64Encode(utf8.encode('$username:$password'))}',
+    };
+    // try {
+    print(data);
+    print(url);
+    print(headers);
+
+    final response = await http.put(
+      Uri.parse(url),
+      headers: headers,
+      body: jsonEncode(data),
+    );
+    /* .timeout(const Duration(minutes: 1)); */
+
+    print('operation status code: ${response.statusCode}');
+    print('operation status code: ${response.body}');
+
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      final responseData = jsonDecode(response.body);
+      print('Transaction successful: $responseData');
+    } else {
+      print('Transaction failed: ${response.statusCode} - ${response.body}');
+    }
+    /*  } catch (e) {
+      print('Error occurred: $e');
+    } */
+  }
+
+/*   Future<String?> createTransaction({
+    required String orderCode,
+    required int amount,
+    required String phone,
+  }) async {
+    try {
+      Map<String, dynamic> transactionData = {
+        "amount": amount,
+        "transaction_phone": phone,
+        "status": "INITIATED", // ------
+        "payment_date": DateTime.now().toIso8601String(),
+        "command_id": orderCode,
+        "command_type": "string",
+        "transaction_id": "string",
+        "payment_method": "string",
+        "description": "string",
+        "currency": "string",
+        "payable_id": "number",
+        "payable_type": "string",
+        "customer_country": "string"
+      };
+      final tr = await RemoteService()
+          .postSomethings(api: 'transactions', data: transactionData)
+          .timeout(const Duration(seconds: 30));
+
+      EasyLoading.dismiss();
+
+      if (tr.statusCode == 200 || tr.statusCode == 201) {
+        final json = jsonDecode(tr.body);
+        return json['unique_code'].toString();
+      } else {
+        Functions.showToast(msg: 'Erreur Veuillez réessayer plus tard.');
+        return null;
+      }
+    } on TimeoutException {
+      EasyLoading.dismiss();
+      Functions.showToast(
+          msg:
+              'Temps de connexion dépassé. Vérifiez votre connexion internet.');
+    } on SocketException {
+      EasyLoading.dismiss();
+      Functions.showToast(
+          msg: 'Pas de connexion Internet. Vérifiez votre réseau.');
+    } catch (e) {
+      EasyLoading.dismiss();
+      Functions.showToast(
+          msg: 'Une erreur s\'est produite. Veuillez réessayer.');
+      debugPrint('Erreur: $e');
+    }
+    return null;
+  } */
 }

@@ -77,6 +77,8 @@ dependencies:
   sqflite: ^2.3.3+2
   lottie: ^3.1.2
   webview_flutter: ^4.10.0
+  flutter_ticket: ^1.0.1
+  qr_flutter: ^4.1.0
 
 dev_dependencies:
   flutter_test:
