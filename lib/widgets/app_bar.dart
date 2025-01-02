@@ -57,10 +57,15 @@ class AppBarCusttom extends StatelessWidget {
               ),
             ),
           ),
-          Text(
-            title,
-            textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 16, color: color),
+          Expanded(
+            flex: 3,
+            child: Text(
+              title,
+              textAlign: TextAlign.center,
+              overflow: TextOverflow.ellipsis,
+              maxLines: 1,
+              style: TextStyle(fontSize: 16, color: color),
+            ),
           ),
           Expanded(child: Container())
         ],

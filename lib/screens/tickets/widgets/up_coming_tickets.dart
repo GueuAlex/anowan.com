@@ -9,8 +9,6 @@ import '../../../config/app_text.dart';
 import '../../../config/palette.dart';
 import '../../../constants/constants.dart';
 import '../../../model/event_model.dart';
-import '../../../providers/user.provider.dart';
-import '../../../widgets/login_sheet.dart';
 import '../../tickets_swap_screen/tickets_swap_screen.dart';
 import 'ticket_preview.dart';
 import 'tickets_missing.dart';
@@ -18,9 +16,9 @@ import 'tickets_missing.dart';
 class UpCommingTickets extends ConsumerStatefulWidget {
   const UpCommingTickets({
     super.key,
-    required this.tickets,
+    required this.eventsWithTickets,
   });
-  final List<dynamic> tickets;
+  final List<dynamic> eventsWithTickets;
 
   @override
   ConsumerState<UpCommingTickets> createState() => _UpCommingTicketsState();
@@ -38,26 +36,33 @@ class _UpCommingTicketsState extends ConsumerState<UpCommingTickets> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    bool ticketListEmpty = widget.tickets.isEmpty;
+    // Récupère la date actuelle
+    final now = DateTime.now();
 
-    final user = ref.watch(userProvider);
+    // Fonction pour trier et regrouper les événements
+    List<dynamic> futureEventsWithTickets = [];
+    List<dynamic> pastEventsWithTickets = [];
 
-    if (user == null) {
-      return Container(
-        padding: const EdgeInsets.symmetric(horizontal: 15),
-        color: Colors.white,
-        child: LoginSheet(
-          fontSize: 16,
-          title: 'Beaucoup mieux avec un compte !',
-          text:
-              'Créez un compte pour accéder à toutes les fonctionnalités - C\'est gratuit , simple et rapide!',
-          withMiddleText: false,
-          withBack: false,
-          withClose: false,
-          width: MediaQuery.of(context).size.width * 0.6,
-        ),
-      );
+    for (var event in widget.eventsWithTickets) {
+      final tickets = event['tickets'] as List<dynamic>;
+
+      // Vérifier si l'une des dates de localisation est future ou égale à aujourd'hui
+      final hasFutureDate = tickets.any((ticket) {
+        final localizations = ticket['localizations'] as List<dynamic>;
+        return localizations.any((loc) {
+          final dateEvent = DateTime.parse(loc['date_event']);
+          return dateEvent.isAfter(now) || dateEvent.isAtSameMomentAs(now);
+        });
+      });
+
+      if (hasFutureDate) {
+        futureEventsWithTickets.add(event);
+      } else {
+        pastEventsWithTickets.add(event);
+      }
     }
+
+    // bool ticketListEmpty = widget.eventsWithTickets.isEmpty;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -102,17 +107,19 @@ class _UpCommingTicketsState extends ConsumerState<UpCommingTickets> {
           index: _selectedIndex,
           alignment: Alignment.center,
           children: [
-            ticketListEmpty
+            futureEventsWithTickets.isEmpty
                 ? ticketsMissing(
                     size: size,
                   )
-                : _ticketsRow(size: size, Apitickets: widget.tickets),
+                : _ticketsRow(size: size, Apitickets: futureEventsWithTickets),
             //_ticketsMissing(size: size),
-            ticketsMissing(
-              size: size,
-              text:
-                  'Vos billets d\'évènements s\'affichent ici une fois qu\'ils sont  scanné ou que l\'évènement est terminé',
-            ),
+            pastEventsWithTickets.isEmpty
+                ? ticketsMissing(
+                    size: size,
+                    text:
+                        'Vos billets d\'évènements s\'affichent ici une fois qu\'ils sont  scanné ou que l\'évènement est terminé',
+                  )
+                : _ticketsRow(size: size, Apitickets: pastEventsWithTickets),
           ],
         ),
       ],

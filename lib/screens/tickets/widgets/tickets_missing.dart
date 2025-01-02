@@ -8,7 +8,7 @@ import '../../../widgets/action_tile.dart';
 Container ticketsMissing({
   required Size size,
   String text =
-      'Vous n\'avez pas de tickets à venir, consulter votre liste d\'évènements recommandés pour trouver un billet',
+      'Vous n\'avez pas de tickets à venir, consulter votre liste d\'évènements recommandés pour prendre un billet',
 }) =>
     Container(
       width: double.infinity,

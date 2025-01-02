@@ -52,8 +52,11 @@ class OrganizerSuggestion extends ConsumerWidget {
                 }).toList(),
               );
             },
-            loading: () => const Center(
-              child: CircularProgressIndicator(),
+            loading: () => Container(
+              color: Colors.white,
+              child: const Center(
+                child: CircularProgressIndicator.adaptive(),
+              ),
             ),
             error: (error, stackTrace) {
               // Affichage d'un message d'erreur avec un log optionnel de stackTrace

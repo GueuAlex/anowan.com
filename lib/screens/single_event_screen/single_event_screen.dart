@@ -96,7 +96,7 @@ class _SingleEventScreenState extends State<SingleEventScreen> {
                   child: isAppBarExpanded
                       ? Row(
                           children: [
-                            AddForiteButton(),
+                            AddForiteButton(event: event),
                             Gap(5),
                             MenuContextuel(),
                             Gap(5),
@@ -151,6 +151,22 @@ class _SingleEventScreenState extends State<SingleEventScreen> {
             SliverList(
               delegate: SliverChildListDelegate(
                 [
+                  if (event.isPastEvent)
+                    Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 15, vertical: 2),
+                      color: Palette.appRed,
+                      child: Center(
+                        child: Text(
+                          'La vente est terminée !',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 12,
+                          ),
+                        ),
+                      ),
+                    ),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 12),
                     child: Column(

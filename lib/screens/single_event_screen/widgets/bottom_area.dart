@@ -20,6 +20,12 @@ class BottomArea extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    if (event.isPastEvent) {
+      return Container(
+        color: Colors.transparent,
+        constraints: BoxConstraints(maxHeight: size.height * 0.0),
+      );
+    }
     return Container(
       //padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 20),
       //height: 100,

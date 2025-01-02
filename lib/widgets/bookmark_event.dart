@@ -1,14 +1,14 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:ticketwave/config/functions.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:ticketwave/model/event_model.dart';
 
+import '../config/functions.dart';
 import '../config/palette.dart';
-import '../model/event_model.dart';
 import '../providers/user.provider.dart';
 import 'login_sheet.dart';
 
-class AddForiteButton extends ConsumerWidget {
-  const AddForiteButton({
+class BookmarkEvent extends ConsumerWidget {
+  const BookmarkEvent({
     super.key,
     required this.event,
   });
@@ -39,27 +39,22 @@ class AddForiteButton extends ConsumerWidget {
             .read(userProvider.notifier)
             .addBookmarkedEvent(event.id.toString());
       },
-      child: Container(
-        height: 35,
-        width: 35,
-        decoration: BoxDecoration(
-          color: Palette.blackColor.withOpacity(0.7),
-          shape: BoxShape.circle,
-        ),
-        child: Center(
-          child: event.isBookmarked(ref)
-              ? Icon(
-                  CupertinoIcons.bookmark_fill,
-                  color: Palette.appRed,
-                  size: 20,
-                )
-              : Icon(
-                  CupertinoIcons.bookmark,
-                  color: Palette.whiteColor,
-                  size: 20,
-                ),
-        ),
-      ),
+      child: event.isBookmarked(ref)
+          ? Icon(
+              CupertinoIcons.bookmark_fill,
+              color: Palette.appRed,
+              size: 20,
+            )
+          : Icon(
+              CupertinoIcons.bookmark,
+              color: const Color.fromARGB(
+                255,
+                105,
+                105,
+                105,
+              ),
+              size: 20,
+            ),
     );
   }
 }

@@ -8,6 +8,7 @@ import '../config/palette.dart';
 import '../constants/constants.dart';
 import '../model/event_model.dart';
 import '../screens/single_event_screen/single_event_screen.dart';
+import 'bookmark_event.dart';
 
 Widget eventCardColumn(
     {required EventModel event,
@@ -147,18 +148,8 @@ Widget eventCardColumn(
                                   ),
                                 ),
                                 Gap(14),
-                                GestureDetector(
-                                  onTap: () => print('bookmark'),
-                                  child: Icon(
-                                    CupertinoIcons.bookmark,
-                                    color: const Color.fromARGB(
-                                      255,
-                                      105,
-                                      105,
-                                      105,
-                                    ),
-                                    size: 20,
-                                  ),
+                                BookmarkEvent(
+                                  event: event,
                                 ),
                               ],
                             )

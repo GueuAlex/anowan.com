@@ -374,17 +374,17 @@ class Functions {
 
     for (var event in events) {
       // Only process events that are published and visible
-      if (event.published && event.visibility) {
-        DateTime nearestDate = getNearestDate(event);
+      //if (event.published && event.visibility) {
+      DateTime nearestDate = getNearestDate(event);
 
-        if (nearestDate.isAtSameMomentAs(today)) {
-          todayEvents.add(event);
-        } else if (nearestDate.isAfter(today)) {
-          futureEvents.add(event);
-        } else {
-          pastEvents.add(event);
-        }
+      if (nearestDate.isAtSameMomentAs(today)) {
+        todayEvents.add(event);
+      } else if (nearestDate.isAfter(today)) {
+        futureEvents.add(event);
+      } else {
+        pastEvents.add(event);
       }
+      //}
     }
 
     // Sort future events by nearest date (from nearest to furthest)

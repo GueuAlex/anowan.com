@@ -11,6 +11,7 @@ import '../../../config/palette.dart';
 import '../../../local_service/local_service.dart';
 import '../../../model/third_party_model.dart';
 import '../../../model/user_model.dart';
+import '../../../providers/checkout_state.provider.dart';
 import '../../../providers/providers.dart';
 import '../../../providers/user.provider.dart';
 import '../../../widgets/country_selector.sheet.dart';
@@ -479,7 +480,7 @@ class _CheckoutFormState extends ConsumerState<CheckoutForm>
                   height: 40,
                   radius: 5,
                   text: 'Continuer',
-                  onPress: () {
+                  onPress: () async {
                     if (_namController.text.trim().isEmpty) {
                       Functions.showToast(msg: 'Veuillez renseigner votre nom');
                       return;
@@ -526,7 +527,7 @@ class _CheckoutFormState extends ConsumerState<CheckoutForm>
                       return;
                     }
 
-                    Functions.showSimpleBottomSheet(
+                    await Functions.showSimpleBottomSheet(
                       ctxt: context,
                       widget: CheckoutDetailsSheet(
                         //isThirdParty: false,
@@ -536,6 +537,7 @@ class _CheckoutFormState extends ConsumerState<CheckoutForm>
                         userPhone: _phoneController.text.trim(),
                       ),
                     );
+                    ref.read(checkoutState.notifier).state = false;
                   },
                 ),
               ),

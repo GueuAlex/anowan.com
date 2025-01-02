@@ -1,9 +1,11 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 //import 'package:ticketwave/config/functions.dart';
 
 import '../config/palette.dart';
+import '../providers/user.provider.dart';
 import '../screens/annuaire/annuaire_screen.dart';
 import '../screens/home/home_screen.dart';
 import '../screens/profil/profil_screen.dart';
@@ -12,25 +14,51 @@ import '../screens/search/search_screen.dart';
 import '../screens/tickets/ticket_screen.dart';
 import '../screens/welcome/welcome_screen.dart';
 import '../side_bar/open_side_dar.dart';
+import 'login_sheet2.dart';
 
-class BottomBar extends StatefulWidget {
+class BottomBar extends ConsumerStatefulWidget {
   static String routeName = '/';
   const BottomBar({super.key});
 
   @override
-  State<BottomBar> createState() => _BottomBarState();
+  ConsumerState<BottomBar> createState() => _BottomBarState();
 }
 
-class _BottomBarState extends State<BottomBar> {
-  ///////////////
-  /// Bottom menu screens list
-  static final List<Widget> _bottomScreens = <Widget>[
-    const HomeScreen(),
-    const AnnuaireScreen(),
-    const SearchScreen(),
-    const TicketScreen(),
-    const ProfilScreen(),
-  ];
+class _BottomBarState extends ConsumerState<BottomBar> {
+  Widget _getProfilScreen({bool isProfile = true}) {
+    final user = ref.watch(userProvider);
+    if (isProfile) {
+      if (user == null) {
+        // Retourne un écran alternatif si l'utilisateur n'est pas connecté
+        return Container(
+          color: Colors.white,
+          height: double.infinity,
+          width: double.infinity,
+          child: const LoginSheet2(
+            fontSize: 16,
+            title: 'Beaucoup mieux avec un compte !',
+            text:
+                'Créez un compte pour accéder à toutes les fonctionnalités - C\'est gratuit, simple et rapide!',
+            withMiddleText: false,
+            withBack: false,
+            withClose: false,
+            width: 260,
+          ),
+        );
+      }
+      return const ProfilScreen(); // Retourne l'écran du profil si l'utilisateur est connecté
+    }
+    return TicketScreen(user: user);
+  }
+
+  List<Widget> get _bottomScreens => <Widget>[
+        const HomeScreen(),
+        const AnnuaireScreen(),
+        const SearchScreen(),
+        _getProfilScreen(
+            isProfile: false), // Utilisation de la méthode conditionnelle
+        _getProfilScreen(), // Utilisation de la méthode conditionnelle
+      ];
   ////////////////////////////
   /// bottom menu initial index
   int bottomMenuInitIndex = 2;
@@ -89,7 +117,9 @@ class _BottomBarState extends State<BottomBar> {
         elevation: 0,
         leading: const OpenSideBar(),
         actions: [
-          bottomMenuInitIndex == 4 ? profilLogo(context: context) : Container(),
+          bottomMenuInitIndex == 4
+              ? profilLogo(context: context, ref: ref)
+              : Container(),
         ],
       ),
       //drawer: const CustomSiderBar(),

@@ -32,85 +32,109 @@ class LoginSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+      //padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
       width: double.infinity,
-      height: MediaQuery.of(context).size.height * 0.43,
+      height: MediaQuery.of(context).size.height,
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Colors.transparent,
         borderRadius: BorderRadius.circular(5),
       ),
       child: Column(
         children: [
-          if (withClose) sheetCloserCross(ctxt: context),
           Expanded(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
-                  padding: const EdgeInsets.all(15),
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Palette.separatorColor,
-                  ),
-                  child: Center(
-                    child: Icon(
-                      FluentIcons.key_24_regular,
+            child: Container(),
+          ),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+            width: double.infinity,
+            //  height: MediaQuery.of(context).size.height,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(5),
+            ),
+            child: SafeArea(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  if (withClose) sheetCloserCross(ctxt: context),
+                  Container(
+                    padding: const EdgeInsets.all(15),
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Palette.separatorColor,
+                    ),
+                    child: Center(
+                      child: Icon(
+                        FluentIcons.key_24_regular,
+                      ),
                     ),
                   ),
-                ),
-                AppText.large(title, fontSize: fontSize),
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 15,
-                    vertical: 4,
-                  ),
-                  child: AppText.small(
-                    text,
-                    textAlign: TextAlign.center,
-                    fontSize: 12,
-                    fontWeight: FontWeight.w300,
-                  ),
-                ),
-                const Gap(25),
-                CustomButton(
-                  color: Palette.appRed,
-                  width: width,
-                  height: 40,
-                  radius: 5,
-                  isSetting: true,
-                  fontsize: 13,
-                  text: 'Créer mon compte',
-                  onPress: () {
-                    Navigator.pop(context);
-                    Navigator.pushNamed(
-                      context,
-                      AuthScreen.routeName,
-                    );
-                  },
-                ),
-                if (withMiddleText)
+                  AppText.large(title, fontSize: fontSize),
                   Padding(
                     padding: const EdgeInsets.symmetric(
-                      horizontal: 100,
-                      vertical: 5,
+                      horizontal: 15,
+                      vertical: 4,
                     ),
-                    child: textMidleLine(text: 'ou'),
+                    child: AppText.small(
+                      text,
+                      textAlign: TextAlign.center,
+                      fontSize: 12,
+                      fontWeight: FontWeight.w300,
+                    ),
                   ),
-                if (withBack)
-                  CustomButton(
-                    color: Palette.separatorColor,
-                    width: width,
-                    height: 40,
-                    radius: 5,
-                    text: 'Retour',
-                    isSetting: true,
-                    fontsize: 13,
-                    textColor: Colors.black87,
-                    onPress: () => Navigator.pop(context),
-                  )
-              ],
+                  const Gap(25),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 15,
+                      // vertical: 4,
+                    ),
+                    child: CustomButton(
+                      color: Palette.appRed,
+                      width: width,
+                      height: 40,
+                      radius: 5,
+                      isSetting: true,
+                      fontsize: 13,
+                      text: 'Créer mon compte',
+                      onPress: () {
+                        Navigator.pop(context);
+                        Navigator.pushNamed(
+                          context,
+                          AuthScreen.routeName,
+                        );
+                      },
+                    ),
+                  ),
+                  if (withMiddleText)
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 100,
+                        vertical: 5,
+                      ),
+                      child: textMidleLine(text: 'ou'),
+                    ),
+                  if (withBack)
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 15,
+                        //vertical: 4,
+                      ),
+                      child: CustomButton(
+                        color: Palette.separatorColor,
+                        width: width,
+                        height: 40,
+                        radius: 5,
+                        text: 'Retour',
+                        isSetting: true,
+                        fontsize: 13,
+                        textColor: Colors.black87,
+                        onPress: () => Navigator.pop(context),
+                      ),
+                    )
+                ],
+              ),
             ),
-          )
+          ),
         ],
       ),
     );

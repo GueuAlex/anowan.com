@@ -68,6 +68,14 @@ class UserNotifier extends StateNotifier<UserModel?> {
     }
   }
 
+  // Charger la liste des événements favoris depuis la base de données
+  Future<void> loadBookmarkedEvents() async {
+    if (state != null) {
+      final bookmarkedEvents = await _localService.getBookmarkedEvents();
+      state = state!.copyWith(bookmarkedEventsId: bookmarkedEvents);
+    }
+  }
+
   // Fonction pour supprimer un favori d'événement
   Future<void> removeBookmarkedEvent(String eventId) async {
     if (state != null && state!.bookmarkedEventsId.contains(eventId)) {

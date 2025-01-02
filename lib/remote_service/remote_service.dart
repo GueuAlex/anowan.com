@@ -157,20 +157,34 @@ class RemoteService {
   ///implement le provider pour le riverpod
   Future<List<EventModel>> getEvents() async {
     try {
-      var uri = Uri.parse('${baseUri}events');
-      var response = await client.get(uri, headers: headers);
+      List<EventModel> allEvents = [];
+      String? nextPage = '${baseUri}events';
 
-      print('events response code ----------> : ${response.statusCode}');
+      while (nextPage != null) {
+        var uri = Uri.parse(nextPage);
+        var response = await client.get(uri, headers: headers);
 
-      if (response.statusCode == 200 || response.statusCode == 201) {
-        var json = response.body;
-        print('events response body ----------> : $json');
-        List<EventModel> events = listEventModelFromJson(json);
-        return events;
-      } else {
-        throw Exception(
-            'Failed to load events. Status code: ${response.statusCode}');
+        print('events response code ----------> : ${response.statusCode}');
+
+        if (response.statusCode == 200 || response.statusCode == 201) {
+          var json = jsonDecode(response.body);
+          // Ajouter les événements de la page actuelle à la liste globale
+          List<EventModel> events = (json['data'] as List)
+              .where((event) =>
+                  event['visibility'] == 1 && event['published'] == 1)
+              .map((event) => EventModel.fromJson(event))
+              .toList();
+          allEvents.addAll(events);
+
+          // Mettre à jour l'URL de la page suivante
+          nextPage = json['links']['next'];
+        } else {
+          throw Exception(
+              'Failed to load events. Status code: ${response.statusCode}');
+        }
       }
+
+      return allEvents;
     } catch (e) {
       print('Error fetching events: $e');
       throw Exception('Error fetching events: $e');

@@ -60,7 +60,6 @@ dependencies:
   google_maps_flutter: ^2.7.0
   flutter_polyline_points: ^2.0.0
   pull_to_refresh_flutter3: ^2.0.2
-  searchbar_animation: ^0.0.4
   table_calendar: ^3.1.2
   banner_carousel: ^1.2.1
   dotted_border: ^2.1.0

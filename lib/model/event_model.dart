@@ -1,8 +1,10 @@
 import 'dart:convert';
 
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ticketwave/model/organizer_model.dart';
 
 import '../constants/constants.dart';
+import '../providers/user.provider.dart';
 import 'image_model.dart';
 import 'inspector_model.dart';
 import 'localization_model.dart';
@@ -92,6 +94,17 @@ class EventModel {
     required this.organizer,
   });
 
+  // Getter pour vérifier si l'événement est passé
+  bool get isPastEvent {
+    final now = DateTime.now();
+    return localizations.every((localization) {
+      // Vérifie si toutes les dates de l'événement sont dans le passé
+      return localization.dateEvent.isBefore(now) &&
+          (localization.dateEventEnd == null ||
+              localization.dateEventEnd!.isBefore(now));
+    });
+  }
+
   factory EventModel.fromJson(Map<String, dynamic> json) => EventModel(
         id: json["id"],
         organizerId: json["organizer_id"],
@@ -106,7 +119,7 @@ class EventModel {
         free: json["free"] == 0 ? false : true,
         qrcode: json["qrcode"],
         image: json["image"] != null
-            ? 'https://anowan.com/events/images/${json["image"]}'
+            ? 'https://izibillet.com/events/images/${json["image"]}'
             : networtImgPlaceholder,
         published: json["published"] == 0 ? false : true,
         active: json["active"] == 0 ? false : true,
@@ -175,6 +188,16 @@ class EventModel {
   static List<EventModel> eventList = eventModelJsonData
       .map((eventJson) => EventModel.fromJson(eventJson))
       .toList();
+}
+
+extension EventModelExtension on EventModel {
+  bool isBookmarked(WidgetRef ref) {
+    final user = ref.watch(userProvider);
+    if (user == null) {
+      return false; // L'utilisateur n'est pas connecté ou chargé
+    }
+    return user.bookmarkedEventsId.contains(id.toString());
+  }
 }
 
 List<Map<String, dynamic>> eventModelJsonData = [
