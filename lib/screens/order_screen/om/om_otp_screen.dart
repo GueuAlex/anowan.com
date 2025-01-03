@@ -3,13 +3,13 @@ import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:gap/gap.dart';
-import 'package:ticketwave/config/functions.dart';
-import 'package:ticketwave/widgets/custom_button.dart';
 
 import '../../../config/app_text.dart';
+import '../../../config/functions.dart';
 import '../../../config/palette.dart';
 import '../../../providers/checkout_state.provider.dart';
 import '../../../remote_service/remote_service.dart';
+import '../../../widgets/custom_button.dart';
 import '../../../widgets/dialog_modal.dart';
 import '../widgets/checkout_sucess.dart';
 import 'widgets/app_bar.dart';

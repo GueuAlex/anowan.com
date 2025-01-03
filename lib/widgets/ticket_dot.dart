@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:ticketwave/config/palette.dart';
+
+import '../config/palette.dart';
 
 class TicketDot extends StatelessWidget {
   const TicketDot({super.key});

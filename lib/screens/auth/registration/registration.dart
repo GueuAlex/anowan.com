@@ -1,14 +1,14 @@
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:ticketwave/screens/auth/widgets/phone_number_input.dart';
-import 'package:ticketwave/widgets/horizontal_separator.dart';
 
 import '../../../config/app_text.dart';
 import '../../../config/functions.dart';
 import '../../../constants/constants.dart';
+import '../../../widgets/horizontal_separator.dart';
 import '../../../widgets/text_middle.dart';
 import '../widgets/email_text_field.dart';
+import '../widgets/phone_number_input.dart';
 import '../widgets/redirect_to.dart';
 import '../widgets/terms_of_us.dart';
 
@@ -39,10 +39,10 @@ class RegistrationScreen extends StatelessWidget {
           width: Functions.contextSize(context).width,
           child: Padding(
             padding: const EdgeInsets.symmetric(
-              horizontal: 155,
+              horizontal: 145,
             ),
             child: Image(
-              image: AssetImage('assets/images/logo-text-short.jpg'),
+              image: AssetImage('assets/images/logo-text-no-bg.png'),
             ),
           ),
         ),

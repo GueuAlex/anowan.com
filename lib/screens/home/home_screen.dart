@@ -1,3 +1,4 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -5,19 +6,22 @@ import 'package:gap/gap.dart';
 import 'package:pull_to_refresh_flutter3/pull_to_refresh_flutter3.dart';
 import '../../../config/app_text.dart';
 import '../../../config/palette.dart';
+import '../../config/functions.dart';
+import '../../model/event_model.dart';
+import '../../providers/providers.dart';
 import 'widgets/header_carousel.dart';
 import 'widgets/home_up_coming_events.dart';
 import 'widgets/hot_events.dart';
 import 'widgets/top_oraniser.dart';
 
-class HomeScreen extends StatefulWidget {
+class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  ConsumerState<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenState extends ConsumerState<HomeScreen> {
   bool _isButtonVisible = true;
   ScrollController _scrollController = ScrollController();
 
@@ -59,6 +63,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var eventsAsyncValue = ref.watch(eventsProvider);
     //final size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: Palette.scafoldColor,
@@ -83,7 +88,12 @@ class _HomeScreenState extends State<HomeScreen> {
           Expanded(
             child: SmartRefresher(
               onLoading: _onLoading,
-              onRefresh: _onRefresh,
+              onRefresh: () async {
+                eventsAsyncValue = await ref.refresh(eventsProvider);
+                await Future.delayed(Duration(milliseconds: 1000));
+                setState(() {});
+                _refreshController.refreshCompleted();
+              },
               enablePullDown: true,
               enablePullUp: false,
               controller: _refreshController,
@@ -99,8 +109,29 @@ class _HomeScreenState extends State<HomeScreen> {
                 physics: const BouncingScrollPhysics(),
                 child: Column(
                   children: [
-                    HomeUpcomingEvents(),
-                    HotEvents(),
+                    eventsAsyncValue.when(
+                      data: (events) {
+                        List<EventModel> list =
+                            Functions.filterAndSortUpcomingEvents(
+                          events: events,
+                        );
+
+                        return Column(
+                          children: [
+                            HomeUpcomingEvents(evenst: list),
+                            HotEvents(events: list),
+                          ],
+                        );
+                      },
+                      error: (e, _) => Center(
+                        child: AppText.medium(
+                          e.toString(),
+                        ),
+                      ),
+                      loading: () => Center(
+                        child: CircularProgressIndicator.adaptive(),
+                      ),
+                    ),
                     Gap(10),
                     TopOrganizer(),
                   ],

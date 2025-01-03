@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:ticketwave/config/app_text.dart';
 
 import '../../../config/palette.dart';
+import '../../config/app_text.dart';
 
 class SideBarItem extends StatelessWidget {
   const SideBarItem({

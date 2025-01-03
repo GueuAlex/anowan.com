@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:ticketwave/model/organizer_model.dart';
 
 import '../../../config/app_text.dart';
 import '../../../config/palette.dart';
 import '../../../constants/constants.dart';
+import '../../../model/organizer_model.dart';
 import '../../organizer_screen/organizer_screen.dart';
 
 class OrganisateurPageRoute extends StatelessWidget {

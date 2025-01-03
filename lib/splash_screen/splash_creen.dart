@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:lottie/lottie.dart';
 
-import '../admin/screens/scan/scan_screen.dart';
+import '../config/functions.dart';
 import '../config/palette.dart';
 import '../config/preferences.dart';
+import '../screens/intro/intro_screen.dart';
+import '../widgets/bottom_bar.dart';
 
 class SplashSceen extends StatefulWidget {
   static String routeName = 'splash_screen';
@@ -16,7 +17,7 @@ class SplashSceen extends StatefulWidget {
 
 class _SplashSceenState extends State<SplashSceen>
     with TickerProviderStateMixin {
-  late final AnimationController _controller;
+  //late final AnimationController _controller;
   bool _showLoading = false;
 
   @override
@@ -26,31 +27,33 @@ class _SplashSceenState extends State<SplashSceen>
     super.initState();
 
     // Initialiser le contrôleur d'animation
-    _controller = AnimationController(vsync: this);
+    // _controller = AnimationController(vsync: this);
 
     // Écouter l'état de l'animation pour savoir quand elle est terminée
-    _controller.addStatusListener((status) async {
-      if (status == AnimationStatus.completed) {
-        // Action à effectuer à la fin de l'animation
-        /* Navigator.pushReplacementNamed(context, IntroScrenn.routeName); */
-        _toggleLoading();
-        // get logged state
-        //bool isLogged = await Functions.getLoggedState();
-        Future.delayed(const Duration(seconds: 3)).then(
-          (value) => Navigator.pushReplacementNamed(
-            context,
-            /* BottomBar.routeName, */
-            /* RegistrationScreen.routeName, */
-            /* !isLogged ? IntroScrenn.routeName : BottomBar.routeName, */
-            /* SetupScreen.routeName, */
-            /*  WelcomeScreen.routeName, */
-            /* SetupScreen.routeName, */
-            /*  ScanScreen.routeName, */
-            ScanScreen.routeName,
-            /* (route) => false, */
-          ),
-        );
-      }
+    //_controller.addStatusListener((status) async {
+    Future.delayed(const Duration(seconds: 3)).then((value) async {
+      //if (status == AnimationStatus.completed) {
+      // Action à effectuer à la fin de l'animation
+      /* Navigator.pushReplacementNamed(context, IntroScrenn.routeName); */
+
+      // get logged state
+      bool isLogged = await Functions.getLoggedState();
+      _toggleLoading();
+      Future.delayed(const Duration(seconds: 3)).then(
+        (value) => Navigator.pushReplacementNamed(
+          context,
+          /* BottomBar.routeName, */
+          /* RegistrationScreen.routeName, */
+          !isLogged ? IntroScrenn.routeName : BottomBar.routeName,
+          /* SetupScreen.routeName, */
+          /*  WelcomeScreen.routeName, */
+          /* SetupScreen.routeName, */
+          /*  ScanScreen.routeName, */
+          /* ScanScreen.routeName, */
+          /* (route) => false, */
+        ),
+      );
+      //}
     });
   }
 
@@ -62,7 +65,7 @@ class _SplashSceenState extends State<SplashSceen>
 
   @override
   void dispose() {
-    _controller.dispose();
+    // _controller.dispose();
     super.dispose();
   }
 
@@ -77,7 +80,7 @@ class _SplashSceenState extends State<SplashSceen>
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               const SizedBox(),
-              SizedBox(
+              /*    SizedBox(
                 width: 350,
                 child: Lottie.asset(
                   'assets/images/simple-dot.json',
@@ -89,6 +92,12 @@ class _SplashSceenState extends State<SplashSceen>
                       ..duration = composition.duration
                       ..forward();
                   },
+                ),
+              ) */
+              SizedBox(
+                child: Image.asset(
+                  'assets/images/logo-text-no-bg.png',
+                  width: 100,
                 ),
               ),
               Container(

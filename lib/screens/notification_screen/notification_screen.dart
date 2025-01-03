@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:ticketwave/config/app_text.dart';
+
+import '../../config/app_text.dart';
 
 class NotificationScreen extends StatefulWidget {
   static String routeName = "notificationScreen";

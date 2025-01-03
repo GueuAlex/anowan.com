@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:ticketwave/config/palette.dart';
 
+import '../../config/palette.dart';
 import '../../constants/constants.dart';
 import '../../model/event_model.dart';
 import '../../model/localization_model.dart';
@@ -177,9 +177,7 @@ class _SingleEventScreenState extends State<SingleEventScreen> {
                           organizer: event.organizer,
                         ),
                         DateSelector(
-                          localizations: localizations,
-                          title: event.name,
-                          description: event.shortDescription ?? '',
+                          event: event,
                         ),
                         EventAbout(
                           html: event.description ?? '',
@@ -188,6 +186,7 @@ class _SingleEventScreenState extends State<SingleEventScreen> {
                         customDiveder(),
                         GoogleMapContainer(
                           localization: localizations[0],
+                          event: event,
                         ),
                         /* customDiveder(), */
                         TageContainer(),

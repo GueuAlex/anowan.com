@@ -4,14 +4,14 @@ import 'package:flutter_ticket/flutter_ticket.dart';
 import 'package:gap/gap.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
-import 'package:ticketwave/config/app_text.dart';
-import 'package:ticketwave/config/functions.dart';
-import 'package:ticketwave/config/palette.dart';
-import 'package:ticketwave/model/event_model.dart';
-import 'package:ticketwave/model/pass_model.dart';
-import 'package:ticketwave/widgets/custom_button.dart';
 
+import '../../../config/app_text.dart';
+import '../../../config/functions.dart';
+import '../../../config/palette.dart';
 import '../../../constants/constants.dart';
+import '../../../model/event_model.dart';
+import '../../../model/pass_model.dart';
+import '../../../widgets/custom_button.dart';
 import '../../../widgets/qrcode_dialog.dart';
 
 class TicketViewCustom extends StatelessWidget {

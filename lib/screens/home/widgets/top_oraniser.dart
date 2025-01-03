@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
-import 'package:ticketwave/config/palette.dart';
-import 'package:ticketwave/widgets/custom_button.dart';
 
 import '../../../config/app_text.dart';
+import '../../../config/palette.dart';
 import '../../../providers/providers.dart';
+import '../../../widgets/custom_button.dart';
 import '../../organizer_screen/widgets/organizer_card.dart';
 
 class TopOrganizer extends ConsumerWidget {

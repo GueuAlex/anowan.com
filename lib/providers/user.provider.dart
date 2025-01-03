@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:ticketwave/providers/local_service_provider.dart';
 import '../model/user_model.dart';
 import '../local_service/local_service.dart';
+import 'local_service_provider.dart';
 
 // StateNotifier pour gérer les opérations sur l'utilisateur
 class UserNotifier extends StateNotifier<UserModel?> {

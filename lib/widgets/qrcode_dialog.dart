@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
-import 'package:ticketwave/widgets/sheet_closer_cross.dart';
+
+import 'sheet_closer_cross.dart';
 
 class QrcodeDialog extends StatelessWidget {
   const QrcodeDialog({

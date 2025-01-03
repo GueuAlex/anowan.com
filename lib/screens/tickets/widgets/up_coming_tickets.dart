@@ -3,12 +3,12 @@ import 'package:banner_carousel/banner_carousel.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:intl/intl.dart';
-import 'package:ticketwave/providers/providers.dart';
 
 import '../../../config/app_text.dart';
 import '../../../config/palette.dart';
 import '../../../constants/constants.dart';
 import '../../../model/event_model.dart';
+import '../../../providers/providers.dart';
 import '../../tickets_swap_screen/tickets_swap_screen.dart';
 import 'ticket_preview.dart';
 import 'tickets_missing.dart';

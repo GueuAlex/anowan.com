@@ -2,9 +2,9 @@ import 'dart:convert';
 
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
-import 'package:ticketwave/model/event_model.dart';
-import 'package:ticketwave/model/organizer_model.dart';
 
+import '../model/event_model.dart';
+import '../model/organizer_model.dart';
 import '../model/prestator_model.dart';
 
 final token = dotenv.env['API_TOKEN']!;

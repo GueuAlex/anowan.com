@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:ticketwave/config/functions.dart';
 
+import '../config/functions.dart';
 import '../config/palette.dart';
 import '../model/event_model.dart';
 import '../providers/user.provider.dart';

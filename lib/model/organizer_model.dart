@@ -4,7 +4,7 @@
 
 import 'dart:convert';
 
-import 'package:ticketwave/model/user_model.dart';
+import 'user_model.dart';
 
 List<OrganizerModel> listOrganizerModelFromJson(String str) {
   final jsonData = json.decode(str);

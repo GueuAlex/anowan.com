@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 
 import 'package:gap/gap.dart';
 
-import 'package:ticketwave/config/palette.dart';
-import 'package:ticketwave/widgets/custom_button.dart';
+import '../../../config/palette.dart';
+import '../../../widgets/custom_button.dart';
 
 class EmailTextInput extends StatelessWidget {
   const EmailTextInput({
@@ -24,7 +24,7 @@ class EmailTextInput extends StatelessWidget {
     return Column(
       children: [
         Container(
-            height: (size.height * 0.05),
+            height: (size.height * 0.055),
             //padding: const EdgeInsets.all(3),
             decoration: BoxDecoration(
               color: Color.fromARGB(5, 61, 68, 74),

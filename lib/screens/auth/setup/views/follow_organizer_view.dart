@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart'; // Import Riverpod
 import 'package:gap/gap.dart';
-import 'package:ticketwave/config/functions.dart';
-import 'package:ticketwave/config/palette.dart';
 
 import '../../../../config/app_text.dart';
+import '../../../../config/functions.dart';
+import '../../../../config/palette.dart';
 import '../../../../constants/constants.dart';
 import '../../../../providers/providers.dart';
 import '../../../organizer_screen/widgets/organizer_row.dart';

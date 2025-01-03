@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:ticketwave/config/functions.dart';
-import 'package:ticketwave/config/palette.dart';
-import 'package:ticketwave/screens/order_screen/order_screen.dart';
 
 import '../../../config/app_text.dart';
+import '../../../config/functions.dart';
+import '../../../config/palette.dart';
 import '../../../model/event_model.dart';
+import '../../order_screen/order_screen.dart';
 
 class BottomArea extends StatelessWidget {
   const BottomArea({

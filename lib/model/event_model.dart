@@ -1,13 +1,13 @@
 import 'dart:convert';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:ticketwave/model/organizer_model.dart';
 
 import '../constants/constants.dart';
 import '../providers/user.provider.dart';
 import 'image_model.dart';
 import 'inspector_model.dart';
 import 'localization_model.dart';
+import 'organizer_model.dart';
 import 'pass_model.dart';
 
 /* List<EventModel> listEventModelFromJson(String str) =>

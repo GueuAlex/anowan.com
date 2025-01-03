@@ -1,10 +1,10 @@
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:ticketwave/screens/maps_screen/maps_screen.dart';
 
 import '../../../config/app_text.dart';
 import '../../../config/palette.dart';
+import '../../maps_screen/maps_screen.dart';
 
 class MapPreview extends StatefulWidget {
   const MapPreview({

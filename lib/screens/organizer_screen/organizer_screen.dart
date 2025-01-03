@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:pull_to_refresh_flutter3/pull_to_refresh_flutter3.dart';
-import 'package:ticketwave/config/app_text.dart';
-import 'package:ticketwave/config/palette.dart';
 
+import '../../config/app_text.dart';
 import '../../config/functions.dart';
+import '../../config/palette.dart';
 import '../../model/organizer_model.dart';
 import '../../providers/providers.dart';
 import 'widgets/Organize_header.dart';

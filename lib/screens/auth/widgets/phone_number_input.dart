@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
-import 'package:ticketwave/config/app_text.dart';
-import 'package:ticketwave/config/functions.dart';
-import 'package:ticketwave/config/palette.dart';
 
+import '../../../config/app_text.dart';
+import '../../../config/functions.dart';
+import '../../../config/palette.dart';
 import '../../../providers/providers.dart';
 import '../../../widgets/country_selector.sheet.dart';
 import '../../../widgets/custom_button.dart';
@@ -28,7 +28,7 @@ class PhoneInput extends ConsumerWidget {
       children: [
         Container(
           width: double.infinity,
-          height: (size.height * 0.05),
+          height: (size.height * 0.055),
           decoration: BoxDecoration(
             color: Color.fromARGB(5, 61, 68, 74),
             border: Border.all(
@@ -46,7 +46,7 @@ class PhoneInput extends ConsumerWidget {
                 ),
                 child: Container(
                   width: 70,
-                  height: (size.height * 0.05),
+                  height: (size.height * 0.055),
                   padding: const EdgeInsets.all(5),
                   alignment: Alignment.center,
                   margin: const EdgeInsets.only(right: 8),

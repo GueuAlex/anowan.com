@@ -3,14 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
-import 'package:ticketwave/config/palette.dart';
-import 'package:ticketwave/model/third_party_model.dart';
-import 'package:ticketwave/widgets/custom_button.dart';
 
 import '../../../config/app_text.dart';
 import '../../../config/functions.dart';
+import '../../../config/palette.dart';
+import '../../../model/third_party_model.dart';
 import '../../../providers/providers.dart';
 import '../../../widgets/b_country_selector.sheet.dart';
+import '../../../widgets/custom_button.dart';
 import 'custome_toggle_switch.dart';
 import 'sheet_header.dart';
 

@@ -2,8 +2,8 @@ import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
-import 'package:ticketwave/config/app_text.dart';
 
+import '../config/app_text.dart';
 import '../config/palette.dart';
 
 class MenuContextuel extends StatelessWidget {

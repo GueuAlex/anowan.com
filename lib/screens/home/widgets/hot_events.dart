@@ -1,16 +1,19 @@
 import 'package:banner_carousel/banner_carousel.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:ticketwave/model/event_model.dart';
-import 'package:ticketwave/widgets/event_card_row.dart';
 
 import '../../../config/app_text.dart';
 import '../../../config/palette.dart';
+import '../../../model/event_model.dart';
+import '../../../widgets/event_card_row.dart';
 
 class HotEvents extends StatelessWidget {
   const HotEvents({
     super.key,
+    required this.events,
   });
+
+  final List<EventModel> events;
 
   @override
   Widget build(BuildContext context) {
@@ -44,9 +47,9 @@ class HotEvents extends StatelessWidget {
       customizedIndicators:
           IndicatorModel(width: 0, height: 0, spaceBetween: 0),
       customizedBanners: List.generate(
-        EventModel.eventList.length,
+        events.sublist(0, 4).length,
         (index) => EventCardRow(
-          event: EventModel.eventList[index],
+          event: events[index],
         ),
       ),
     );

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:ticketwave/screens/suggestion_screen/suggestion_screen.dart';
 
 import '../../../config/app_text.dart';
 import '../../../config/palette.dart';
+import '../../suggestion_screen/suggestion_screen.dart';
 
 Container suggestions({required Size size, required BuildContext context}) {
   return Container(

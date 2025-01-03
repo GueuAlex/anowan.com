@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:pull_to_refresh_flutter3/pull_to_refresh_flutter3.dart';
-import 'package:ticketwave/screens/annuaire/widgets/most_view.dart';
 
 import '../../config/app_text.dart';
 import '../../config/palette.dart';
@@ -10,6 +9,7 @@ import '../../providers/providers.dart';
 import '../../widgets/action_tile.dart';
 import '../../widgets/search_bar_view.dart';
 import 'widgets/annuer_shimmer.dart';
+import 'widgets/most_view.dart';
 import 'widgets/prestator_by_category.dart';
 
 class AnnuaireScreen extends ConsumerStatefulWidget {

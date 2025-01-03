@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:ticketwave/config/functions.dart';
-import 'package:ticketwave/widgets/envent_card_column.dart';
 
 import '../../../config/app_text.dart';
+import '../../../config/functions.dart';
 import '../../../model/event_model.dart';
+import '../../../widgets/envent_card_column.dart';
 
 Widget categoryEvents({
   required String category,

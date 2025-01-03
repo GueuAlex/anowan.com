@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:ticketwave/model/event_model.dart';
 
 import '../config/functions.dart';
 import '../config/palette.dart';
+import '../model/event_model.dart';
 import '../providers/user.provider.dart';
 import 'login_sheet.dart';
 
@@ -11,8 +11,10 @@ class BookmarkEvent extends ConsumerWidget {
   const BookmarkEvent({
     super.key,
     required this.event,
+    this.size = 20,
   });
   final EventModel event;
+  final double size;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -43,7 +45,7 @@ class BookmarkEvent extends ConsumerWidget {
           ? Icon(
               CupertinoIcons.bookmark_fill,
               color: Palette.appRed,
-              size: 20,
+              size: size,
             )
           : Icon(
               CupertinoIcons.bookmark,
@@ -53,7 +55,7 @@ class BookmarkEvent extends ConsumerWidget {
                 105,
                 105,
               ),
-              size: 20,
+              size: size,
             ),
     );
   }

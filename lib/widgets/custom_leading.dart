@@ -2,7 +2,8 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:ticketwave/config/palette.dart';
+
+import '../config/palette.dart';
 
 class CustomLeading extends StatelessWidget {
   const CustomLeading({

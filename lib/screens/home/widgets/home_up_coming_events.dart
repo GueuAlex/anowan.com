@@ -1,14 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:ticketwave/model/event_model.dart';
-import 'package:ticketwave/widgets/envent_card_column.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import '../../../config/app_text.dart';
 import '../../../config/palette.dart';
+import '../../../model/event_model.dart';
+import '../../../widgets/envent_card_column.dart';
+import '../../maps_screen/maps_screen.dart';
 
 class HomeUpcomingEvents extends StatelessWidget {
   const HomeUpcomingEvents({
     super.key,
+    required this.evenst,
   });
+
+  final List<EventModel> evenst;
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +34,11 @@ class HomeUpcomingEvents extends StatelessWidget {
               ),
               TextButton(
                 iconAlignment: IconAlignment.end,
-                onPressed: () {},
+                onPressed: () => Navigator.pushNamed(
+                  context,
+                  MapsScreen.routeName,
+                  arguments: LatLng(5.345317, -4.024429),
+                ),
                 child: AppText.medium(
                   'Voir tout',
                   fontSize: (size.width * 0.040),
@@ -42,7 +51,7 @@ class HomeUpcomingEvents extends StatelessWidget {
           SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             child: Row(
-              children: EventModel.eventList
+              children: evenst
                   .map(
                     (event) => eventCardColumn(
                       event: event,

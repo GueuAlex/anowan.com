@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:ticketwave/config/palette.dart';
+
+import 'palette.dart';
 
 class QRScannerOverlay extends StatelessWidget {
   const QRScannerOverlay({super.key, required this.overlayColour});

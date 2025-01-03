@@ -8,8 +8,6 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
-import 'package:ticketwave/remote_service/remote_service.dart';
-import 'package:ticketwave/widgets/custom_button.dart';
 
 import '../../../config/app_text.dart';
 import '../../../config/functions.dart';
@@ -19,6 +17,8 @@ import '../../../model/third_party_model.dart';
 import '../../../providers/checkout_state.provider.dart';
 import '../../../providers/providers.dart';
 import '../../../providers/user.provider.dart';
+import '../../../remote_service/remote_service.dart';
+import '../../../widgets/custom_button.dart';
 import '../om/om_otp_screen.dart';
 import 'checkout_row_infow.dart';
 import 'checkout_sucess.dart';

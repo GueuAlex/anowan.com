@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:ticketwave/config/palette.dart';
 
+import '../../../config/palette.dart';
 import '../../../model/event_model.dart';
 import '../../../widgets/event_card_row.dart';
 

@@ -3,9 +3,9 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
-import 'package:ticketwave/config/functions.dart';
 
 import '../../../config/app_text.dart';
+import '../../../config/functions.dart';
 import '../../../providers/providers.dart';
 import '../../../widgets/event_card_row.dart';
 

@@ -8,13 +8,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:ticketwave/config/functions.dart';
-import 'package:ticketwave/model/ticket_model.dart';
-import 'package:ticketwave/remote_service/remote_service.dart';
+
 import 'package:vibration/vibration.dart';
 
+import '../../../config/functions.dart';
 import '../../../config/overlay.dart';
+import '../../../model/ticket_model.dart';
 import '../../../providers/providers.dart';
+import '../../../remote_service/remote_service.dart';
 import '../../../widgets/error_sheet_container.dart';
 import 'widgets/carton_sheet.dart';
 import 'widgets/error_sheet.dart';

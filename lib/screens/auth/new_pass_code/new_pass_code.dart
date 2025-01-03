@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:pin_plus_keyboard/package/controllers/pin_input_controller.dart';
 import 'package:pin_plus_keyboard/pin_plus_keyboard.dart';
-import 'package:ticketwave/config/app_text.dart';
-import 'package:ticketwave/screens/auth/new_pass_code/confirm_pass_code.dart';
+
+import '../../../config/app_text.dart';
+import 'confirm_pass_code.dart';
 
 class NewPassCodeScreen extends StatefulWidget {
   static String routeName = 'NewPassCodeScreen';

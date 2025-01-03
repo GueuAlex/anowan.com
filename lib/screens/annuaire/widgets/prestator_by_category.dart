@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
-import 'package:ticketwave/screens/prestator_screen/prestator_screen.dart';
 
 import '../../../config/app_text.dart';
 import '../../../config/functions.dart';
 import '../../../config/palette.dart';
 import '../../../model/prestator_model.dart';
 import '../../../providers/providers.dart';
+import '../../prestator_screen/prestator_screen.dart';
 import 'filter_modal_bottom_sheet.dart';
 import 'prestator_card.dart';
 

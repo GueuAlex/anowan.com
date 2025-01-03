@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:ticketwave/config/palette.dart';
 
 import '../../../config/app_text.dart';
+import '../../../config/palette.dart';
 import 'favorites.dart';
 import 'participe.dart';
 import 'suggestion_container.dart';

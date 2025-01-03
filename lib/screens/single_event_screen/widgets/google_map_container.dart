@@ -3,20 +3,23 @@ import 'package:flutter/material.dart';
 import 'package:flutter_google_maps_webservices/geocoding.dart';
 import 'package:gap/gap.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:ticketwave/screens/single_event_screen/widgets/full_screen_maps.dart';
 
 import '../../../config/app_text.dart';
 import '../../../constants/constants.dart';
+import '../../../model/event_model.dart';
 import '../../../model/localization_model.dart';
 import 'custom_map.dart';
+import 'full_screen_maps.dart';
 import 'position_full_info.dart';
 
 class GoogleMapContainer extends StatefulWidget {
   GoogleMapContainer({
     Key? key,
     required this.localization,
+    required this.event,
   }) : super(key: key);
   final LocalizationModel localization;
+  final EventModel event;
 
   @override
   State<GoogleMapContainer> createState() => _GoogleMapContainerState();
@@ -106,6 +109,7 @@ class _GoogleMapContainerState extends State<GoogleMapContainer> {
         CupertinoPageRoute(
           builder: (context) => FullScreenMaps(
             localization: widget.localization,
+            event: widget.event,
           ),
         ),
       ),

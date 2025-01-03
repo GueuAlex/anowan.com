@@ -3,9 +3,9 @@ import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter_google_maps_webservices/geocoding.dart'; // Import du package
-import 'package:ticketwave/constants/constants.dart';
 
 import '../../../config/app_text.dart';
+import '../../../constants/constants.dart';
 
 class PositionFullInfo extends StatefulWidget {
   const PositionFullInfo({

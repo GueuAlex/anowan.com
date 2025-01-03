@@ -2,9 +2,10 @@ import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:ticketwave/config/app_text.dart';
-import 'package:ticketwave/config/palette.dart';
-import 'package:ticketwave/screens/user_details_screen/widgets/user_profile_pic.dart';
+
+import '../../../config/app_text.dart';
+import '../../../config/palette.dart';
+import '../widgets/user_profile_pic.dart';
 
 class ProfilSettings extends StatelessWidget {
   static String routeName = 'profilSettings';

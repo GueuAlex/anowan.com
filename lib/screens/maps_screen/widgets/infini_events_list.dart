@@ -1,18 +1,21 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
-import 'package:ticketwave/model/event_model.dart';
 
 import '../../../config/app_text.dart';
+import '../../../config/functions.dart';
+import '../../../model/event_model.dart';
+import '../../../providers/providers.dart';
 import '../../../widgets/action_tile.dart';
 import 'draggable_event_card.dart';
 
-class InfiniEventsList extends StatefulWidget {
+class InfiniEventsList extends ConsumerStatefulWidget {
   const InfiniEventsList({super.key});
 
   @override
-  State<InfiniEventsList> createState() => _InfiniEventsListState();
+  ConsumerState<InfiniEventsList> createState() => _InfiniEventsListState();
 }
 
-class _InfiniEventsListState extends State<InfiniEventsList> {
+class _InfiniEventsListState extends ConsumerState<InfiniEventsList> {
   List<EventModel> displayedEvents = [];
   int currentPage = 0;
   bool isLoadingMore = false;
@@ -32,20 +35,24 @@ class _InfiniEventsListState extends State<InfiniEventsList> {
     });
 
     // Simuler un appel à l'API avec un délai
-    await Future.delayed(Duration(seconds: 2), () {
-      setState(() {
-        int nextPage = currentPage + 1;
-        List<EventModel> newEvents =
-            EventModel.eventList.skip(currentPage * 10).take(10).toList();
-        if (newEvents.isEmpty) {
-          hasMore = false;
-        } else {
-          displayedEvents.addAll(newEvents);
-          currentPage = nextPage;
-        }
-        isLoadingMore = false;
-      });
+    //await Future.delayed(Duration(seconds: 2), () {
+    var events = ref.read(eventsProvider);
+    List<EventModel> list = Functions.filterAndSortUpcomingEvents(
+      events: events.value ?? [],
+    );
+    setState(() {
+      int nextPage = currentPage + 1;
+      List<EventModel> newEvents =
+          list.skip(currentPage * 10).take(10).toList();
+      if (newEvents.isEmpty) {
+        hasMore = false;
+      } else {
+        displayedEvents.addAll(newEvents);
+        currentPage = nextPage;
+      }
+      isLoadingMore = false;
     });
+    //});
   }
 
   @override

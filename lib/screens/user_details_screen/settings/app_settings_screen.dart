@@ -2,11 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:gap/gap.dart';
-import 'package:ticketwave/config/functions.dart';
-import 'package:ticketwave/config/palette.dart';
-import 'package:ticketwave/screens/intro/intro_screen.dart';
 
 import '../../../config/app_text.dart';
+import '../../../config/functions.dart';
+import '../../../config/palette.dart';
+import '../../intro/intro_screen.dart';
 
 class AppSettingsScreen extends StatelessWidget {
   static const routeName = 'app_settings_screen';
@@ -144,9 +144,9 @@ class AppSettingsScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Image.asset(
-                    'assets/images/logo-text-short-removebg.png',
-                    height: 40,
-                    width: 80,
+                    'assets/images/logo-text-no-bg.png',
+                    height: 30,
+                    width: 70,
                   ),
                   RichText(
                     textAlign: TextAlign.center,

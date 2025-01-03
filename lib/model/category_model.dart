@@ -1,4 +1,4 @@
-import 'package:ticketwave/model/event_model.dart';
+import 'event_model.dart';
 
 class CategoryModel {
   final int id;

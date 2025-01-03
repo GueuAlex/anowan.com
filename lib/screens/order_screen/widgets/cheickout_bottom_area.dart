@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:ticketwave/model/checkout_method.dart';
 
 import '../../../config/app_text.dart';
 import '../../../config/palette.dart';
+import '../../../model/checkout_method.dart';
 import '../../../widgets/custom_button.dart';
 
 class CheckBottomArea extends StatefulWidget {

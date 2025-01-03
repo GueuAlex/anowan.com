@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pull_to_refresh_flutter3/pull_to_refresh_flutter3.dart';
-import 'package:ticketwave/config/app_text.dart';
-import 'package:ticketwave/config/functions.dart';
-import 'package:ticketwave/screens/search/widgets/search_screen_doby.dart';
 
+import '../../config/app_text.dart';
+import '../../config/functions.dart';
 import '../../config/palette.dart';
 import '../../providers/providers.dart';
 import '../../widgets/search_bar_view.dart';
+import 'widgets/search_screen_doby.dart';
 
 class SearchScreen extends ConsumerStatefulWidget {
   static String routeName = "searchScreen";
@@ -76,7 +76,6 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                 ),
                 child: events.when(
                   data: (events) {
-                    ;
                     return SearchScreenBody(
                       events: Functions.filterAndSortUpcomingEvents(
                         events: events,

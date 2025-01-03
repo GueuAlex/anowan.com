@@ -1,5 +1,5 @@
-import 'package:ticketwave/admin/screens/scan/scan_screen.dart';
-import 'package:ticketwave/widgets/bottom_bar.dart';
+import '../admin/screens/scan/scan_screen.dart';
+import '../widgets/bottom_bar.dart';
 
 class SideBarItemModel {
   final String title;

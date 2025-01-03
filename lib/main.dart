@@ -38,13 +38,13 @@ void main() async {
   await dotenv.load(fileName: ".env");
   runApp(
     const ProviderScope(
-      child: MyApp(),
+      child: IziBillet(),
     ),
   );
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class IziBillet extends StatelessWidget {
+  const IziBillet({super.key});
 
   // This widget is the root of your application.
   @override

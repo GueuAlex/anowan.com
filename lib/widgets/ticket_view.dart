@@ -1,11 +1,11 @@
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:ticketwave/config/app_text.dart';
-import 'package:ticketwave/config/palette.dart';
-import 'package:ticketwave/widgets/ticket_dot.dart';
 
 import '../config/app_layout.dart';
+import '../config/app_text.dart';
+import '../config/palette.dart';
+import 'ticket_dot.dart';
 
 class TicketView extends StatelessWidget {
   const TicketView({super.key});

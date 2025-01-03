@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
-import 'package:ticketwave/config/palette.dart';
 
+import '../../../config/palette.dart';
 import '../../../model/operator_model.dart';
 import '../../../providers/providers.dart';
 

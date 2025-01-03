@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper_view/flutter_swiper_view.dart';
-import 'package:ticketwave/config/app_text.dart';
 
+import '../../../config/app_text.dart';
 import '../../../constants/constants.dart';
 
 class SwiperBuilder extends StatelessWidget {

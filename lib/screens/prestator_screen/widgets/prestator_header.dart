@@ -1,9 +1,9 @@
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:ticketwave/config/functions.dart';
 
 import '../../../config/app_text.dart';
+import '../../../config/functions.dart';
 import '../../../config/palette.dart';
 import '../../../constants/constants.dart';
 import '../../../model/prestator_model.dart';

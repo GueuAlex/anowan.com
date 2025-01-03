@@ -1,13 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:ticketwave/config/functions.dart';
-import 'package:ticketwave/widgets/horizontal_separator.dart';
-import 'package:ticketwave/widgets/sheet_closer_cross.dart';
 
+import '../../../config/functions.dart';
 import '../../../config/palette.dart';
 import '../../../model/prestator_model.dart';
 import '../../../widgets/build_link.dart';
+import '../../../widgets/horizontal_separator.dart';
+import '../../../widgets/sheet_closer_cross.dart';
 
 class MoreContact extends StatelessWidget {
   const MoreContact({

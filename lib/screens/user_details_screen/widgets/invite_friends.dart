@@ -42,7 +42,7 @@ class InviteFriends extends StatelessWidget {
               children: [
                 TextSpan(text: 'Invitez vos amis à'),
                 TextSpan(
-                  text: ' télécharger anowan.com',
+                  text: ' télécharger Izibillet',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     color: Colors.black,
@@ -72,7 +72,7 @@ class InviteFriends extends StatelessWidget {
                 children: [
                   // Anowan logo (remplacer par l'image du logo)
                   Image.asset(
-                    'assets/images/anowan-invite-2.png',
+                    'assets/images/ico.png',
                     height: 24,
                   ),
                   SizedBox(width: 8),

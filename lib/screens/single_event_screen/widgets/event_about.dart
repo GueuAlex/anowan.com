@@ -2,10 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 import 'package:gap/gap.dart';
-import 'package:ticketwave/config/palette.dart';
 
 import '../../../config/app_text.dart';
 import '../../../config/functions.dart';
+import '../../../config/palette.dart';
 
 class EventAbout extends StatelessWidget {
   const EventAbout({

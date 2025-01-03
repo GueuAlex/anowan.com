@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:ticketwave/config/app_text.dart';
+
+import '../../config/app_text.dart';
 
 class SuggestionScreen extends StatelessWidget {
   static const routeName = '/suggestions';

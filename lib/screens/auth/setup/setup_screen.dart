@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:ticketwave/config/palette.dart';
-import 'package:ticketwave/widgets/bottom_bar.dart';
-import 'package:ticketwave/widgets/custom_button.dart';
 
+import '../../../config/palette.dart';
 import '../../../local_service/local_service.dart';
 import '../../../providers/bookmark_event_provider.dart';
 import '../../../providers/following_provider.dart';
 import '../../../providers/providers.dart';
+import '../../../widgets/bottom_bar.dart';
+import '../../../widgets/custom_button.dart';
 import 'views/centre_interet_view.dart';
 import 'views/event_suggestion.dart';
 import 'views/follow_organizer_view.dart';

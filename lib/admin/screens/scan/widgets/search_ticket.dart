@@ -4,7 +4,6 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:gap/gap.dart';
 import 'package:rounded_loading_button_plus/rounded_loading_button.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:ticketwave/admin/screens/scan/widgets/error_sheet.dart';
 import 'package:vibration/vibration.dart';
 
 import '../../../../config/app_text.dart';
@@ -15,6 +14,7 @@ import '../../../../remote_service/remote_service.dart';
 import '../../../../widgets/all_sheet_header.dart';
 import '../../../../widgets/error_sheet_container.dart';
 import '../../../../widgets/infos_column.dart';
+import 'error_sheet.dart';
 import 'phical_ticket_sheet.dart';
 import 'scan_sheet.dart';
 import 'token_checker.dart';

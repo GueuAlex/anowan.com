@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:ticketwave/config/functions.dart';
-import 'package:ticketwave/model/event_model.dart';
 import '../../../../config/app_text.dart';
+import '../../../../config/functions.dart';
 import '../../../../config/palette.dart';
+import '../../../../model/event_model.dart';
 import '../../../../providers/providers.dart';
 import '../widgets/show_event_detail_sheet.dart';
 import '../widgets/suggestionEventCard.dart';

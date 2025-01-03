@@ -3,13 +3,13 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:ticketwave/screens/auth/login/login_screen.dart';
-import 'package:ticketwave/screens/auth/otp/otp_screen.dart';
-import 'package:ticketwave/screens/auth/registration/registration.dart';
 
 import '../../config/functions.dart';
 import '../../providers/providers.dart';
 import '../../remote_service/remote_service.dart';
+import 'login/login_screen.dart';
+import 'otp/otp_screen.dart';
+import 'registration/registration.dart';
 
 class AuthScreen extends ConsumerStatefulWidget {
   static String routeName = "authScreen";

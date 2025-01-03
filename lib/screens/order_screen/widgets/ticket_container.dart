@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
-import 'package:ticketwave/screens/order_screen/widgets/third_party_container.dart';
 
 import '../../../config/app_text.dart';
 import '../../../config/functions.dart';
 import '../../../config/palette.dart';
 import '../../../model/third_party_model.dart';
 import '../../../providers/providers.dart';
+import 'third_party_container.dart';
 
 class TicketContainer extends ConsumerWidget {
   const TicketContainer({

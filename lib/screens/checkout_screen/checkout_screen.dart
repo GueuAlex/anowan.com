@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:ticketwave/config/app_text.dart';
 
+import '../../config/app_text.dart';
 import '../../widgets/app_bar_leading.dart';
 
 class CheckoutScreen extends StatelessWidget {

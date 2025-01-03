@@ -104,11 +104,11 @@ class _BottomBarState extends ConsumerState<BottomBar> {
         centerTitle: true,
         title: bottomMenuInitIndex == 4 || bottomMenuInitIndex == 0
             ? Container(
-                width: size.width * 0.24,
+                width: size.width * 0.20,
                 margin: const EdgeInsets.only(bottom: 10),
                 padding: const EdgeInsets.only(top: 10.0),
                 child: Image.asset(
-                  "assets/images/logo-text-short.jpg",
+                  "assets/images/logo-text-no-bg.png",
                 ),
               )
             : Container(),

@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:gap/gap.dart';
-import 'package:ticketwave/config/palette.dart';
-import 'package:ticketwave/config/preferences.dart';
-import 'package:ticketwave/screens/auth/auth_screen.dart';
-import 'package:ticketwave/widgets/bottom_bar.dart';
-import 'package:ticketwave/widgets/vertical_separator.dart';
+import 'package:izibillet/widgets/custom_button.dart';
+
+import '../../config/palette.dart';
+import '../../config/preferences.dart';
+import '../../widgets/bottom_bar.dart';
+import '../auth/auth_screen.dart';
 
 class IntroScrenn extends StatelessWidget {
   static String routeName = "introScreen";
@@ -22,7 +23,7 @@ class IntroScrenn extends StatelessWidget {
             RichText(
               textAlign: TextAlign.center,
               text: TextSpan(
-                text: 'Anowan.com le ',
+                text: 'Izibillet le ',
                 style: Theme.of(context).textTheme.headlineSmall!.copyWith(
                       fontWeight: FontWeight.w500,
                     ),
@@ -74,61 +75,90 @@ class IntroScrenn extends StatelessWidget {
             const Spacer(flex: 3),
             SafeArea(
               top: false,
-              child: Row(
-                //mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Container(
-                    //color: Colors.amber,
-                    padding: const EdgeInsets.symmetric(vertical: 8),
-                    alignment: Alignment.centerRight,
-                    child: InkWell(
-                      splashColor: Colors.transparent,
-                      highlightColor: Colors.transparent,
-                      hoverColor: Colors.transparent,
-                      focusColor: Colors.transparent,
-                      overlayColor: WidgetStatePropertyAll(Colors.transparent),
-                      onTap: () => _redirect(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 15),
+                child: Column(
+                  //mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    /*  Container(
+                      //color: Colors.amber,
+                      padding: const EdgeInsets.symmetric(vertical: 8),
+                      alignment: Alignment.centerRight,
+                      child: InkWell(
+                        splashColor: Colors.transparent,
+                        highlightColor: Colors.transparent,
+                        hoverColor: Colors.transparent,
+                        focusColor: Colors.transparent,
+                        overlayColor: WidgetStatePropertyAll(Colors.transparent),
+                        onTap: () => _redirect(
+                          ctxt: context,
+                          route: BottomBar.routeName,
+                        ),
+                        child: Text(
+                          'Obtenir un aperçu',
+                          style: TextStyle(
+                            color: const Color.fromARGB(221, 35, 35, 35),
+                            fontWeight: FontWeight.w400,
+                            fontSize: 13,
+                          ),
+                        ),
+                      ),
+                    ), */
+
+                    /*  Container(
+                      // color: Colors.amber,
+                      padding: const EdgeInsets.symmetric(vertical: 8),
+                      child: InkWell(
+                        splashColor: Colors.transparent,
+                        highlightColor: Colors.transparent,
+                        hoverColor: Colors.transparent,
+                        focusColor: Colors.transparent,
+                        overlayColor: WidgetStatePropertyAll(Colors.transparent),
+                        onTap: () => _redirect(
+                          ctxt: context,
+                          route: AuthScreen.routeName,
+                        ),
+                        child: Text(
+                          'S\'authentifier',
+                          style: TextStyle(
+                            color: const Color.fromARGB(221, 35, 35, 35),
+                            fontWeight: FontWeight.w400,
+                            fontSize: 13,
+                          ),
+                        ),
+                      ),
+                    ), */
+                    // const Gap(20),
+                    CustomButton(
+                      color: Palette.separatorColor,
+                      width: double.infinity,
+                      //fontsize: 11,
+                      //isSetting: true,
+                      textColor: const Color.fromARGB(255, 43, 43, 43),
+                      height: 40,
+                      radius: 5,
+                      text: 'Obtenir un aperçu',
+                      onPress: () => _redirect(
                         ctxt: context,
                         route: BottomBar.routeName,
                       ),
-                      child: Text(
-                        'Obtenir un aperçu',
-                        style: TextStyle(
-                          color: const Color.fromARGB(221, 35, 35, 35),
-                          fontWeight: FontWeight.w400,
-                          fontSize: 13,
-                        ),
-                      ),
                     ),
-                  ),
-                  verticalSeparator(height: 18, width: 2, color: Colors.red),
-                  Container(
-                    // color: Colors.amber,
-                    padding: const EdgeInsets.symmetric(vertical: 8),
-                    child: InkWell(
-                      splashColor: Colors.transparent,
-                      highlightColor: Colors.transparent,
-                      hoverColor: Colors.transparent,
-                      focusColor: Colors.transparent,
-                      overlayColor: WidgetStatePropertyAll(Colors.transparent),
-                      onTap: () => _redirect(
+                    const Gap(8.0),
+                    CustomButton(
+                      color: Palette.appRed,
+                      width: double.infinity,
+                      height: 40,
+                      radius: 5,
+                      text: 'S\'authentifier',
+                      onPress: () => _redirect(
                         ctxt: context,
                         route: AuthScreen.routeName,
                       ),
-                      child: Text(
-                        'S\'authentifier',
-                        style: TextStyle(
-                          color: const Color.fromARGB(221, 35, 35, 35),
-                          fontWeight: FontWeight.w400,
-                          fontSize: 13,
-                        ),
-                      ),
                     ),
-                  ),
-                  // const Gap(20),
-                ],
+                  ],
+                ),
               ),
             ),
             Gap(45),

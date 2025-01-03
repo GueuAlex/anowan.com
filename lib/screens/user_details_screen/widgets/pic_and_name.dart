@@ -1,9 +1,9 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:ticketwave/providers/user.provider.dart';
 
 import '../../../config/app_text.dart';
+import '../../../providers/user.provider.dart';
 import 'user_profile_pic.dart';
 
 class PicAndName extends ConsumerWidget {
@@ -28,14 +28,14 @@ class PicAndName extends ConsumerWidget {
                 color: Color.fromARGB(255, 32, 32, 32),
               ),
               AppText.medium(
-                '📬 ${user.email ?? user.phone}',
+                '📬 ${user.email!.isNotEmpty ? user.email : user.phone}',
                 fontSize: 12,
                 fontWeight: FontWeight.w300,
                 color: Color.fromARGB(255, 80, 80, 80),
                 maxLine: 1,
               ),
               AppText.medium(
-                '📍${user.favoriteLocation ?? 'Inconnue'}',
+                '📍${user.favoriteLocation!.isNotEmpty ? user.favoriteLocation : 'Inconnue'}',
                 fontSize: 12,
                 fontWeight: FontWeight.w300,
                 color: Color.fromARGB(255, 80, 80, 80),

@@ -103,58 +103,59 @@ Widget eventCardColumn(
                         ),
                       ],
                     ),
-                    Flexible(
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 10),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Expanded(
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Icon(
-                                    Icons.location_on,
-                                    color: Color.fromARGB(255, 141, 141, 141),
-                                    size: 23,
-                                  ),
-                                  Gap(2),
-                                  Flexible(
-                                    child: AppText.small(
-                                      '${event.localizations[0].place}',
-                                      fontSize: size.width * 0.029,
-                                      fontWeight: FontWeight.w300,
-                                      maxLine: 1,
-                                      color: Color.fromARGB(255, 37, 40, 42),
-                                      textOverflow: TextOverflow.fade,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Row(
+                    Container(
+                      height: 30,
+                      //color: Colors.amber,
+                      padding: const EdgeInsets.only(bottom: 10),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Expanded(
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                GestureDetector(
-                                  onTap: () => print('share'),
-                                  child: Icon(
-                                    CupertinoIcons.share,
-                                    color: const Color.fromARGB(
-                                      255,
-                                      105,
-                                      105,
-                                      105,
-                                    ),
-                                    size: 20,
-                                  ),
+                                Icon(
+                                  Icons.location_on,
+                                  color: Color.fromARGB(255, 141, 141, 141),
+                                  size: 23,
                                 ),
-                                Gap(14),
-                                BookmarkEvent(
-                                  event: event,
+                                Gap(2),
+                                Expanded(
+                                  child: AppText.small(
+                                    '${event.localizations[0].place}',
+                                    fontSize: size.width * 0.029,
+                                    fontWeight: FontWeight.w300,
+                                    maxLine: 1,
+                                    color: Color.fromARGB(255, 37, 40, 42),
+                                    textOverflow: TextOverflow.ellipsis,
+                                  ),
                                 ),
                               ],
-                            )
-                          ],
-                        ),
+                            ),
+                          ),
+                          const Gap(10),
+                          Row(
+                            children: [
+                              GestureDetector(
+                                onTap: () => print('share'),
+                                child: Icon(
+                                  CupertinoIcons.share,
+                                  color: const Color.fromARGB(
+                                    255,
+                                    105,
+                                    105,
+                                    105,
+                                  ),
+                                  size: 20,
+                                ),
+                              ),
+                              Gap(14),
+                              BookmarkEvent(
+                                event: event,
+                              ),
+                            ],
+                          )
+                        ],
                       ),
                     ),
                   ],

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:ticketwave/screens/single_event_screen/widgets/tag_wiget.dart';
 
 import '../../../config/app_text.dart';
+import 'tag_wiget.dart';
 
 class TageContainer extends StatelessWidget {
   const TageContainer({super.key});

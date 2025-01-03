@@ -3,10 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
-import 'package:ticketwave/config/functions.dart';
-import 'package:ticketwave/screens/order_screen/widgets/text_midle.dart';
 
 import '../../../config/app_text.dart';
+import '../../../config/functions.dart';
 import '../../../config/palette.dart';
 import '../../../local_service/local_service.dart';
 import '../../../model/third_party_model.dart';
@@ -21,6 +20,7 @@ import 'check_button.dart';
 import 'checkout_details_sheet.dart';
 import 'custome_toggle_switch.dart';
 import 'operator_switch.dart';
+import 'text_midle.dart';
 import 'third_part_form.dart';
 import 'ticket_container.dart';
 

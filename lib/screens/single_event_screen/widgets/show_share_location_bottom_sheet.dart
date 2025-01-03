@@ -1,20 +1,21 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:ticketwave/screens/single_event_screen/widgets/icon_row.dart';
 
 import '../../../config/app_text.dart';
+import '../../../model/event_model.dart';
 import '../../../model/localization_model.dart';
 import 'full_screen_maps.dart';
+import 'icon_row.dart';
 
 class ShowShareLocationBottomSheet extends StatelessWidget {
   const ShowShareLocationBottomSheet({
     super.key,
     required this.localization,
-    //required this.event,
+    required this.event,
   });
   final LocalizationModel localization;
-  // final EventModel event;
+  final EventModel event;
 
   @override
   Widget build(BuildContext context) {
@@ -87,6 +88,7 @@ class ShowShareLocationBottomSheet extends StatelessWidget {
                             CupertinoPageRoute(
                               builder: (context) => FullScreenMaps(
                                 localization: localization,
+                                event: event,
                               ),
                             ),
                           ),

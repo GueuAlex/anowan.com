@@ -3,8 +3,8 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:ticketwave/config/palette.dart';
 
+import '../config/palette.dart';
 import '../screens/notification_screen/notification_screen.dart';
 
 class OpenSideBar extends StatelessWidget {

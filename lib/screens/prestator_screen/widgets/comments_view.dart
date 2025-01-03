@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:ticketwave/screens/order_screen/widgets/sheet_header.dart';
+
+import '../../order_screen/widgets/sheet_header.dart';
 
 class CommentsView extends StatelessWidget {
   const CommentsView({

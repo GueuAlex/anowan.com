@@ -4,15 +4,15 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 import 'package:gap/gap.dart';
 import 'package:intl/intl.dart';
-import 'package:ticketwave/config/palette.dart';
-import 'package:ticketwave/model/pass_model.dart';
-import 'package:ticketwave/widgets/horizontal_separator.dart';
-import 'package:ticketwave/widgets/sheet_closer_cross.dart';
 
 import '../../../../config/app_text.dart';
+import '../../../../config/palette.dart';
 import '../../../../constants/constants.dart';
 import '../../../../model/event_model.dart';
+import '../../../../model/pass_model.dart';
 import '../../../../providers/bookmark_event_provider.dart';
+import '../../../../widgets/horizontal_separator.dart';
+import '../../../../widgets/sheet_closer_cross.dart';
 import '../../../organizer_screen/widgets/organizer_row.dart';
 import '../../../single_event_screen/widgets/icon_row.dart';
 

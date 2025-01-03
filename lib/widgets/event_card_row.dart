@@ -3,12 +3,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:intl/intl.dart';
-import 'package:ticketwave/model/event_model.dart';
-import 'package:ticketwave/screens/single_event_screen/single_event_screen.dart';
 
 import '../config/app_text.dart';
 import '../config/palette.dart';
 import '../constants/constants.dart';
+import '../model/event_model.dart';
+import '../screens/single_event_screen/single_event_screen.dart';
+import 'bookmark_event.dart';
 
 class EventCardRow extends StatelessWidget {
   const EventCardRow({
@@ -139,18 +140,9 @@ class EventCardRow extends StatelessWidget {
                               ),
                             ),
                             Gap(14),
-                            GestureDetector(
-                              onTap: () => print('bookmark'),
-                              child: Icon(
-                                CupertinoIcons.bookmark,
-                                color: const Color.fromARGB(
-                                  255,
-                                  105,
-                                  105,
-                                  105,
-                                ),
-                                size: 16,
-                              ),
+                            BookmarkEvent(
+                              event: event,
+                              size: 16,
                             ),
                           ],
                         )
@@ -164,20 +156,22 @@ class EventCardRow extends StatelessWidget {
               Positioned(
                 left: 45,
                 top: 10,
-                child: Container(
-                  width: 70,
-                  padding: const EdgeInsets.all(5),
-                  decoration: BoxDecoration(
-                    color: Palette.primaryColor.withOpacity(0.7),
-                    borderRadius: BorderRadius.circular(5),
-                  ),
-                  child: Center(
-                    child: AppText.small(
-                      'Gratuit',
-                      color: Palette.whiteColor,
-                    ),
-                  ),
-                ),
+                child: event.free
+                    ? Container(
+                        width: 70,
+                        padding: const EdgeInsets.all(5),
+                        decoration: BoxDecoration(
+                          color: Palette.primaryColor.withOpacity(0.7),
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                        child: Center(
+                          child: AppText.small(
+                            'Gratuit',
+                            color: Palette.whiteColor,
+                          ),
+                        ),
+                      )
+                    : SizedBox(),
               )
             ],
           ),

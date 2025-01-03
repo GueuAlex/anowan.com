@@ -6,10 +6,10 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:gap/gap.dart';
 import 'package:pin_plus_keyboard/package/controllers/pin_input_controller.dart';
 import 'package:pin_plus_keyboard/pin_plus_keyboard.dart';
-import 'package:ticketwave/config/app_text.dart';
-import 'package:ticketwave/config/functions.dart';
-import 'package:ticketwave/config/palette.dart';
 
+import '../../../config/app_text.dart';
+import '../../../config/functions.dart';
+import '../../../config/palette.dart';
 import '../../../remote_service/remote_service.dart';
 import '../user_infos/take_user_infos.dart';
 

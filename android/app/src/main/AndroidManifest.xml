@@ -21,7 +21,7 @@
         </intent>
     </queries>
    <application
-        android:label="Anowan"
+        android:label="Izibillet"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <!-- google api key config -->

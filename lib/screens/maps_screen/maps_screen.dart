@@ -6,10 +6,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:ticketwave/config/app_text.dart';
-import 'package:ticketwave/config/palette.dart';
 
+import '../../config/app_text.dart';
 import '../../config/functions.dart';
+import '../../config/palette.dart';
 import '../annuaire/widgets/filter_modal_bottom_sheet.dart';
 import 'widgets/draggable_bottom_sheet.dart';
 import 'widgets/localisable_events.dart';
@@ -103,7 +103,7 @@ class _MapsScreenState extends State<MapsScreen> {
             )
           else
             Center(
-              child: CircularProgressIndicator.adaptive(),
+              child: SizedBox(),
             ),
           // localisable events
           Positioned(

@@ -2,9 +2,9 @@ import 'package:add_2_calendar/add_2_calendar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:ticketwave/config/functions.dart';
 
 import '../../../config/app_text.dart';
+import '../../../config/functions.dart';
 import '../../../config/palette.dart';
 import '../../../model/localization_model.dart';
 import '../../../widgets/custom_button.dart';

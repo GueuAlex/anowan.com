@@ -1,5 +1,5 @@
-name: ticketwave
-description: A new Flutter project.
+name: izibillet
+description: Application mobile de billetteries.
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: "none" # Remove this line if you wish to publish to pub.dev
@@ -82,19 +82,21 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_launcher_icons: ^0.12.0
+  icons_launcher: ^3.0.0
   flutter_native_splash: ^2.2.19
 
 flutter_native_splash:
   color: "#ffffff"
-  image: "assets/images/ic_launcher4.png"
+  image: "assets/images/logo-text-no-bg.png"
   android: true
   ios: true
-flutter_icons:
-  android: true
-  ios: true
-  image_path: "assets/images/ic_launcher.png"
-  min_sdk_android: 21 # android min sdk min:16, default 21
+icons_launcher:
+  image_path: "assets/images/ic_logo_radius.png"
+  platforms:
+    android:
+      enable: true
+    ios:
+      enable: true
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is

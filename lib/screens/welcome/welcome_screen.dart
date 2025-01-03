@@ -2,9 +2,10 @@ import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:ticketwave/config/app_text.dart';
-import 'package:ticketwave/config/palette.dart';
-import 'package:ticketwave/widgets/custom_button.dart';
+
+import '../../config/app_text.dart';
+import '../../config/palette.dart';
+import '../../widgets/custom_button.dart';
 
 class WelcomeScreen extends StatelessWidget {
   static final String routeName = '/welcome';
@@ -53,7 +54,7 @@ class WelcomeScreen extends StatelessWidget {
                   SizedBox(
                     width: double.infinity,
                     child: Text(
-                      'Bienvenue sur anowan',
+                      'Bienvenue sur Izibillet',
                       textAlign: TextAlign.center,
                       style:
                           TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
@@ -164,7 +165,7 @@ class WelcomeScreen extends StatelessWidget {
                             child: RichText(
                               textAlign: TextAlign.left,
                               text: TextSpan(
-                                text: 'Anowan.com\n ',
+                                text: 'Izibillet\n ',
                                 style: TextStyle(
                                   fontWeight: FontWeight.w600,
                                 ),
@@ -212,11 +213,10 @@ class WelcomeScreen extends StatelessWidget {
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 4, vertical: 4),
                             decoration: BoxDecoration(
-                              color: Palette.appRed,
+                              color: Palette.whiteColor,
                               borderRadius: BorderRadius.circular(8),
                             ),
-                            child: Image.asset(
-                                'assets/images/anowan-invite-2.png'),
+                            child: Image.asset('assets/images/ico.png'),
                           )
                         ],
                       ),
@@ -228,7 +228,7 @@ class WelcomeScreen extends StatelessWidget {
                   SizedBox(
                     width: double.infinity,
                     child: Text(
-                      'Avec l\'app Anowan\nProfiter des avantages exclusives.',
+                      'Avec l\'app Izibillet\nProfiter des avantages exclusives.',
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.w600,
@@ -264,7 +264,7 @@ class WelcomeScreen extends StatelessWidget {
                   CustomButton(
                     color: Palette.appRed,
                     width: double.infinity,
-                    height: 35,
+                    height: 40,
                     radius: 5,
                     text: 'Profiter maintenant',
                     onPress: () => Navigator.pop(context),

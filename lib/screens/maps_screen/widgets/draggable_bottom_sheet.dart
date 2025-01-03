@@ -48,7 +48,7 @@ class _DraggableBottomSheetState extends State<DraggableBottomSheet> {
       _screenHeight = MediaQuery.of(context).size.height;
     });
     final size = MediaQuery.of(context).size;
-    print(size.height);
+    //print(size.height);
     return Stack(
       children: [
         DraggableScrollableSheet(
@@ -137,7 +137,7 @@ class _DraggableBottomSheetState extends State<DraggableBottomSheet> {
         ),
         Gap(4),
         AppText.medium(
-          'Liste des événements.',
+          'Tous les événements.',
           fontSize: 15,
           fontWeight: FontWeight.w400,
         ),

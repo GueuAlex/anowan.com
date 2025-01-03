@@ -4,17 +4,18 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as htt;
 import 'package:intl/intl.dart';
-import 'package:ticketwave/config/preferences.dart';
-import 'package:ticketwave/remote_service/remote_service.dart';
-import 'package:ticketwave/widgets/all_sheet_header.dart';
+
 import 'package:url_launcher/url_launcher.dart';
 
 import '../model/event_model.dart';
 import '../model/localization_model.dart';
+import '../remote_service/remote_service.dart';
+import '../widgets/all_sheet_header.dart';
 import '../widgets/custom_button.dart';
 import '../widgets/snackbar_widget.dart';
 import 'app_text.dart';
 import 'palette.dart';
+import 'preferences.dart';
 
 class Functions {
   static void showSnackBar(
@@ -293,7 +294,7 @@ class Functions {
     );
   }
 
-  static bool containsCurrentDate(List<DateTime> dates) {
+/*   static bool containsCurrentDate(List<DateTime> dates) {
     DateTime currentDate = DateTime.now();
     for (DateTime date in dates) {
       if (date.year == currentDate.year &&
@@ -303,6 +304,27 @@ class Functions {
       }
     }
     return false;
+  } */
+
+  static bool containsCurrentDate(List<DateTime> dates) {
+    DateTime currentDate = DateTime.now();
+    bool allDatesInPast = true;
+
+    for (DateTime date in dates) {
+      // Vérifie si une date correspond à aujourd'hui
+      if (date.year == currentDate.year &&
+          date.month == currentDate.month &&
+          date.day == currentDate.day) {
+        return true;
+      }
+      // Vérifie si la date est dans le futur
+      if (date.isAfter(currentDate)) {
+        allDatesInPast = false;
+      }
+    }
+
+    // Retourne true si toutes les dates sont dans le passé
+    return allDatesInPast;
   }
 
   static Size contextSize(BuildContext context) {

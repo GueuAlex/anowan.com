@@ -2,9 +2,9 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper_view/flutter_swiper_view.dart';
-import 'package:ticketwave/model/event_model.dart';
 
 import '../../constants/constants.dart';
+import '../../model/event_model.dart';
 import '../../widgets/app_bar.dart';
 import 'widgets/ticket_view_custom.dart';
 

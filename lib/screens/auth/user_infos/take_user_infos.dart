@@ -7,20 +7,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:gap/gap.dart';
 import 'package:intl/intl.dart';
-import 'package:ticketwave/config/app_text.dart';
-import 'package:ticketwave/config/functions.dart';
-import 'package:ticketwave/config/palette.dart';
-import 'package:ticketwave/local_service/local_service.dart';
-import 'package:ticketwave/screens/auth/setup/setup_screen.dart';
-import 'package:ticketwave/widgets/custom_button.dart';
-import 'package:ticketwave/widgets/horizontal_separator.dart';
-import 'package:ticketwave/widgets/infos_column.dart';
-import 'package:ticketwave/widgets/vertical_separator.dart';
 
+import '../../../config/app_text.dart';
+import '../../../config/functions.dart';
+import '../../../config/palette.dart';
+import '../../../local_service/local_service.dart';
 import '../../../model/user_model.dart';
 import '../../../remote_service/remote_service.dart';
+import '../../../widgets/custom_button.dart';
+import '../../../widgets/horizontal_separator.dart';
+import '../../../widgets/infos_column.dart';
 import '../../../widgets/sheet_closer_cross.dart';
+import '../../../widgets/vertical_separator.dart';
 import '../otp/otp_screen.dart';
+import '../setup/setup_screen.dart';
 
 class TakeUserInfos extends StatefulWidget {
   static String routeName = "takeUserInfos";

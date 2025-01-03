@@ -3,12 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
-import 'package:ticketwave/config/functions.dart';
-import 'package:ticketwave/widgets/customAnimateSlide.dart';
-import 'package:ticketwave/widgets/custom_button.dart';
+
 import '../../../config/app_text.dart';
+import '../../../config/functions.dart';
 import '../../../config/palette.dart';
 import '../../../model/pass_model.dart';
+import '../../../widgets/customAnimateSlide.dart';
+import '../../../widgets/custom_button.dart';
 import 'checkout_form.dart';
 import 'text_midle.dart';
 

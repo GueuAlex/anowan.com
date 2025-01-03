@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:gap/gap.dart';
-import 'package:ticketwave/remote_service/remote_service.dart';
 
 import '../../../../config/app_text.dart';
 import '../../../../config/palette.dart';
+import '../../../../remote_service/remote_service.dart';
 import '../../../../widgets/all_sheet_header.dart';
 import '../../../../widgets/custom_button.dart';
 

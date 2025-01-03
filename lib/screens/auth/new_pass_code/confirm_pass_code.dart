@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:pin_plus_keyboard/package/controllers/pin_input_controller.dart';
 import 'package:pin_plus_keyboard/pin_plus_keyboard.dart';
-import 'package:ticketwave/config/app_text.dart';
-import 'package:ticketwave/widgets/bottom_bar.dart';
+
+import '../../../config/app_text.dart';
+import '../../../widgets/bottom_bar.dart';
 
 class ConfirmPassCodeScreen extends StatefulWidget {
   static String routeName = 'confirmPassCodeScreen';

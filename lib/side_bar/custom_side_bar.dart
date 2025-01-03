@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:ticketwave/config/app_text.dart';
-import 'package:ticketwave/config/palette.dart';
 
 import '../../config/functions.dart';
 import '../../model/side_bar_item.dart';
+import '../config/app_text.dart';
+import '../config/palette.dart';
 import 'widgets/side_bar_item.dart';
 
 class CustomSiderBar extends StatefulWidget {

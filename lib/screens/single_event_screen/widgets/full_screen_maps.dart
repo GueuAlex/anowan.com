@@ -12,10 +12,12 @@ import '../../../widgets/event_card_row.dart';
 
 class FullScreenMaps extends StatefulWidget {
   final LocalizationModel localization;
+  final EventModel event;
 
   const FullScreenMaps({
     super.key,
     required this.localization,
+    required this.event,
   });
 
   @override
@@ -213,7 +215,7 @@ class _FullScreenMapsState extends State<FullScreenMaps> {
                       ],
                     ),
                     child: EventCardRow(
-                      event: EventModel.eventList[0],
+                      event: widget.event,
                       color: Colors.white,
                     ),
                   ),

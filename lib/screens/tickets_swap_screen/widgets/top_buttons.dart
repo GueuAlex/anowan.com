@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:ticketwave/widgets/build_icon.dart';
+
+import '../../../widgets/build_icon.dart';
 
 class HeaderWidgets extends StatelessWidget {
   const HeaderWidgets({

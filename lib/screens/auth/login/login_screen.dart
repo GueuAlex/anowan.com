@@ -4,18 +4,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
-import 'package:ticketwave/local_service/local_service.dart';
-import 'package:ticketwave/model/user_model.dart';
-import 'package:ticketwave/widgets/bottom_bar.dart';
-import 'package:ticketwave/widgets/custom_button.dart';
-import 'package:ticketwave/widgets/horizontal_separator.dart';
 
 import '../../../config/app_text.dart';
 import '../../../config/functions.dart';
 import '../../../config/palette.dart';
 import '../../../constants/constants.dart';
+import '../../../local_service/local_service.dart';
+import '../../../model/user_model.dart';
 import '../../../providers/providers.dart';
 import '../../../remote_service/remote_service.dart';
+import '../../../widgets/bottom_bar.dart';
+import '../../../widgets/custom_button.dart';
+import '../../../widgets/horizontal_separator.dart';
 import '../widgets/redirect_to.dart';
 import '../widgets/terms_of_us.dart';
 
@@ -42,10 +42,10 @@ class LoginScreen extends ConsumerWidget {
           width: Functions.contextSize(context).width,
           child: Padding(
             padding: const EdgeInsets.symmetric(
-              horizontal: 155,
+              horizontal: 145,
             ),
             child: Image(
-              image: AssetImage('assets/images/logo-text-short.jpg'),
+              image: AssetImage('assets/images/logo-text-no-bg.png'),
             ),
           ),
         ),

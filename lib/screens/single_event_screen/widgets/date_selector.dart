@@ -1,26 +1,24 @@
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:ticketwave/config/functions.dart';
-import 'package:ticketwave/screens/single_event_screen/widgets/show_share_location_bottom_sheet.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../config/app_text.dart';
+import '../../../config/functions.dart';
 import '../../../config/palette.dart';
+import '../../../model/event_model.dart';
 import '../../../model/localization_model.dart';
 import 'add_agenda_bottom_sheet.dart';
 import 'icon_row.dart';
+import 'show_share_location_bottom_sheet.dart';
 
 class DateSelector extends StatefulWidget {
   const DateSelector({
     super.key,
-    this.localizations = const [],
-    required this.title,
-    required this.description,
+    required this.event,
   });
-  final List<LocalizationModel> localizations;
-  final String title;
-  final String description;
+
+  final EventModel event;
 
   @override
   State<DateSelector> createState() => _DateSelectorState();
@@ -32,11 +30,12 @@ class _DateSelectorState extends State<DateSelector> {
 
   @override
   Widget build(BuildContext context) {
+    final localizations = widget.event.localizations;
     setState(() {
-      _selectedLocalization = widget.localizations[_selectedIndex];
+      _selectedLocalization = localizations[_selectedIndex];
     });
     //widget.localizations.addAll(LocalizationModel.localList);
-    bool isMultipleLocalization = widget.localizations.length > 1;
+    bool isMultipleLocalization = localizations.length > 1;
 
     return Column(
       children: [
@@ -49,7 +48,7 @@ class _DateSelectorState extends State<DateSelector> {
               scrollDirection: Axis.horizontal,
               child: Row(
                 children: List.generate(
-                  widget.localizations.length,
+                  localizations.length,
                   (index) => InkWell(
                     child: GestureDetector(
                       onTap: () => _selectLocalization(index),
@@ -74,8 +73,8 @@ class _DateSelectorState extends State<DateSelector> {
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
                             AppText.medium(
-                              DateFormat('EEEE', 'fr_FR').format(
-                                  widget.localizations[index].dateEvent),
+                              DateFormat('EEEE', 'fr_FR')
+                                  .format(localizations[index].dateEvent),
                               fontWeight: FontWeight.w300,
                             ),
                             Container(
@@ -93,8 +92,8 @@ class _DateSelectorState extends State<DateSelector> {
                               child: Column(
                                 children: [
                                   AppText.medium(
-                                    DateFormat('dd', 'fr_FR').format(
-                                        widget.localizations[index].dateEvent),
+                                    DateFormat('dd', 'fr_FR')
+                                        .format(localizations[index].dateEvent),
                                     color: Palette.whiteColor,
                                     fontSize: 20,
                                     fontWeight: FontWeight.w600,
@@ -102,7 +101,7 @@ class _DateSelectorState extends State<DateSelector> {
                                   //Gap(5),
                                   AppText.medium(
                                     DateFormat('MMM', 'fr_FR').format(
-                                      widget.localizations[index].dateEvent,
+                                      localizations[index].dateEvent,
                                     ),
                                     color: Palette.appRed,
                                   ),
@@ -110,7 +109,7 @@ class _DateSelectorState extends State<DateSelector> {
                               ),
                             ),
                             AppText.medium(
-                              widget.localizations[index].starttimeEvent,
+                              localizations[index].starttimeEvent,
                               fontWeight: FontWeight.w300,
                             ),
                           ],
@@ -151,7 +150,7 @@ class _DateSelectorState extends State<DateSelector> {
   void _selectLocalization(int index) {
     setState(() {
       _selectedIndex = index;
-      _selectedLocalization = widget.localizations[index];
+      _selectedLocalization = widget.event.localizations[index];
     });
   }
 
@@ -160,6 +159,7 @@ class _DateSelectorState extends State<DateSelector> {
       ctxt: context,
       widget: ShowShareLocationBottomSheet(
         localization: _selectedLocalization,
+        event: widget.event,
       ),
     );
   }
@@ -179,8 +179,8 @@ class _DateSelectorState extends State<DateSelector> {
       ctxt: context,
       widget: AddToAgendaContainer(
         localization: _selectedLocalization,
-        title: widget.title,
-        description: widget.description,
+        title: widget.event.name,
+        description: widget.event.shortDescription ?? '',
       ),
     );
   }
