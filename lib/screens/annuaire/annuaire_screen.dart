@@ -46,7 +46,7 @@ class _AnnuaireScreenState extends ConsumerState<AnnuaireScreen> {
                 ),
               ),
             ),
-            child: searcheBarView(size: size, text: "Trouver un prestataire"),
+            child: SearchBarView(hintText: "Trouver un prestataire"),
           ),
           prestators.when(
             data: (listPrestator) {

@@ -53,7 +53,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                 ),
               ),
             ),
-            child: searcheBarView(size: size),
+            child: SearchBarView(),
           ),
           Expanded(
             child: SmartRefresher(
